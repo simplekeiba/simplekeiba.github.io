@@ -1,0 +1,121 @@
+---
+const pathname = Astro.url.pathname;
+const navItems = [
+  { label: '初めての方へ', href: '/start' },
+  { label: 'エピソード', href: '/episodes' },
+  { label: '番組について', href: '/about' },
+  { label: 'メンバーシップ', href: '/membership' }
+];
+
+const isActive = (href: string) => {
+  if (href === '/') {
+    return pathname === href;
+  }
+  return pathname.startsWith(href);
+};
+---
+
+<header class="fixed top-0 left-0 w-full bg-ink border-b border-ink-line z-50">
+  <div class="flex justify-between items-center p-4 mx-auto max-w-screen-xl">
+    <a href="/" class="font-display font-bold text-lg text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm transition-colors hover:text-gold-soft">
+      シンプルKEIBA
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex gap-6 items-center">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class:list={[
+            "text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm px-1 py-0.5",
+            isActive(item.href) ? "text-gold" : "text-text hover:text-gold-soft"
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+      <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="ml-2 bg-gold text-ink font-bold px-4 py-2 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
+        Spotifyで聴く
+      </a>
+    </nav>
+
+    <!-- Mobile Button & Navigation -->
+    <div class="flex items-center gap-3 md:hidden">
+      <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="bg-gold text-ink text-sm font-bold px-3 py-1.5 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
+        Spotifyで聴く
+      </a>
+      
+      <button 
+        id="mobile-menu-btn" 
+        class="text-text hover:text-gold-soft p-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hamburger-icon"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="close-icon hidden"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Dropdown -->
+  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-ink border-b border-ink-line shadow-lg">
+    <nav class="flex flex-col py-2">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class:list={[
+            "block text-base font-medium py-3 px-4 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold focus-visible:relative z-10",
+            isActive(item.href) ? "text-gold bg-ink-raised" : "text-text hover:text-gold-soft hover:bg-ink-raised transition-colors"
+          ]}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<script>
+  const setupMobileMenu = () => {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const hamburgerIcon = btn?.querySelector('.hamburger-icon');
+    const closeIcon = btn?.querySelector('.close-icon');
+
+    if (!btn || !menu) return;
+
+    // Reset state in case of navigation
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'メニューを開く');
+    menu.classList.add('hidden');
+    hamburgerIcon?.classList.remove('hidden');
+    closeIcon?.classList.add('hidden');
+
+    // Remove old event listener if exists to prevent duplicates on view transitions
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode?.replaceChild(newBtn, btn);
+
+    newBtn.addEventListener('click', () => {
+      const isExpanded = newBtn.getAttribute('aria-expanded') === 'true';
+      
+      if (isExpanded) {
+        newBtn.setAttribute('aria-expanded', 'false');
+        newBtn.setAttribute('aria-label', 'メニューを開く');
+        menu.classList.add('hidden');
+        newBtn.querySelector('.hamburger-icon')?.classList.remove('hidden');
+        newBtn.querySelector('.close-icon')?.classList.add('hidden');
+      } else {
+        newBtn.setAttribute('aria-expanded', 'true');
+        newBtn.setAttribute('aria-label', 'メニューを閉じる');
+        menu.classList.remove('hidden');
+        newBtn.querySelector('.hamburger-icon')?.classList.add('hidden');
+        newBtn.querySelector('.close-icon')?.classList.remove('hidden');
+      }
+    });
+  };
+
+  setupMobileMenu();
+  document.addEventListener('astro:page-load', setupMobileMenu);
+</script>

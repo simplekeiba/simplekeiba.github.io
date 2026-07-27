@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0B0B0D;
+  --color-ink-raised: #15151A;
+  --color-ink-line: #26262E;
+  
+  --color-gold: #D4AF37;
+  --color-gold-soft: #E8CE7A;
+  --color-gold-deep: #8C7220;
+  
+  --color-text: #FFFFFF;
+  --color-text-muted: #A8ADB5;
+  --color-text-faint: #6B7079;
+  
+  --color-read-bg: #101014;
+  --color-read-text: #E8E8EA;
+  
+  --color-waku-1: #FFFFFF;
+  --color-waku-2: #16161A;
+  --color-waku-3: #D6403A;
+  --color-waku-4: #2E5FBF;
+  --color-waku-5: #E8C33A;
+  --color-waku-6: #2E8B57;
+  --color-waku-7: #E8862E;
+  --color-waku-8: #F09BB0;
+
+  --font-display: "Zen Kaku Gothic New", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+  --font-data: "Inter", sans-serif;
+}
