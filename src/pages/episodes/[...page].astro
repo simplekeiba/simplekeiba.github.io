@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { fetchEpisodes } from '../../lib/podcast';
+import { formatDateJa } from '../../lib/date';
 import type { GetStaticPathsOptions } from 'astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -32,14 +33,6 @@ const getWakuClasses = (num: number | null) => {
     'border-l-waku-8', // 8: 桃
   ];
   return `${baseClasses} ${classes[waku]}`;
-};
-
-// YYYY.MM.DD 形式で日付をフォーマット
-const formatDate = (date: Date) => {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0');
-  const dd = String(date.getDate()).padStart(2, '0');
-  return `${yyyy}.${mm}.${dd}`;
 };
 
 // 尺を簡潔な表記にする
@@ -77,36 +70,36 @@ const cleanTitle = (title: string) => {
       </p>
     </header>
 
-    <div class="bg-ink-raised border-y sm:border sm:rounded-lg border-ink-line w-full overflow-hidden">
-      <!-- 出走表ヘッダー -->
-      <div class="episode-header border-b-2 border-ink-line text-text-faint text-xs font-bold items-center hidden sm:grid">
-        <div class="text-center">枠番</div>
-        <div>タイトル</div>
-        <div class="text-right pr-4">配信日 / 尺</div>
-      </div>
-
+    <div class="bg-ink-raised border-t-2 border-b md:border-2 md:rounded-lg border-ink-line w-full overflow-hidden mt-2">
       <!-- 出走表ボディ -->
       <ul class="flex flex-col w-full">
         {page.data.map((ep) => (
           <li class="episode-row border-b border-ink-line last:border-b-0 group bg-ink-raised hover:bg-ink transition-colors">
             {/* 1列目: 枠番チップ */}
-            <div class={`episode-waku font-display font-bold text-lg sm:text-xl ${getWakuClasses(ep.episodeNumber)}`}>
+            <div class={`episode-waku font-display font-bold text-lg md:text-xl ${getWakuClasses(ep.episodeNumber)}`}>
               {ep.episodeNumber || '-'}
             </div>
             
-            {/* 2列目: タイトル */}
-            <div class="episode-title">
-              <span class="font-body font-bold text-text text-sm sm:text-base leading-snug group-hover:text-gold-soft transition-colors truncate w-full">
+            {/* 2列目: タイトルとモバイル向けメタデータ */}
+            <div class="episode-content">
+              <span class="font-body font-bold text-text text-sm md:text-base leading-snug group-hover:text-gold-soft transition-colors line-clamp-2 md:line-clamp-1">
                 {cleanTitle(ep.title)}
               </span>
+              
+              {/* モバイル用メタデータ (768px未満でのみ表示) */}
+              <div class="episode-meta-mobile font-data tabular-nums text-text-muted text-[11px]">
+                <time datetime={ep.pubDate.toISOString()}>{formatDateJa(ep.pubDate)}</time>
+                <span class="text-text-faint">&middot;</span>
+                <span>{formatDuration(ep.duration)}</span>
+              </div>
             </div>
               
-            {/* 3列目: 日付と尺 */}
+            {/* 3列目: 日付と尺 (768px以上でのみ表示) */}
             <div class="episode-meta font-data tabular-nums border-l border-ink-line/50">
-              <time datetime={ep.pubDate.toISOString()} class="text-text-muted text-xs sm:text-sm">
-                {formatDate(ep.pubDate)}
+              <time datetime={ep.pubDate.toISOString()} class="text-text-muted text-sm">
+                {formatDateJa(ep.pubDate)}
               </time>
-              <span class="text-text-faint text-[10px] sm:text-xs mt-0.5">
+              <span class="text-text-faint text-xs mt-0.5">
                 {formatDuration(ep.duration)}
               </span>
             </div>
@@ -128,7 +121,7 @@ const cleanTitle = (title: string) => {
           </span>
         )}
         
-        <span class="text-text-muted text-sm sm:text-base">
+        <span class="text-text-muted text-sm md:text-base">
           Page <strong class="text-text">{page.currentPage}</strong> of {page.lastPage}
         </span>
         
@@ -147,27 +140,15 @@ const cleanTitle = (title: string) => {
 </Layout>
 
 <style>
-  /* 
-    タイトルが長い場合に親のGridコンテナを突き破るのを防ぐため、
-    1fr の代わりに minmax(0, 1fr) を使用します。
-  */
-  .episode-header {
-    display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) 120px;
-    align-items: center;
-    gap: 16px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    width: 100%;
-  }
-
+  /* --- 共通・モバイルファースト --- */
+  
   .episode-row {
     display: grid;
-    grid-template-columns: 64px minmax(0, 1fr) 120px;
-    align-items: center;
-    gap: 16px;
-    height: 64px;
+    /* モバイル: 48px + 残り幅 (2段組み) */
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: stretch;
     width: 100%;
+    /* min-height や height を一切指定せず、padding に完全に任せる */
   }
 
   .episode-waku {
@@ -177,30 +158,50 @@ const cleanTitle = (title: string) => {
     height: 100%;
   }
 
-  .episode-title {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .episode-meta {
+  .episode-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: right;
-    padding-right: 16px;
-    height: 100%;
+    min-width: 0;
+    /* モバイル用に十分な上下パディングを確保し、これで行の高さを決める */
+    padding: 12px 12px;
   }
 
-  @media (max-width: 639px) {
-    /* モバイル幅でも確実に見切れないように、枠番とメタ領域を少し狭めます */
+  .episode-meta-mobile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .episode-meta {
+    display: none;
+  }
+
+  /* --- 768px以上 (PC/タブレット) --- */
+  @media (min-width: 768px) {
     .episode-row {
-      grid-template-columns: 48px minmax(0, 1fr) 88px;
-      gap: 8px;
+      /* PC: 3列グリッド */
+      grid-template-columns: 64px minmax(0, 1fr) 120px;
+      gap: 16px;
     }
+
+    .episode-content {
+      padding: 16px 0; /* PCでは左右パディングは gap などで処理 */
+      padding-left: 16px;
+    }
+
+    .episode-meta-mobile {
+      display: none;
+    }
+
     .episode-meta {
-      padding-right: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: right;
+      padding-right: 16px;
+      height: 100%;
     }
   }
 </style>
