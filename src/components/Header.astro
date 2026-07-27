@@ -7,6 +7,8 @@ const navItems = [
   { label: 'メンバーシップ', href: '/membership' }
 ];
 
+import { PLATFORM_LINKS } from '../data/links';
+
 const isActive = (href: string) => {
   if (href === '/') {
     return pathname === href;
@@ -35,14 +37,14 @@ const isActive = (href: string) => {
           {item.label}
         </a>
       ))}
-      <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="ml-2 bg-gold text-ink font-bold px-4 py-2 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
+      <a href={PLATFORM_LINKS.spotify} target="_blank" rel="noopener noreferrer" data-cta-location="header" class="ml-2 bg-gold text-ink font-bold px-4 py-2 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
         Spotifyで聴く
       </a>
     </nav>
 
     <!-- Mobile Button & Navigation -->
     <div class="flex items-center gap-3 md:hidden">
-      <a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer" class="bg-gold text-ink text-sm font-bold px-3 py-1.5 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
+      <a href={PLATFORM_LINKS.spotify} target="_blank" rel="noopener noreferrer" data-cta-location="header-mobile" class="bg-gold text-ink text-sm font-bold px-3 py-1.5 rounded hover:bg-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text">
         Spotifyで聴く
       </a>
       
