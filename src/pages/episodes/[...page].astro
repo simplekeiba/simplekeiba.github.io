@@ -74,35 +74,37 @@ const cleanTitle = (title: string) => {
       <!-- 出走表ボディ -->
       <ul class="flex flex-col w-full">
         {page.data.map((ep) => (
-          <li class="episode-row border-b border-ink-line last:border-b-0 group bg-ink-raised hover:bg-ink transition-colors">
-            {/* 1列目: 枠番チップ */}
-            <div class={`episode-waku font-display font-bold text-lg md:text-xl ${getWakuClasses(ep.episodeNumber)}`}>
-              {ep.episodeNumber || '-'}
-            </div>
-            
-            {/* 2列目: タイトルとモバイル向けメタデータ */}
-            <div class="episode-content">
-              <span class="font-body font-bold text-text text-sm md:text-base leading-snug group-hover:text-gold-soft transition-colors line-clamp-2 md:line-clamp-1">
-                {cleanTitle(ep.title)}
-              </span>
-              
-              {/* モバイル用メタデータ (768px未満でのみ表示) */}
-              <div class="episode-meta-mobile font-data tabular-nums text-text-muted text-[11px]">
-                <time datetime={ep.pubDate.toISOString()}>{formatDateJa(ep.pubDate)}</time>
-                <span class="text-text-faint">&middot;</span>
-                <span>{formatDuration(ep.duration)}</span>
+          <li class="border-b border-ink-line last:border-b-0 group bg-ink-raised hover:bg-ink transition-colors relative">
+            <a href={`/episodes/${ep.slug}/`} class="episode-row focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold outline-none">
+              {/* 1列目: 枠番チップ */}
+              <div class={`episode-waku font-display font-bold text-lg md:text-xl ${getWakuClasses(ep.episodeNumber)}`}>
+                {ep.episodeNumber || '-'}
               </div>
-            </div>
               
-            {/* 3列目: 日付と尺 (768px以上でのみ表示) */}
-            <div class="episode-meta font-data tabular-nums border-l border-ink-line/50">
-              <time datetime={ep.pubDate.toISOString()} class="text-text-muted text-sm">
-                {formatDateJa(ep.pubDate)}
-              </time>
-              <span class="text-text-faint text-xs mt-0.5">
-                {formatDuration(ep.duration)}
-              </span>
-            </div>
+              {/* 2列目: タイトルとモバイル向けメタデータ */}
+              <div class="episode-content">
+                <span class="font-body font-bold text-text text-sm md:text-base leading-snug group-hover:text-gold-soft transition-colors line-clamp-2 md:line-clamp-1">
+                  {cleanTitle(ep.title)}
+                </span>
+                
+                {/* モバイル用メタデータ (768px未満でのみ表示) */}
+                <div class="episode-meta-mobile font-data tabular-nums text-text-muted text-[11px]">
+                  <time datetime={ep.pubDate.toISOString()}>{formatDateJa(ep.pubDate)}</time>
+                  <span class="text-text-faint">&middot;</span>
+                  <span>{formatDuration(ep.duration)}</span>
+                </div>
+              </div>
+                
+              {/* 3列目: 日付と尺 (768px以上でのみ表示) */}
+              <div class="episode-meta font-data tabular-nums border-l border-ink-line/50">
+                <time datetime={ep.pubDate.toISOString()} class="text-text-muted text-sm">
+                  {formatDateJa(ep.pubDate)}
+                </time>
+                <span class="text-text-faint text-xs mt-0.5">
+                  {formatDuration(ep.duration)}
+                </span>
+              </div>
+            </a>
           </li>
         ))}
       </ul>

@@ -35,28 +35,57 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
 
     const itemArray = Array.isArray(items) ? items : [items];
 
-    const episodes = itemArray.map((item: any): PodcastEpisode => {
-      // itunes:episode がある場合はそれを話数として使用
-      const itunesEpisode = item['itunes:episode'];
-      const epNum = itunesEpisode ? parseInt(itunesEpisode, 10) : null;
-      
-      // slugは ep-{話数} 形式。話数が不明な場合はフォールバック
+    // まずパースして必要な値を確定する
+    const parsedItems = itemArray.map((item: any) => {
+      const title = item.title || '';
+      // titleから最後の #数字 を抽出
+      const matches = [...title.matchAll(/[#＃](\d+)/g)];
+      const epNum = matches.length > 0 ? parseInt(matches[matches.length - 1][1], 10) : null;
+      const pubDate = new Date(item.pubDate);
+      return { item, title, epNum, pubDate };
+    });
+
+    // 配信日時の古い順にソートする（重複解消のため）
+    parsedItems.sort((a, b) => a.pubDate.getTime() - b.pubDate.getTime());
+
+    const formatter = new Intl.DateTimeFormat('ja-JP', {
+      timeZone: 'Asia/Tokyo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+
+    const dateSlugCount: Record<string, number> = {};
+    const epSlugSet = new Set<string>();
+
+    const episodes = parsedItems.map(({ item, title, epNum, pubDate }): PodcastEpisode => {
       let slug = '';
-      if (epNum) {
+      if (epNum !== null) {
         slug = `ep-${epNum}`;
+        if (epSlugSet.has(slug)) {
+          throw new Error(`重複する話数が検出されました: ${slug} (${title})`);
+        }
+        epSlugSet.add(slug);
       } else {
-        const fallbackId = (item.guid?.['#text'] || item.guid || 'id').replace(/[^a-zA-Z0-9-]/g, '').slice(0, 20);
-        slug = `ep-unknown-${fallbackId}`;
+        // 日本時間 YYYY-MM-DD
+        const baseSlug = formatter.format(pubDate).replace(/\//g, '-');
+        if (!dateSlugCount[baseSlug]) {
+          dateSlugCount[baseSlug] = 1;
+          slug = baseSlug;
+        } else {
+          dateSlugCount[baseSlug]++;
+          slug = `${baseSlug}-${dateSlugCount[baseSlug]}`;
+        }
       }
 
-      // guid の取得（#textの可能性がある）
+      // guid の取得
       const guid = item.guid?.['#text'] || item.guid || '';
 
       return {
         slug,
         episodeNumber: epNum,
-        title: item.title || '',
-        pubDate: new Date(item.pubDate),
+        title,
+        pubDate,
         duration: item['itunes:duration'] || '',
         description: item.description || '',
         audioUrl: item.enclosure?.['@_url'] || '',
@@ -70,7 +99,6 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
     console.error('Failed to fetch podcast episodes:', error);
     // ビルドを停止しないという要件のため、実際にはここでキャッシュJSONを読み込むことになる。
     // 現段階ではひとまず空配列を返すか、エラーを再スローする。
-    // 今回はデータ取得部分の確認なので再スローしておく。
     throw error;
   }
 }
