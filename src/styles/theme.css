@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  --header-height: 72px;
+}
+
 @theme {
   --color-ink: #0B0B0D;
   --color-ink-raised: #15151A;
