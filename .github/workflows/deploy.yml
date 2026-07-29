@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: '30 11 * * 1' # 毎週月曜 20:30 JST (11:30 UTC)
+    - cron: '30 11 * * *' # 毎日 20:30 JST (11:30 UTC)
 
 permissions:
   contents: read
