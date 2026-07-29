@@ -343,9 +343,9 @@
 |---|---|---|
 | フレームワーク | Astro 5.x（`output: 'static'`） | ビルド時にRSSを取得し、エピソード数だけ静的ページを生成できる |
 | CSS | Tailwind CSS v4（`@theme` にトークン集約） | セレクタ詳細度の衝突を構造的に防ぐ |
-| RSSパース | `fast-xml-parser` | 依存が軽量 |
+| RSSパース | `rss-parser` | RSSの正規化に最適 |
 | 画像 | `astro:assets` | WebP自動生成、寸法属性自動付与 |
-| OGP画像生成 | `astro-og-canvas` | **エピソードごとの動的OGP生成に必須** |
+| OGP画像生成 | satori + @resvg/resvg-js | astro-og-canvas はレイアウトが固定でロゴ・話数・タイトルの自由配置ができないため変更 |
 | SEO | 自前 `<Seo />` ＋ `@astrojs/sitemap` | |
 | ショーノート | Content Collections（Markdown） | RSSの説明文では文字数が足りないため別管理 |
 | フォーム | Google Forms 埋め込み、または Tally | 静的ホスティングのため |
