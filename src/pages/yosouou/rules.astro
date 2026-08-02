@@ -1,0 +1,207 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { PLATFORM_LINKS } from '../../data/links';
+
+const races = [
+  { name: 'スプリンターズステークス', date: '9月27日(日)', deadline: '9月26日(土) 23:59' },
+  { name: '秋華賞', date: '10月18日(日)', deadline: '10月17日(土) 23:59' },
+  { name: '菊花賞', date: '10月25日(日)', deadline: '10月24日(土) 23:59' },
+  { name: '天皇賞(秋)', date: '11月1日(日)', deadline: '10月31日(土) 23:59' },
+  { name: 'エリザベス女王杯', date: '11月15日(日)', deadline: '11月14日(土) 23:59' },
+  { name: 'マイルチャンピオンシップ', date: '11月22日(日)', deadline: '11月21日(土) 23:59' },
+  { name: 'ジャパンカップ', date: '11月29日(日)', deadline: '11月28日(土) 23:59' },
+  { name: 'チャンピオンズカップ', date: '12月6日(日)', deadline: '12月5日(土) 23:59' },
+  { name: '阪神ジュベナイルフィリーズ', date: '12月13日(日)', deadline: '12月12日(土) 23:59' },
+  { name: '朝日杯フューチュリティステークス', date: '12月20日(日)', deadline: '12月19日(土) 23:59' },
+  { name: 'ホープフルステークス', date: '12月26日(土)', deadline: '12月25日(金) 23:59' },
+  { name: '有馬記念', date: '12月27日(日)', deadline: '12月26日(土) 23:59' },
+];
+---
+
+<Layout title="秋のGⅠ予想王決定戦 ルール - シンプルKEIBA" description="秋のGⅠ予想王決定戦の正式ルールです。">
+  <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-12">秋のGⅠ予想王決定戦 ルール</h1>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">企画概要</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        2026年秋のGⅠ12レースを対象に、各レース1頭を指名していただきます。<br />
+        指名した馬の着順に応じてポイントを獲得し、合計ポイントで順位を競います。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed">
+        競馬にくわしくなくても参加できます。馬券の購入は必要ありません。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">ポイント</h2>
+      <div class="bg-ink-raised rounded-lg border border-ink-line overflow-hidden max-w-sm">
+        <table class="w-full text-left border-collapse">
+          <tbody class="text-text divide-y divide-ink-line">
+            <tr>
+              <td class="px-4 py-3 bg-ink-line/30 font-medium w-1/2">1着</td>
+              <td class="px-4 py-3 font-data text-gold-soft">5点</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 bg-ink-line/30 font-medium">2着</td>
+              <td class="px-4 py-3 font-data text-gold-soft">3点</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 bg-ink-line/30 font-medium">3着</td>
+              <td class="px-4 py-3 font-data text-gold-soft">1点</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 bg-ink-line/30 font-medium">4着以下</td>
+              <td class="px-4 py-3 font-data">0点</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">参加方法</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-6">
+        応募フォームから、対象レースと指名馬を送信してください。<br />
+        1レースにつき1頭です。全12レースに参加しなくてもかまいません。<br />
+        途中からの参加も歓迎します。
+      </p>
+      <div class="mb-6">
+        <a href="https://forms.gle/1r71nxcxBe35zEVE7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-8 py-4 bg-gold hover:bg-gold-soft text-ink font-bold rounded-lg transition-colors shadow-lg">
+          応募フォームはこちら
+        </a>
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">締切</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        各レース前日の23:59です。<br />
+        締切は受信時刻を基準とします（送信時刻ではありません）。<br />
+        締切を過ぎた応募は、集計の対象になりません。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">指名の変更</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        締切前であれば、何度でも応募し直せます。<br />
+        同じレースに複数回応募された場合、締切前に受信した最新の1件を有効とします。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">対象12レース</h2>
+      
+      <div class="bg-ink-raised rounded-lg border border-ink-line mb-6">
+        <table class="w-full text-left border-collapse">
+          <thead class="hidden md:table-header-group">
+            <tr class="bg-ink-line/50 text-text-muted text-sm border-b border-ink-line">
+              <th class="px-4 py-3 font-medium">レース名</th>
+              <th class="px-4 py-3 font-medium">日程</th>
+              <th class="px-4 py-3 font-medium">締切</th>
+            </tr>
+          </thead>
+          <tbody class="block md:table-row-group text-text divide-y divide-ink-line">
+            {races.map((race) => (
+              <tr class="block md:table-row p-4 md:p-0">
+                <td class="block md:table-cell px-0 md:px-4 py-1 md:py-3 font-bold md:font-normal text-lg md:text-base before:content-['レース：'] before:text-sm before:text-text-muted before:mr-2 before:inline-block md:before:hidden">
+                  {race.name}
+                </td>
+                <td class="block md:table-cell px-0 md:px-4 py-1 md:py-3 font-data text-text-muted md:text-text before:content-['日程：'] before:text-sm before:text-text-muted before:mr-2 before:inline-block md:before:hidden before:w-12">
+                  {race.date}
+                </td>
+                <td class="block md:table-cell px-0 md:px-4 py-1 md:py-3 font-data text-gold-soft before:content-['締切：'] before:text-sm before:text-text-muted before:mr-2 before:inline-block md:before:hidden before:w-12">
+                  {race.deadline}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm md:text-base text-text-faint">
+        日程はJRAの発表にもとづきます。開催が変更された場合は、サイト上でお知らせします。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">順位</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        合計ポイントの多い順です。<br />
+        同点の場合は同順位とし、次の順位を飛ばします（例：1位、2位、2位、4位）。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">結果発表</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        ランキングは、レース終了後にサイト上で更新します。<br />
+        最終順位は12月28日にサイトで発表し、2027年最初の配信で表彰します。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">ラジオネームについて</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        ラジオネームは、番組およびサイト上で公開されます。<br />
+        あわせて、あなたの成績を表示する個別ページが自動生成されます。<br />
+        本名や、個人が特定される名称の使用はお控えください。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">馬名の表記</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        馬名に誤字がある場合、運営側で合理的に補正することがあります。<br />
+        判別が困難な場合は、無効となることがあります。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">個人情報の取り扱い</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        メールアドレスは本人確認のみに使用し、公開しません。<br />
+        詳しくは<a href="/privacy" class="text-gold-soft hover:text-gold transition-colors underline underline-offset-4">プライバシーポリシーをご覧ください</a>。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">賞品</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        <!-- 賞品確定後に差し替え -->
+        Coming Soon
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">その他</h2>
+      <ul class="text-base md:text-lg text-text-muted leading-relaxed space-y-2 list-none">
+        <li class="flex"><span class="mr-2">・</span>本企画への参加に、馬券の購入は必要ありません</li>
+        <li class="flex"><span class="mr-2">・</span>運営の判断により、企画内容を変更または中止する場合があります</li>
+      </ul>
+    </section>
+
+    <div class="mb-16 flex justify-center">
+      <a href="https://forms.gle/1r71nxcxBe35zEVE7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-10 py-5 bg-gold hover:bg-gold-soft text-ink text-lg font-bold rounded-lg transition-colors shadow-lg">
+        応募フォームはこちら
+      </a>
+    </div>
+
+    <!-- 番組の紹介と Spotify / Apple のボタン -->
+    <div class="bg-ink-raised border border-ink-line rounded-xl p-8 text-center mt-12">
+      <h3 class="text-2xl font-display font-bold text-text mb-4">シンプルKEIBAを聴く</h3>
+      <p class="text-text-muted mb-8 max-w-lg mx-auto">
+        「難しくない競馬ポッドキャスト」をコンセプトに、競馬の楽しさをわかりやすくお届けしています。
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href={PLATFORM_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-full font-bold text-white transition-opacity hover:opacity-90" style="background-color: #1DB954;">
+          Spotify で聴く
+        </a>
+        <a href={PLATFORM_LINKS.apple} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-full font-bold text-white transition-opacity hover:opacity-90" style="background-color: #A341DF;">
+          Apple Podcasts で聴く
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
