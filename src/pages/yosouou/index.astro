@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { fetchYosououData, getNextRace, getFinishedRacesCount } from '../../lib/yosouou';
+import { PLATFORM_LINKS } from '../../data/links';
+
+const data = await fetchYosououData();
+const nextRace = getNextRace();
+const finishedCount = getFinishedRacesCount();
+const remainingPoints = Math.max(0, (12 - finishedCount) * 5);
+
+const top10 = data.participants.slice(0, 10);
+const totalParticipants = data.participants.length;
+
+function formatDateJST(dateString: string) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('ja-JP', {
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  }).format(date);
+}
+
+const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
+---
+
+<Layout 
+  title="秋のGⅠ予想王決定戦 | シンプルKEIBA"
+  description="毎回1頭を選ぶだけの参加企画。競馬にくわしくなくても、馬券を買わなくても参加できます。"
+>
+  <div class="max-w-3xl mx-auto px-4 py-12 md:py-20 space-y-16">
+    
+    {data.fetchFailed && (
+      <div class="bg-red-900/50 border border-red-500 text-red-100 p-4 rounded text-center">
+        <p>データ取得に失敗しています。現在表示されている情報は最新ではない可能性があります。</p>
+      </div>
+    )}
+
+    <!-- 1. 企画概要 & 2. 次の締切 -->
+    <section class="text-center space-y-8">
+      <div>
+        <h1 class="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight text-white">秋のGⅠ予想王決定戦</h1>
+        <p class="text-lg md:text-xl text-text-muted leading-relaxed max-w-xl mx-auto">
+          2026年秋のGⅠ12レース。<strong class="text-white font-bold">毎回1頭を選ぶだけ</strong>の参加企画です。<br/>
+          指名した馬が1着なら5点、2着なら3点、3着なら1点。<br/>
+          競馬にくわしくなくても、馬券を買わなくても参加できます。
+        </p>
+      </div>
+
+      <div class="bg-ink-raised border border-ink-line p-6 md:p-8 rounded-xl shadow-lg inline-block w-full max-w-lg mx-auto">
+        <h2 class="text-sm font-bold text-text-faint tracking-widest mb-2">次の締切</h2>
+        {nextRace ? (
+          <div class="space-y-4">
+            <p class="font-display text-2xl md:text-3xl text-gold-soft font-bold">{nextRace.name}</p>
+            <p class="text-lg font-data text-white">{formatDateJST(nextRace.deadline)}</p>
+            <!-- 3. 応募ボタン -->
+            <div class="pt-4">
+              <a href={formUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-gold hover:bg-gold-soft text-ink-raised font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-md w-full sm:w-auto">
+                予想を応募する
+              </a>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <p class="font-display text-2xl text-gold-soft font-bold">全12レースが終了しました</p>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <!-- 4. 現在の状況 -->
+    <section class="bg-ink-raised border border-ink-line p-6 rounded-xl">
+      <h2 class="font-display text-2xl font-bold mb-6 text-center text-white">現在の状況</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+        <div>
+          <p class="text-sm text-text-muted mb-1">参加人数</p>
+          <p class="font-data text-3xl font-bold text-white">{totalParticipants}<span class="text-base font-body text-text-muted ml-1">人</span></p>
+        </div>
+        <div>
+          <p class="text-sm text-text-muted mb-1">消化レース</p>
+          <p class="font-data text-3xl font-bold text-white">{finishedCount}<span class="text-base font-body text-text-muted ml-1">/ 12</span></p>
+        </div>
+        <div>
+          <p class="text-sm text-text-muted mb-1">残り最大獲得ポイント</p>
+          <p class="font-data text-3xl font-bold text-gold-soft">{remainingPoints}<span class="text-base font-body text-text-muted ml-1">pt</span></p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 5. 上位10名 -->
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-display text-2xl font-bold text-white">現在のトップ10</h2>
+        <a href="/yosouou/ranking/" class="text-gold hover:text-gold-soft transition-colors text-sm font-bold underline">全ランキングを見る</a>
+      </div>
+      
+      {totalParticipants === 0 ? (
+        <div class="bg-ink-raised border border-ink-line p-8 text-center rounded-xl">
+          <p class="text-text-muted">まだ参加者がいません。第1号になりませんか？</p>
+        </div>
+      ) : (
+        <div class="bg-ink-raised border border-ink-line rounded-xl overflow-hidden">
+          <table class="w-full text-left">
+            <thead class="bg-ink border-b border-ink-line text-sm text-text-faint">
+              <tr>
+                <th class="px-4 py-3 font-normal w-16 text-center">順位</th>
+                <th class="px-4 py-3 font-normal">ラジオネーム</th>
+                <th class="px-4 py-3 font-normal text-right w-24">ポイント</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-ink-line">
+              {top10.map((p) => (
+                <tr class="hover:bg-ink/50 transition-colors">
+                  <td class="px-4 py-4 font-data text-center text-text-muted">{p.rank}</td>
+                  <td class="px-4 py-4 font-bold text-white">{p.radioName}</td>
+                  <td class="px-4 py-4 font-data text-right text-gold-soft font-bold">{p.totalPoints}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {data.updatedAt && (
+        <p class="text-right text-sm text-text-faint mt-3">
+          最終更新：{data.updatedAt}（{data.asOfRace}）
+        </p>
+      )}
+    </section>
+
+    <!-- 6. ルール要約 -->
+    <section class="bg-read-bg border border-ink-line p-6 md:p-8 rounded-xl">
+      <h2 class="font-display text-2xl font-bold mb-6 text-white">ルールの要約</h2>
+      <ul class="space-y-3 text-read-text list-disc list-outside ml-5 mb-8">
+        <li>対象は2026年秋のGⅠ12レース</li>
+        <li>各レース1頭を指名。1着5点、2着3点、3着1点</li>
+        <li>締切は各レース前日の23:59（受信時刻基準）</li>
+        <li>締切前なら何度でも指名を変更できます</li>
+        <li>途中からの参加も歓迎します</li>
+      </ul>
+      <div class="text-center">
+        <a href="/yosouou/rules/" class="text-gold hover:text-gold-soft transition-colors underline font-bold">詳しいルールを見る</a>
+      </div>
+    </section>
+
+    <!-- 3. 応募ボタン (下部) -->
+    {nextRace && (
+      <div class="text-center pt-8">
+        <p class="text-text-muted mb-4">あなたのご参加をお待ちしています！</p>
+        <a href={formUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-gold hover:bg-gold-soft text-ink-raised font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-md w-full sm:w-auto">
+          予想を応募する
+        </a>
+      </div>
+    )}
+
+    <!-- 番組紹介 & プラットフォームリンク -->
+    <section class="border-t border-ink-line pt-12 mt-12 text-center">
+      <h2 class="font-display text-xl font-bold mb-4 text-white">シンプルKEIBA を聴く</h2>
+      <p class="text-text-muted mb-8 text-sm md:text-base">
+        競馬にくわしくない方も楽しめる、難しくない競馬ポッドキャスト。<br/>
+        毎週配信中！
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a 
+          href={PLATFORM_LINKS.spotify} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
+        >
+          Spotifyで聴く
+        </a>
+        <a 
+          href={PLATFORM_LINKS.apple} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="bg-[#872EC4] hover:bg-[#9d3ee0] text-white font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
+        >
+          Apple Podcastsで聴く
+        </a>
+      </div>
+    </section>
+
+  </div>
+</Layout>

@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { fetchYosououData } from '../../lib/yosouou';
+import { PLATFORM_LINKS } from '../../data/links';
+
+const data = await fetchYosououData();
+const totalParticipants = data.participants.length;
+
+const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
+---
+
+<Layout 
+  title="現在のランキング - 秋のGⅠ予想王決定戦 | シンプルKEIBA"
+  description="秋のGⅠ予想王決定戦の現在の全ランキング状況です。"
+>
+  <div class="max-w-3xl mx-auto px-4 py-8 md:py-12 space-y-12">
+    
+    <div class="mb-6">
+      <a href="/yosouou/" class="text-gold hover:text-gold-soft transition-colors font-bold inline-flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        企画トップへ戻る
+      </a>
+    </div>
+
+    {data.fetchFailed && (
+      <div class="bg-red-900/50 border border-red-500 text-red-100 p-4 rounded text-center">
+        <p>データ取得に失敗しています。現在表示されている情報は最新ではない可能性があります。</p>
+      </div>
+    )}
+
+    <section>
+      <h1 class="font-display text-3xl md:text-4xl font-bold mb-8 text-white">現在のランキング</h1>
+      
+      {totalParticipants === 0 ? (
+        <div class="bg-ink-raised border border-ink-line p-12 text-center rounded-xl">
+          <p class="text-text-muted text-lg mb-6">まだ参加者がいません。第1号になりませんか？</p>
+          <a href={formUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-gold hover:bg-gold-soft text-ink-raised font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-md w-full sm:w-auto">
+            予想を応募する
+          </a>
+        </div>
+      ) : (
+        <>
+          <div class="bg-ink-raised border border-ink-line rounded-xl overflow-hidden w-full">
+            <div class="overflow-x-auto w-full">
+              <table class="w-full text-left min-w-[320px]">
+                <thead class="bg-ink border-b border-ink-line text-sm text-text-faint">
+                  <tr>
+                    <th class="px-4 py-3 font-normal w-16 text-center whitespace-nowrap">順位</th>
+                    <th class="px-4 py-3 font-normal sticky left-0 bg-ink z-10 whitespace-nowrap">ラジオネーム</th>
+                    <th class="px-4 py-3 font-normal text-right w-24 whitespace-nowrap">ポイント</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-ink-line">
+                  {data.participants.map((p) => (
+                    <tr class="hover:bg-ink/50 transition-colors">
+                      <td class="px-4 py-4 font-data text-center text-text-muted whitespace-nowrap">
+                        {p.rank}
+                      </td>
+                      <td class="px-4 py-4 font-bold text-white sticky left-0 bg-ink-raised z-10 whitespace-nowrap">
+                        <!-- {{TODO: 参加者個別ページへのリンク}} -->
+                        {p.radioName}
+                      </td>
+                      <td class="px-4 py-4 font-data text-right text-gold-soft font-bold whitespace-nowrap">
+                        {p.totalPoints}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {data.updatedAt && (
+            <p class="text-right text-sm text-text-faint mt-3">
+              最終更新：{data.updatedAt}（{data.asOfRace}）
+            </p>
+          )}
+        </>
+      )}
+    </section>
+
+    <!-- 応募ボタン (下部) -->
+    {totalParticipants > 0 && (
+      <div class="text-center pt-8 border-t border-ink-line">
+        <p class="text-text-muted mb-4">あなたのご参加をお待ちしています！</p>
+        <a href={formUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-gold hover:bg-gold-soft text-ink-raised font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-md w-full sm:w-auto">
+          予想を応募する
+        </a>
+      </div>
+    )}
+
+    <!-- 番組紹介 & プラットフォームリンク -->
+    <section class="border-t border-ink-line pt-12 mt-12 text-center">
+      <h2 class="font-display text-xl font-bold mb-4 text-white">シンプルKEIBA を聴く</h2>
+      <p class="text-text-muted mb-8 text-sm md:text-base">
+        競馬にくわしくない方も楽しめる、難しくない競馬ポッドキャスト。<br/>
+        毎週配信中！
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a 
+          href={PLATFORM_LINKS.spotify} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
+        >
+          Spotifyで聴く
+        </a>
+        <a 
+          href={PLATFORM_LINKS.apple} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="bg-[#872EC4] hover:bg-[#9d3ee0] text-white font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
+        >
+          Apple Podcastsで聴く
+        </a>
+      </div>
+    </section>
+
+  </div>
+</Layout>

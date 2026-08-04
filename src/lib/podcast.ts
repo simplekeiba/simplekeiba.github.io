@@ -38,8 +38,8 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
     // まずパースして必要な値を確定する
     const parsedItems = itemArray.map((item: any) => {
       const title = item.title || '';
-      // titleから最後の #数字 を抽出
-      const matches = [...title.matchAll(/[#＃](\d+)/g)];
+      // titleから最後の #数字 を抽出 (小数点を含む場合は除外)
+      const matches = [...title.matchAll(/[#＃](\d+)(?!\d|\.)/g)];
       const epNum = matches.length > 0 ? parseInt(matches[matches.length - 1][1], 10) : null;
       const pubDate = new Date(item.pubDate);
       return { item, title, epNum, pubDate };
