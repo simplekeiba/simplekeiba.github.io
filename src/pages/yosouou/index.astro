@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { fetchYosououData, getNextRace, getFinishedRacesCount } from '../../lib/yosouou';
+import { formatDateTimeJa } from '../../lib/date';
 import { PLATFORM_LINKS } from '../../data/links';
 
 const data = await fetchYosououData();
@@ -10,16 +11,6 @@ const remainingPoints = Math.max(0, (12 - finishedCount) * 5);
 
 const top10 = data.participants.slice(0, 10);
 const totalParticipants = data.participants.length;
-
-function formatDateJST(dateString: string) {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('ja-JP', {
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-  }).format(date);
-}
 
 const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
 ---
@@ -52,7 +43,7 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
         {nextRace ? (
           <div class="space-y-4">
             <p class="font-display text-2xl md:text-3xl text-gold-soft font-bold">{nextRace.name}</p>
-            <p class="text-lg font-data text-white">{formatDateJST(nextRace.deadline)}</p>
+            <p class="text-lg font-data text-white">{formatDateTimeJa(nextRace.deadline)}</p>
             <!-- 3. 応募ボタン -->
             <div class="pt-4">
               <a href={formUrl} target="_blank" rel="noopener noreferrer" class="inline-block bg-gold hover:bg-gold-soft text-ink-raised font-bold py-4 px-8 rounded-full transition-colors text-lg shadow-md w-full sm:w-auto">
