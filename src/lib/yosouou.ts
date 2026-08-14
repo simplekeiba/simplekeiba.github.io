@@ -141,6 +141,15 @@ export function getNextRace(): RaceInfo | null {
   return null;
 }
 
+/**
+ * 秋のGⅠ予想王決定戦の企画期間中（2026年9月〜12月末、日本時間）かどうかを判定する
+ */
+export function isYosououCampaignActive(now: Date = new Date()): boolean {
+  const start = new Date('2026-09-01T00:00:00+09:00');
+  const end = new Date('2026-12-31T23:59:59+09:00');
+  return now >= start && now <= end;
+}
+
 export function getFinishedRacesCount(): number {
   const now = new Date();
   let count = 0;

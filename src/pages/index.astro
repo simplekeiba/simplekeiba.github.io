@@ -1,9 +1,128 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import HighlightCarousel, { type CarouselSlide } from '../components/HighlightCarousel.astro';
+import carouselMembership from '../assets/carousel-membership.png';
+import carouselYoutube from '../assets/carousel-youtube.png';
+import carouselYosouou from '../assets/carousel-yosouou.png';
+import { fetchEpisodes } from '../lib/podcast';
+import { formatDateJa, formatDateTimeJa } from '../lib/date';
+import { fetchYosououData, getNextRace, isYosououCampaignActive } from '../lib/yosouou';
+import { PLATFORM_LINKS, YOUTUBE_URL, MEMBERSHIP_URL } from '../data/links';
+
+const episodes = await fetchEpisodes();
+const latestEpisode = episodes.length > 0 ? episodes[episodes.length - 1] : null;
+
+const spotifyShowId = PLATFORM_LINKS.spotify.match(/show\/([a-zA-Z0-9]+)/)?.[1] ?? '';
+
+const campaignActive = isYosououCampaignActive();
+const nextRace = campaignActive ? getNextRace() : null;
+const yosououData = campaignActive ? await fetchYosououData() : null;
+
+const carouselSlides: CarouselSlide[] = [
+  {
+    id: 'membership',
+    image: carouselMembership,
+    alt: 'メンバーシップ',
+    href: MEMBERSHIP_URL,
+    external: true,
+    ctaLocation: 'carousel-membership',
+  },
+  {
+    id: 'youtube',
+    image: carouselYoutube,
+    alt: 'YouTube',
+    href: YOUTUBE_URL,
+    external: true,
+    ctaLocation: 'carousel-youtube',
+  },
+  {
+    id: 'yosouou',
+    image: carouselYosouou,
+    alt: '秋のGⅠ予想王決定戦',
+    href: '/yosouou/',
+    ctaLocation: 'carousel-yosouou',
+  },
+];
+
+const formatDuration = (duration: string) => {
+  if (!duration) return '--:--';
+  const parts = duration.split(':');
+  if (parts.length === 3) {
+    const h = parseInt(parts[0], 10);
+    const m = parts[1];
+    const s = parts[2];
+    return h > 0 ? `${h}:${m}:${s}` : `${parseInt(m, 10)}:${s}`;
+  }
+  return duration;
+};
 ---
 
-<Layout title="表示確認用">
-	<div class="p-8">
-		表示確認用
-	</div>
+<Layout title="シンプルKEIBA～難しくない競馬ラジオ～" description="難しくない競馬ポッドキャスト「シンプルKEIBA」の公式サイト。">
+  <!-- ヒーロー＝ハイライトカルーセル：メンバーシップ・YouTube・秋のGⅠ予想王決定戦への導線 -->
+  <HighlightCarousel slides={carouselSlides} />
+
+  <div class="max-w-3xl mx-auto px-4 space-y-16 py-16">
+    <!-- 秋のGⅠ予想王決定戦（企画期間中のみ表示） -->
+    {campaignActive && (
+      <section>
+        <a
+          href="/yosouou/"
+          class="block bg-ink-raised border border-gold/40 hover:border-gold rounded-2xl p-6 md:p-8 transition-colors"
+        >
+          <p class="text-xs md:text-sm font-bold text-gold tracking-widest mb-3">秋のGⅠ予想王決定戦</p>
+          {nextRace ? (
+            <>
+              <p class="font-display text-xl md:text-2xl font-bold text-text mb-1">{nextRace.name}</p>
+              <p class="font-data text-text-muted mb-6">締切 {formatDateTimeJa(nextRace.deadline)}</p>
+            </>
+          ) : (
+            <p class="font-display text-xl md:text-2xl font-bold text-text mb-6">全12レースが終了しました</p>
+          )}
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-text-muted">
+              現在の参加人数 <strong class="text-text font-data">{yosououData?.participants.length ?? 0}人</strong>
+            </span>
+            <span class="text-gold font-bold text-sm">詳しく見る&nbsp;→</span>
+          </div>
+        </a>
+      </section>
+    )}
+
+    <!-- 最新エピソード -->
+    <section>
+      <h2 class="font-display text-2xl font-bold text-text mb-6">最新エピソード</h2>
+      {latestEpisode ? (
+        <div class="bg-ink-raised border border-ink-line rounded-2xl p-6 md:p-8">
+          <div class="font-data tabular-nums text-text-muted text-sm mb-3">
+            {latestEpisode.episodeNumber && <span>第{latestEpisode.episodeNumber}回&nbsp;&middot;&nbsp;</span>}
+            <time datetime={latestEpisode.pubDate.toISOString()}>{formatDateJa(latestEpisode.pubDate)}</time>
+            <span>&nbsp;&middot;&nbsp;{formatDuration(latestEpisode.duration)}</span>
+          </div>
+          <h3 class="font-body font-black text-xl text-text mb-6 leading-snug">{latestEpisode.title}</h3>
+          <iframe
+            style="border-radius:12px"
+            src={`https://open.spotify.com/embed/show/${spotifyShowId}?utm_source=generator&theme=0`}
+            width="100%"
+            height="152"
+            frameborder="0"
+            allowfullscreen
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            title="シンプルKEIBA を Spotify で再生"
+          />
+          <div class="mt-6 text-center">
+            <a
+              href={`/episodes/${latestEpisode.slug}/`}
+              class="text-gold hover:text-gold-soft transition-colors underline underline-offset-4 text-sm font-bold"
+            >
+              ショーノートを読む
+            </a>
+          </div>
+        </div>
+      ) : (
+        <p class="text-text-muted">エピソードを取得できませんでした。</p>
+      )}
+    </section>
+
+  </div>
 </Layout>

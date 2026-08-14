@@ -25,6 +25,7 @@ pnpm-debug.log*
 
 # ignored images
 *.png
+!src/assets/*.png
 
 # temp scripts
 take_screenshot.mjs

@@ -1,0 +1,146 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const stats = [
+  { value: 'WEEKLY', label: '毎週更新' },
+  { value: '99 EPISODES', label: '2025年 年間配信数' },
+  { value: '161 MESSAGES', label: '2025年に届いたリスナーからのお便り' },
+];
+
+const history = [
+  {
+    date: '2024.02',
+    title: 'シンプルKEIBA、配信スタート。',
+    body: '第1回のテーマは「競馬って儲かるの？」競馬をこれから始める人にも分かる番組を目指し、13分のエピソードからシンプルKEIBAは始まりました。',
+  },
+  {
+    date: '2024–2025',
+    title: '予想だけではない競馬番組へ。',
+    body: 'G1・重賞展望だけでなく、名馬、競馬史、馬券、馬事文化、ゲストトークなどへテーマを拡大。リスナーから届くメッセージもどんどん増え、番組とリスナーが一緒になって競馬を楽しむ現在のスタイルが形になっていきました。',
+  },
+  {
+    date: '2025',
+    title: '年間99エピソードを配信。',
+    body: '1年間で届いたリスナーからのお便りは161通。「聴く番組」から、リスナーも参加する番組へ。',
+  },
+  {
+    date: '2025.12',
+    title: 'メンバーシップスタート。',
+    body: '通常配信だけでは届けきれない企画や、番組制作の裏側、リスナーとの新しい交流の場づくりを開始しました。',
+  },
+  {
+    date: '2026',
+    title: '3人のシンプルKEIBAへ。',
+    body: '新メンバーが加わり、感覚、競馬文化、ロジック。異なる3つの視点から競馬を語る現在の体制へ進化しました。',
+  },
+  {
+    date: '2026.05',
+    title: 'PODCAST WEEKEND 2026 出店。',
+    body: '音声の中だけではなく、実際にリスナーと出会える場所へ。ポッドキャストを起点に、競馬を一緒に楽しむコミュニティへと活動の幅を広げています。',
+  },
+];
+---
+
+<Layout
+  title="シンプルKEIBAとは？ - シンプルKEIBA"
+  description="競馬をまだよく知らない人も、長年見てきた人も。「シンプルKEIBA～難しくない競馬ラジオ～」がどんな番組か紹介します。"
+>
+  <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+    <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-3">ABOUT SIMPLE KEIBA</p>
+    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-16">シンプルKEIBAについて</h1>
+
+    <!-- 01｜シンプルKEIBAとは -->
+    <section class="mb-20">
+      <div class="flex items-baseline gap-4 mb-8">
+        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">01</span>
+        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">シンプルKEIBAとは</h2>
+      </div>
+      <h3 class="text-lg md:text-xl font-display font-bold text-gold-soft mb-6">
+        競馬を、シンプルかつ分かりやすく
+      </h3>
+      <p class="text-lg md:text-xl font-bold text-text leading-relaxed mb-6">
+        「シンプルKEIBA～難しくない競馬ラジオ～」は、競馬をもっとシンプルに、分かりやすく、楽しく届けるポッドキャスト番組です。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        G1レースの見どころや馬券の予想、名馬の物語、競馬の歴史、リスナーから届いた思い出まで。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        専門用語や難しい理論だけに頼るのではなく、<br />
+        <span class="font-bold text-text">「競馬って、こんなに面白いんだ」</span><br />
+        と思えるきっかけを、パーソナリティそれぞれの視点からお話しています。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        競馬を始めたばかりの人も、何十年も競馬を見続けてきた人も。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-6">
+        知識の量に関係なく、同じレースを見て、一緒に喜んだり、悔しがったり、語り合ったりできる。
+      </p>
+      <p class="text-lg md:text-xl font-display font-bold text-gold-soft">それが、シンプルKEIBAです。</p>
+    </section>
+
+    <!-- 02｜数字で見るシンプルKEIBA -->
+    <section class="mb-20">
+      <div class="flex items-baseline gap-4 mb-2">
+        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">02</span>
+        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">数字で見るシンプルKEIBA</h2>
+      </div>
+      <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-8">NUMBERS</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+        {stats.map((stat) => (
+          <div class="bg-ink-raised border border-ink-line rounded-xl p-6 text-center">
+            <p class="font-data text-xl md:text-2xl font-bold text-gold-soft mb-2 tabular-nums">{stat.value}</p>
+            <p class="text-sm text-text-muted">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <blockquote class="text-center text-base md:text-lg text-text-muted leading-relaxed italic border-l-2 border-gold-soft/40 pl-6 sm:border-l-0 sm:pl-0">
+        小さく始まった競馬ラジオは、<br />
+        リスナーとともに少しずつその輪を広げています。
+      </blockquote>
+    </section>
+
+    <!-- 03｜番組の歩み -->
+    <section class="mb-20">
+      <div class="flex items-baseline gap-4 mb-2">
+        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">03</span>
+        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">番組の歩み</h2>
+      </div>
+      <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-10">HISTORY</p>
+
+      <div class="space-y-10">
+        {history.map((item) => (
+          <div class="border-l-2 border-gold-soft/40 pl-6">
+            <p class="font-data text-sm font-bold text-gold-soft tracking-wide mb-2 tabular-nums">{item.date}</p>
+            <h3 class="text-lg md:text-xl font-display font-bold text-text mb-3">{item.title}</h3>
+            <p class="text-base text-text-muted leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 04｜Philosophy -->
+    <section>
+      <div class="flex items-baseline gap-4 mb-8">
+        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">04</span>
+        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">Philosophy</h2>
+      </div>
+      <h3 class="text-lg md:text-xl font-display font-bold text-gold-soft mb-6">
+        競馬を、もっと身近なエンタメに。
+      </h3>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        競馬は、詳しい人だけのものではありません。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        「難しそう」<br />
+        「何を見ればいいか分からない」<br />
+        そんな競馬への最初の壁を、少しだけ低くしたい。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-6">
+        競馬を好きになった人たちが、笑ったり、悔しがったり、語り合える音声コミュニティ。
+      </p>
+      <p class="text-lg md:text-xl font-display font-bold text-gold-soft">それが、シンプルKEIBAです。</p>
+    </section>
+  </div>
+</Layout>

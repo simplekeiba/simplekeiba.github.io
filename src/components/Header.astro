@@ -1,15 +1,16 @@
 ---
+import { PLATFORM_LINKS, MEMBERSHIP_URL } from '../data/links';
+
 const pathname = Astro.url.pathname;
 const navItems = [
-  { label: 'シンプルKEIBAとは？', href: '/about' },
-  { label: 'パーソナリティ紹介', href: '/personality' },
-  { label: 'エピソード', href: '/episodes' },
-  { label: 'メンバーシップ', href: '/membership' }
+  { label: 'シンプルKEIBAとは？', href: '/about', external: false },
+  { label: 'パーソナリティ紹介', href: '/personality', external: false },
+  { label: 'エピソード', href: '/episodes', external: false },
+  { label: 'メンバーシップ', href: MEMBERSHIP_URL, external: true }
 ];
 
-import { PLATFORM_LINKS } from '../data/links';
-
-const isActive = (href: string) => {
+const isActive = (href: string, external: boolean) => {
+  if (external) return false;
   if (href === '/') {
     return pathname === href;
   }
@@ -26,13 +27,15 @@ const isActive = (href: string) => {
     <!-- Desktop Navigation -->
     <nav class="hidden md:flex gap-6 items-center">
       {navItems.map((item) => (
-        <a 
-          href={item.href} 
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
           class:list={[
             "text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm px-1 py-0.5",
-            isActive(item.href) ? "text-gold" : "text-text hover:text-gold-soft"
+            isActive(item.href, item.external) ? "text-gold" : "text-text hover:text-gold-soft"
           ]}
-          aria-current={isActive(item.href) ? "page" : undefined}
+          aria-current={isActive(item.href, item.external) ? "page" : undefined}
         >
           {item.label}
         </a>
@@ -64,13 +67,15 @@ const isActive = (href: string) => {
   <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-ink border-b border-ink-line shadow-lg">
     <nav class="flex flex-col py-2">
       {navItems.map((item) => (
-        <a 
-          href={item.href} 
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
           class:list={[
             "block text-base font-medium py-3 px-4 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold focus-visible:relative z-10",
-            isActive(item.href) ? "text-gold bg-ink-raised" : "text-text hover:text-gold-soft hover:bg-ink-raised transition-colors"
+            isActive(item.href, item.external) ? "text-gold bg-ink-raised" : "text-text hover:text-gold-soft hover:bg-ink-raised transition-colors"
           ]}
-          aria-current={isActive(item.href) ? "page" : undefined}
+          aria-current={isActive(item.href, item.external) ? "page" : undefined}
         >
           {item.label}
         </a>

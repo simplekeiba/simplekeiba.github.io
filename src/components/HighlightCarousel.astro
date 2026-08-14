@@ -1,0 +1,146 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+export interface CarouselSlide {
+  id: string;
+  image: ImageMetadata;
+  alt: string;
+  href: string;
+  external?: boolean;
+  ctaLocation: string;
+}
+
+interface Props {
+  slides: CarouselSlide[];
+}
+
+const { slides } = Astro.props;
+---
+
+{slides.length > 0 && (
+  <div class="highlight-carousel relative w-full" data-carousel>
+    <div
+      class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      data-carousel-track
+    >
+      {slides.map((slide) => (
+        <div class="relative shrink-0 w-full aspect-video max-h-[80vh] bg-ink snap-center" data-carousel-slide>
+          <a
+            href={slide.href}
+            target={slide.external ? '_blank' : undefined}
+            rel={slide.external ? 'noopener noreferrer' : undefined}
+            data-cta-location={slide.ctaLocation}
+            class="block w-full h-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+          >
+            <Image
+              src={slide.image}
+              alt={slide.alt}
+              width={1920}
+              height={1080}
+              fit="contain"
+              class="w-full h-full object-contain"
+            />
+          </a>
+        </div>
+      ))}
+    </div>
+
+    {slides.length > 1 && (
+      <div
+        class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 pointer-events-none"
+        role="tablist"
+        aria-label="スライド切り替え"
+      >
+        {slides.map((slide, i) => (
+          <button
+            type="button"
+            class="pointer-events-auto w-2.5 h-2.5 rounded-full bg-white/40 aria-selected:bg-gold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            data-carousel-dot
+            data-index={i}
+            aria-label={`${i + 1}枚目のスライドを表示`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+          />
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<script>
+  function setupCarousel(root: HTMLElement) {
+    const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-carousel-dot]'));
+    if (!track || slides.length <= 1) return;
+
+    let index = 0;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const setActiveDot = (i: number) => {
+      dots.forEach((dot, di) => dot.setAttribute('aria-selected', di === i ? 'true' : 'false'));
+    };
+
+    const goTo = (i: number) => {
+      index = (i + slides.length) % slides.length;
+      slides[index].scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        inline: 'start',
+        block: 'nearest',
+      });
+      setActiveDot(index);
+    };
+
+    const start = () => {
+      if (prefersReducedMotion) return;
+      stop();
+      timer = setInterval(() => goTo(index + 1), 5000);
+    };
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = null;
+    };
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        stop();
+        goTo(Number(dot.dataset.index));
+        start();
+      });
+    });
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    let scrollTimeout: ReturnType<typeof setTimeout>;
+    track.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const trackLeft = track.getBoundingClientRect().left;
+        let closest = 0;
+        let closestDist = Infinity;
+        slides.forEach((slide, i) => {
+          const dist = Math.abs(slide.getBoundingClientRect().left - trackLeft);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closest = i;
+          }
+        });
+        index = closest;
+        setActiveDot(index);
+      }, 100);
+    });
+
+    start();
+  }
+
+  function init() {
+    document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(setupCarousel);
+  }
+
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>
