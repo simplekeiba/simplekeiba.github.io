@@ -27,3 +27,34 @@ export function formatDateTimeJa(date: Date | string | number): string {
   });
   return formatter.format(d);
 }
+
+/**
+ * 日付を日本時間 (Asia/Tokyo) 基準の「MM.DD DOW」形式でフォーマットする（例: 09.27 SUN）
+ */
+export function formatDateShortJa(date: Date | string | number): string {
+  const d = new Date(date);
+  const dateFormatter = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  const weekdayFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Tokyo',
+    weekday: 'short'
+  });
+  return `${dateFormatter.format(d).replace(/\//g, '.')} ${weekdayFormatter.format(d).toUpperCase()}`;
+}
+
+/**
+ * 締切日時を日本時間 (Asia/Tokyo) 基準の「MM.DD DOW HH:mm」形式でフォーマットする（例: 09.26 SAT 23:59）
+ */
+export function formatDeadlineJa(date: Date | string | number): string {
+  const d = new Date(date);
+  const timeFormatter = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  return `${formatDateShortJa(d)} ${timeFormatter.format(d)}`;
+}
