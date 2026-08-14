@@ -26,6 +26,8 @@ pnpm-debug.log*
 # ignored images
 *.png
 !src/assets/*.png
+!public/favicon*.png
+!public/apple-touch-icon.png
 
 # temp scripts
 take_screenshot.mjs
