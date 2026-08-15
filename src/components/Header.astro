@@ -20,8 +20,13 @@ const isActive = (href: string, external: boolean) => {
 
 <header class="fixed top-0 left-0 w-full bg-ink border-b border-ink-line z-50 flex items-center" style="height: var(--header-height);">
   <div class="flex justify-between items-center px-4 w-full mx-auto max-w-screen-xl">
-    <a href="/" class="font-display font-bold text-base md:text-lg text-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm transition-colors hover:text-gold-soft leading-tight max-w-[180px] sm:max-w-[240px] md:max-w-none">
-      シンプルKEIBA～難しくない競馬ラジオ～
+    <a href="/" class="group flex flex-col justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm max-w-[180px] sm:max-w-[240px] md:max-w-none">
+      <span class="font-display font-bold text-[15px] md:text-lg text-gold leading-[1.25] transition-colors group-hover:text-gold-soft">
+        シンプルKEIBA
+      </span>
+      <span class="font-display font-semibold text-[11px] md:text-xs text-gold opacity-80 leading-[1.25] mt-[2px] transition-colors group-hover:text-gold-soft">
+        ～難しくない競馬ラジオ～
+      </span>
     </a>
 
     <!-- Desktop Navigation -->
