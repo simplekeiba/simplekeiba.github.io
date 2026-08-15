@@ -3,16 +3,13 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import yosououBanner from '../../assets/carousel-yosouou.png';
 import races from '../../data/races.json';
-import { fetchYosououData, getNextRace, getFinishedRacesCount } from '../../lib/yosouou';
+import { fetchYosououData, getNextRace } from '../../lib/yosouou';
 import { formatDateShortJa, formatDeadlineJa } from '../../lib/date';
-import { PLATFORM_LINKS } from '../../data/links';
 
 const data = await fetchYosououData();
 const nextRace = getNextRace();
-const finishedCount = getFinishedRacesCount();
-const remainingPoints = Math.max(0, (12 - finishedCount) * 5);
 
-const top10 = data.participants.slice(0, 10);
+const top3 = data.participants.slice(0, 3);
 const totalParticipants = data.participants.length;
 
 const formUrl = 'https://forms.gle/1r71nxcxBe35zEVE7';
@@ -27,18 +24,21 @@ const raceStatus = (race: { date: string; deadline: string }) => {
 const ctaClasses =
   'inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-soft text-ink font-bold px-8 py-4 rounded-md tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold';
 
+const sectionLabelClass = 'text-xs font-data font-bold text-gold-soft tracking-widest uppercase mb-4';
+const sectionHeadingClass = 'text-[28px] md:text-4xl font-display font-bold text-text leading-[1.35]';
+
 const steps = [
-  { num: '01', title: '1頭を選ぶ', body: 'GⅠごとに、勝つと思う馬を1頭指名' },
-  { num: '02', title: '着順でポイント', body: null },
-  { num: '03', title: '最多ポイントが優勝', body: '秋のGⅠ12戦終了時に決定' },
+  { num: '01', title: '1頭を選ぶ', desc: '各GⅠで、勝つと思う馬を1頭指名。' },
+  { num: '02', title: '着順でポイント', desc: null },
+  { num: '03', title: '合計ポイントで勝負', desc: '全12戦終了時、最多ポイントのリスナーが優勝。' },
 ];
 ---
 
 <Layout
-  title="秋のGⅠ予想王決定戦 | シンプルKEIBA"
-  description="毎回1頭を選ぶだけの参加企画。競馬にくわしくなくても、馬券を買わなくても参加できます。"
+  title="2026年下半期 G1予想最強リスナー決定戦 | シンプルKEIBA"
+  description="秋のGⅠ12戦。各レースで1頭を指名し、着順ポイントの合計を競うリスナー参加企画です。競馬にくわしくなくても、馬券を買わなくても参加できます。"
 >
-  <h1 class="sr-only">秋のGⅠ予想王決定戦</h1>
+  <h1 class="sr-only">2026年下半期 G1予想最強リスナー決定戦</h1>
 
   {data.fetchFailed && (
     <p class="max-w-[1140px] mx-auto px-4 pt-8 text-center text-sm text-red-400">
@@ -46,7 +46,7 @@ const steps = [
     </p>
   )}
 
-  <!-- HERO -->
+  <!-- 1. HERO -->
   <section class="border-b border-ink-line">
     <div class="max-w-3xl mx-auto px-4 pt-12 md:pt-16">
       <Image
@@ -57,183 +57,11 @@ const steps = [
         class="w-full h-auto rounded-md"
       />
     </div>
-    <div class="max-w-[1140px] mx-auto px-4 py-12 md:py-16 text-center">
-      <p class="text-base md:text-lg text-text-muted leading-[1.7] mb-8 max-w-md mx-auto">
-        秋のGⅠ12戦。毎回、勝つと思う馬を1頭選ぶだけ。
-      </p>
-      <a href={formUrl} target="_blank" rel="noopener noreferrer" class={`${ctaClasses} mb-6`}>
-        予想に参加する<span aria-hidden="true">→</span>
-      </a>
-      {nextRace && (
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 justify-center text-xs md:text-sm text-text-faint font-data">
-          <span class="border border-ink-line px-2 py-0.5 text-text-muted">次回対象レース</span>
-          <span class="text-text font-bold">{nextRace.name}</span>
-          <span>締切 {formatDeadlineJa(nextRace.deadline)}</span>
-        </div>
-      )}
-    </div>
-  </section>
-
-  <!-- HOW TO PLAY + NEXT RACE -->
-  <section class="border-b border-ink-line py-12 md:py-20">
-    <div class="max-w-[1140px] mx-auto px-6 md:px-4">
-      <h2 class="text-2xl md:text-4xl font-display font-bold text-center mb-10 md:mb-16">参加方法はシンプル。</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-16">
-        <div>
-          <!-- モバイル：縦積みステップ（左に番号+接続線、右に説明） -->
-          <div class="md:hidden grid grid-cols-[auto_1fr] gap-x-4">
-            {steps.map((step, i) => (
-              <>
-                <div class="flex flex-col items-center">
-                  <span class="font-data text-xl font-bold text-gold">{step.num}</span>
-                  {i < steps.length - 1 && <span class="w-px flex-1 bg-ink-line mt-2" aria-hidden="true" />}
-                </div>
-                <div class={i < steps.length - 1 ? 'pb-8' : ''}>
-                  <p class="text-lg font-bold text-text mb-1">{step.title}</p>
-                  {step.body ? (
-                    <p class="text-sm leading-relaxed text-white/55">{step.body}</p>
-                  ) : (
-                    <p class="text-sm leading-relaxed text-white/55 tabular-nums">
-                      1着 <span class="text-gold font-bold">5pt</span>　2着 <span class="text-gold font-bold">3pt</span>　3着 <span class="text-gold font-bold">1pt</span>
-                    </p>
-                  )}
-                </div>
-              </>
-            ))}
-          </div>
-
-          <!-- デスクトップ：横並びステップ（細い線で01-02-03を接続） -->
-          <div class="hidden md:grid md:grid-cols-3 md:gap-8">
-            {steps.map((step, i) => (
-              <div class="text-center">
-                <div class="flex items-center justify-center mb-6">
-                  {i > 0 && <span class="h-px flex-1 bg-ink-line" aria-hidden="true" />}
-                  <span class="font-data text-2xl font-bold text-gold px-4">{step.num}</span>
-                  {i < steps.length - 1 && <span class="h-px flex-1 bg-ink-line" aria-hidden="true" />}
-                </div>
-                <p class="text-lg font-bold text-text mb-2">{step.title}</p>
-                {step.body ? (
-                  <p class="text-sm leading-relaxed text-white/55">{step.body}</p>
-                ) : (
-                  <p class="text-sm leading-relaxed text-white/55 tabular-nums">
-                    1着 <span class="text-gold font-bold">5pt</span>　2着 <span class="text-gold font-bold">3pt</span>　3着 <span class="text-gold font-bold">1pt</span>
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div class="mt-10 md:mt-14 pt-6 border-t border-ink-line">
-            <p class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs md:text-sm text-white/55">
-              <span>馬券購入不要</span>
-              <span>途中参加OK</span>
-              <span>締切前なら変更OK</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="border border-ink-line p-8 text-center">
-          <p class="text-xs font-data tracking-[0.3em] text-gold mb-6">NEXT RACE</p>
-          {nextRace ? (
-            <>
-              <p class="text-2xl font-display font-bold mb-3">{nextRace.name}</p>
-              <p class="font-data text-lg text-text-muted mb-1 tabular-nums">{formatDateShortJa(nextRace.date)}</p>
-              <p class="font-data text-xs text-text-faint mb-8 tabular-nums">
-                応募締切　{formatDeadlineJa(nextRace.deadline)}
-              </p>
-              <a href={formUrl} target="_blank" rel="noopener noreferrer" class={`${ctaClasses} w-full`}>
-                このレースの予想を送る<span aria-hidden="true">→</span>
-              </a>
-            </>
-          ) : (
-            <p class="text-xl font-display font-bold py-8">全12戦が終了しました</p>
-          )}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 対象レース（全12戦） -->
-  <section class="border-b border-ink-line py-16 md:py-20">
-    <div class="max-w-[1140px] mx-auto px-4">
-      <h2 class="text-xl md:text-2xl font-display font-bold mb-8">対象レース（全12戦）</h2>
-      <div class="flex gap-3 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        {races.map((race) => {
-          const status = raceStatus(race);
-          return (
-            <div class={`shrink-0 w-32 border px-3 py-4 text-center ${status === 'next' ? 'border-gold' : 'border-ink-line'}`}>
-              <p class="font-data text-xs text-text-faint mb-1 tabular-nums">{formatDateShortJa(race.date)}</p>
-              <p class="text-sm font-bold mb-2 leading-snug">{race.name}</p>
-              {status === 'next' && <p class="font-data text-[10px] text-gold tracking-wide">NEXT</p>}
-              {status === 'closed' && <p class="font-data text-[10px] text-text-faint tracking-wide">終了</p>}
-              {status === 'upcoming' && <p class="font-data text-[10px] text-text-faint tracking-wide">COMING SOON</p>}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- CURRENT RANKING + ABOUT RULE -->
-  <section class="border-b border-ink-line py-20 md:py-28">
-    <div class="max-w-[1140px] mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16">
-      <div>
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-xl md:text-2xl font-display font-bold">CURRENT RANKING</h2>
-          <a href="/yosouou/ranking/" class="text-xs text-gold hover:text-gold-soft transition-colors underline underline-offset-4">
-            全ランキングを見る<span aria-hidden="true">→</span>
-          </a>
-        </div>
-        {totalParticipants === 0 ? (
-          <p class="text-text-faint font-data text-sm tracking-widest py-10 text-center">
-            {nextRace ? `RANKING STARTS ${formatDateShortJa(nextRace.date)}` : 'RANKING'}
-          </p>
-        ) : (
-          <div class="divide-y divide-ink-line">
-            {top10.map((p, i) => (
-              <div class={`flex items-baseline justify-between ${i < 3 ? 'py-5' : 'py-3'}`}>
-                <div class="flex items-baseline gap-4">
-                  <span class={`font-data tabular-nums font-bold ${i < 3 ? 'text-2xl text-gold' : 'text-sm text-text-faint'}`}>
-                    {p.rank}
-                  </span>
-                  <span class={`font-bold ${i < 3 ? 'text-lg' : 'text-sm'}`}>{p.radioName}</span>
-                </div>
-                <span class={`font-data tabular-nums font-bold ${i < 3 ? 'text-lg text-gold' : 'text-sm text-text-muted'}`}>
-                  {p.totalPoints}pt
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-        {data.updatedAt && (
-          <p class="mt-6 text-right text-xs text-text-faint">
-            最終更新：{data.updatedAt}（{data.asOfRace}）
-          </p>
-        )}
-      </div>
-
-      <div>
-        <h2 class="text-xl md:text-2xl font-display font-bold mb-8">ABOUT RULE</h2>
-        <ul class="space-y-3 text-sm text-text-muted leading-[1.7] mb-8">
-          <li>対象は2026年秋のGⅠ12レース</li>
-          <li>各レース1頭を指名。1着5点、2着3点、3着1点</li>
-          <li>締切は各レース前日の23:59（受信時刻基準）</li>
-          <li>締切前なら何度でも指名を変更できます</li>
-          <li>途中からの参加も歓迎します</li>
-        </ul>
-        <a href="/yosouou/rules/" class="text-sm text-gold hover:text-gold-soft transition-colors underline underline-offset-4">
-          詳しいルールを見る<span aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 締めのCTA -->
-  <section class="border-b border-ink-line py-20 md:py-28 text-center">
-    <div class="max-w-xl mx-auto px-4">
-      <h2 class="text-2xl md:text-3xl font-display font-bold mb-4">あなたの1頭が、ランキングをつくる。</h2>
-      <p class="text-sm md:text-base text-text-muted leading-[1.7] mb-10">
-        知識や経験は関係ありません。信じた馬を選ぶ、その気持ちだけで参加できます。
+    <div class="max-w-xl mx-auto px-4 py-12 md:py-16 text-center">
+      <p class="text-base md:text-lg text-text-muted leading-[1.7] mb-8">
+        2026年下半期G1で勝ち馬1頭を指名。<br />
+        着順ポイントの合計を競うリスナー参加企画！<br />
+        優勝者には豪華景品！
       </p>
       <a href={formUrl} target="_blank" rel="noopener noreferrer" class={ctaClasses}>
         予想に参加する<span aria-hidden="true">→</span>
@@ -241,31 +69,123 @@ const steps = [
     </div>
   </section>
 
-  <!-- 番組紹介 -->
-  <section class="py-20 md:py-28 text-center">
+  <!-- 2. NEXT RACE -->
+  <section class="border-b border-ink-line py-16 md:py-20 text-center">
     <div class="max-w-xl mx-auto px-4">
-      <h2 class="font-display text-xl font-bold mb-4">シンプルKEIBA を聴く</h2>
-      <p class="text-text-muted mb-8 text-sm md:text-base leading-[1.7]">
-        競馬にくわしくない方も楽しめる、難しくない競馬ポッドキャスト。毎週配信中！
+      <p class={sectionLabelClass}>NEXT RACE</p>
+      {nextRace ? (
+        <>
+          <h2 class={`${sectionHeadingClass} mb-6`}>{nextRace.name}</h2>
+          <p class="font-data text-lg text-text-muted mb-1 tabular-nums">{formatDateShortJa(nextRace.date)}</p>
+          <p class="font-data text-xs text-text-faint mb-10 tabular-nums">
+            応募締切　{formatDeadlineJa(nextRace.deadline)}
+          </p>
+          <a href={formUrl} target="_blank" rel="noopener noreferrer" class={ctaClasses}>
+            このレースを予想する<span aria-hidden="true">→</span>
+          </a>
+        </>
+      ) : (
+        <p class={`${sectionHeadingClass} py-8`}>全12戦が終了しました</p>
+      )}
+    </div>
+  </section>
+
+  <!-- 3. HOW TO PLAY -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-[1140px] mx-auto px-6 md:px-4 text-center">
+      <p class={sectionLabelClass}>HOW TO PLAY</p>
+      <h2 class={`${sectionHeadingClass} mb-10 md:mb-16`}>参加方法はシンプル。</h2>
+
+      <ol class="flex flex-col divide-y divide-ink-line md:flex-row md:divide-y-0 md:divide-x md:divide-ink-line max-w-3xl mx-auto text-left md:text-center">
+        {steps.map((step, i) => (
+          <li class={`flex items-start gap-4 py-6 first:pt-0 last:pb-0 md:flex-1 md:flex-col md:items-center md:gap-3 md:py-0 ${i > 0 ? 'md:pl-8' : ''} ${i < steps.length - 1 ? 'md:pr-8' : ''}`}>
+            <span class="font-data text-xl md:text-2xl font-bold text-gold shrink-0">{step.num}</span>
+            <div>
+              <p class="text-base md:text-lg font-bold text-text mb-1">{step.title}</p>
+              {step.desc ? (
+                <p class="text-sm leading-relaxed text-text-muted">{step.desc}</p>
+              ) : (
+                <p class="text-sm leading-relaxed text-text-muted tabular-nums">
+                  1着 <span class="text-gold font-bold">5pt</span>　2着 <span class="text-gold font-bold">3pt</span>　3着 <span class="text-gold font-bold">1pt</span>
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="mt-10 md:mt-14 pt-6 border-t border-ink-line flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs md:text-sm text-text-muted">
+        <span>馬券購入不要</span>
+        <span>途中参加OK</span>
+        <span>締切前なら変更OK</span>
       </p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a
-          href={PLATFORM_LINKS.spotify}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
-        >
-          Spotifyで聴く
-        </a>
-        <a
-          href={PLATFORM_LINKS.apple}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="bg-[#872EC4] hover:bg-[#9d3ee0] text-white font-bold py-3 px-6 rounded-full w-full sm:w-auto flex items-center justify-center transition-colors"
-        >
-          Apple Podcastsで聴く
+    </div>
+  </section>
+
+  <!-- 4. CURRENT RANKING -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-[720px] mx-auto px-4">
+      <p class={sectionLabelClass}>CURRENT RANKING</p>
+      <div class="flex items-center justify-between mb-8">
+        <h2 class={sectionHeadingClass}>現在のランキング</h2>
+        <a href="/yosouou/ranking/" class="text-xs text-gold hover:text-gold-soft transition-colors underline underline-offset-4 shrink-0 ml-4">
+          全ランキングを見る<span aria-hidden="true">→</span>
         </a>
       </div>
+      {totalParticipants === 0 ? (
+        <p class="text-text-faint font-data text-sm tracking-widest py-10 text-center">
+          {nextRace ? `RANKING STARTS ${formatDateShortJa(nextRace.date)}` : 'RANKING'}
+        </p>
+      ) : (
+        <div class="divide-y divide-ink-line">
+          {top3.map((p) => (
+            <div class="flex items-baseline justify-between py-5">
+              <div class="flex items-baseline gap-4">
+                <span class="font-data tabular-nums font-bold text-2xl text-gold">{p.rank}</span>
+                <span class="font-bold text-lg">{p.radioName}</span>
+              </div>
+              <span class="font-data tabular-nums font-bold text-lg text-gold">{p.totalPoints}pt</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {data.updatedAt && (
+        <p class="mt-6 text-right text-xs text-text-faint">
+          最終更新：{data.updatedAt}（{data.asOfRace}）
+        </p>
+      )}
+    </div>
+  </section>
+
+  <!-- 5. RACE SCHEDULE -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-[720px] mx-auto px-4">
+      <p class={sectionLabelClass}>RACE SCHEDULE</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>対象GⅠ 全12戦</h2>
+
+      <ul>
+        {races.map((race) => {
+          const status = raceStatus(race);
+          return (
+            <li class="flex items-center gap-3 py-3 border-b border-white/10 last:border-b-0">
+              <span class="font-data tabular-nums text-text-muted text-xs md:text-sm shrink-0 w-[92px] md:w-[104px]">
+                {formatDateShortJa(race.date)}
+              </span>
+              <span class="flex-1 text-sm md:text-base text-text font-medium">{race.name}</span>
+              <span class={`shrink-0 text-xs font-data tracking-wide w-10 text-right ${status === 'next' ? 'text-gold font-bold' : 'text-text-faint'}`}>
+                {status === 'next' && 'NEXT'}
+                {status === 'closed' && '✓'}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+
+      <p class="mt-10 text-center">
+        <a href="/yosouou/rules/" class="text-sm text-gold hover:text-gold-soft transition-colors underline underline-offset-4">
+          詳しいルールを見る<span aria-hidden="true">→</span>
+        </a>
+      </p>
     </div>
   </section>
 </Layout>
