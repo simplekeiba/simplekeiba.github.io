@@ -1,5 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import logo from '../assets/logo.jpg';
+
+const sectionLabelClass =
+  'text-xs font-data font-bold text-gold-soft tracking-widest uppercase mb-4';
+const sectionHeadingClass =
+  'text-[28px] md:text-4xl font-display font-bold text-text leading-[1.35]';
 
 const stats = [
   { value: 'WEEKLY', label: '毎週更新' },
@@ -47,44 +54,40 @@ const history = [
 >
   <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
     <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-3">ABOUT SIMPLE KEIBA</p>
-    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-16">シンプルKEIBAについて</h1>
+    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-8 md:mb-10">シンプルKEIBAについて</h1>
+
+    <Image
+      src={logo}
+      alt="シンプルKEIBA"
+      width={520}
+      height={520}
+      class="block mx-auto h-auto w-[220px] max-w-[52vw] md:w-[260px] md:max-w-full mb-14"
+    />
 
     <!-- 01｜シンプルKEIBAとは -->
     <section class="mb-20">
-      <div class="flex items-baseline gap-4 mb-8">
-        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">01</span>
-        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">シンプルKEIBAとは</h2>
+      <p class={sectionLabelClass}>01 / ABOUT</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>シンプルKEIBAとは</h2>
+      <p class="text-2xl md:text-3xl font-display font-bold text-text leading-tight mb-6 md:mb-8 max-w-[700px]">
+        競馬を、<br />
+        シンプルかつ分かりやすく。
+      </p>
+      <div class="max-w-[700px] space-y-4">
+        <p class="text-base text-text-muted leading-[1.8]">
+          シンプルKEIBA～難しくない競馬ラジオ～<br />
+          競馬をもっと気軽に楽しむためのポッドキャスト番組です。
+        </p>
+        <p class="text-base text-text-muted leading-[1.8]">
+          レース予想から、名馬、競馬史、馬事文化まで。<br />
+          競馬の面白さを分かりやすくお届けします。
+        </p>
       </div>
-      <h3 class="text-lg md:text-xl font-display font-bold text-gold-soft mb-6">
-        競馬を、シンプルかつ分かりやすく
-      </h3>
-      <p class="text-lg md:text-xl font-bold text-text leading-relaxed mb-6">
-        「シンプルKEIBA～難しくない競馬ラジオ～」は、競馬をもっとシンプルに、分かりやすく、楽しく届けるポッドキャスト番組です。
-      </p>
-      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        G1レースの見どころや馬券の予想、名馬の物語、競馬の歴史、リスナーから届いた思い出まで。
-      </p>
-      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        専門用語や難しい理論だけに頼るのではなく、<br />
-        <span class="font-bold text-text">「競馬って、こんなに面白いんだ」</span><br />
-        と思えるきっかけを、パーソナリティそれぞれの視点からお話しています。
-      </p>
-      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        競馬を始めたばかりの人も、何十年も競馬を見続けてきた人も。
-      </p>
-      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-6">
-        知識の量に関係なく、同じレースを見て、一緒に喜んだり、悔しがったり、語り合ったりできる。
-      </p>
-      <p class="text-lg md:text-xl font-display font-bold text-gold-soft">それが、シンプルKEIBAです。</p>
     </section>
 
     <!-- 02｜数字で見るシンプルKEIBA -->
     <section class="mb-20">
-      <div class="flex items-baseline gap-4 mb-2">
-        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">02</span>
-        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">数字で見るシンプルKEIBA</h2>
-      </div>
-      <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-8">NUMBERS</p>
+      <p class={sectionLabelClass}>02 / NUMBERS</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>数字で見るシンプルKEIBA</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
         {stats.map((stat) => (
@@ -103,11 +106,8 @@ const history = [
 
     <!-- 03｜番組の歩み -->
     <section class="mb-20">
-      <div class="flex items-baseline gap-4 mb-2">
-        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">03</span>
-        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">番組の歩み</h2>
-      </div>
-      <p class="font-data text-sm font-bold text-text-faint tracking-widest mb-10">HISTORY</p>
+      <p class={sectionLabelClass}>03 / HISTORY</p>
+      <h2 class={`${sectionHeadingClass} mb-10`}>番組の歩み</h2>
 
       <div class="space-y-10">
         {history.map((item) => (
@@ -122,13 +122,8 @@ const history = [
 
     <!-- 04｜Philosophy -->
     <section>
-      <div class="flex items-baseline gap-4 mb-8">
-        <span class="font-data text-4xl md:text-5xl font-bold text-gold-soft">04</span>
-        <h2 class="text-2xl md:text-3xl font-display font-bold text-text">Philosophy</h2>
-      </div>
-      <h3 class="text-lg md:text-xl font-display font-bold text-gold-soft mb-6">
-        競馬を、もっと身近なエンタメに。
-      </h3>
+      <p class={sectionLabelClass}>04 / PHILOSOPHY</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>競馬を、もっと身近なエンタメに。</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
         競馬は、詳しい人だけのものではありません。
       </p>
