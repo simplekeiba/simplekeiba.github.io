@@ -199,15 +199,24 @@ const formatDuration = (duration: string) => {
         )}
       </section>
 
-      <!-- 03｜MESSAGE -->
-      <section>
-        <p class={sectionLabelClass}>MESSAGE</p>
-        <h2 class="text-[28px] font-display font-bold text-text leading-[1.4] mb-4">
-          あなたの競馬の話、<br />
-          聞かせてください。
+    </div>
+
+  </div>
+
+  <!-- MESSAGE：ページを締める静かなCTA -->
+  <section class="border-t border-ink-line bg-ink-raised">
+    <div class="max-w-[1140px] mx-auto px-4 py-16 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-start">
+      <div>
+        <p class="text-xs font-data font-bold text-gold tracking-widest uppercase mb-4">MESSAGE</p>
+        <h2 class="text-[28px] md:text-4xl font-display font-bold text-text leading-tight">
+          あなたの声を、<br />
+          番組へ。
         </h2>
-        <p class="text-[15px] text-white/70 leading-[1.7] mb-6 max-w-md">
-          感想、質問、競馬の思い出、テーマのリクエストまで。
+      </div>
+      <div>
+        <p class="text-[15px] text-white/70 leading-[1.8] mb-6">
+          感想・質問・テーマのリクエストなど、<br />
+          お便りをお待ちしています。
         </p>
         <a
           href={MESSAGE_FORM_URL}
@@ -217,8 +226,7 @@ const formatDuration = (duration: string) => {
         >
           お便りを送る<span aria-hidden="true">→</span>
         </a>
-      </section>
+      </div>
     </div>
-
-  </div>
+  </section>
 </Layout>
