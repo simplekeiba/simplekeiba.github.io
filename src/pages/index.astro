@@ -29,12 +29,18 @@ const yosououData = campaignActive ? await fetchYosououData() : null;
 
 const carouselSlides: CarouselSlide[] = [
   {
-    id: 'membership',
-    image: carouselMembership,
-    alt: 'メンバーシップ',
-    href: MEMBERSHIP_URL,
-    external: true,
-    ctaLocation: 'carousel-membership',
+    id: 'trailer',
+    image: '/assets/video/simplekeibamv.png',
+    alt: 'OFFICIAL TRAILER',
+    variant: 'trailer',
+    ctaLocation: 'carousel-trailer',
+  },
+  {
+    id: 'yosouou',
+    image: carouselYosouou,
+    alt: '秋のGⅠ予想王決定戦',
+    href: '/yosouou/',
+    ctaLocation: 'carousel-yosouou',
   },
   {
     id: 'youtube',
@@ -45,19 +51,20 @@ const carouselSlides: CarouselSlide[] = [
     ctaLocation: 'carousel-youtube',
   },
   {
-    id: 'yosouou',
-    image: carouselYosouou,
-    alt: '秋のGⅠ予想王決定戦',
-    href: '/yosouou/',
-    ctaLocation: 'carousel-yosouou',
-  },
-  {
     id: 'sense-paddock',
     image: carouselSensePaddock,
     alt: 'SENSE PADDOCK',
     href: 'https://www.sense-paddock.com/',
     external: true,
     ctaLocation: 'carousel-sense-paddock',
+  },
+  {
+    id: 'membership',
+    image: carouselMembership,
+    alt: 'メンバーシップ',
+    href: MEMBERSHIP_URL,
+    external: true,
+    ctaLocation: 'carousel-membership',
   },
 ];
 

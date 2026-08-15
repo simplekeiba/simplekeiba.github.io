@@ -30,6 +30,7 @@ pnpm-debug.log*
 !public/apple-touch-icon.png
 !public/assets/og-top.png
 !public/assets/og-top-20260815.png
+!public/assets/video/simplekeibamv.png
 
 # temp scripts
 take_screenshot.mjs

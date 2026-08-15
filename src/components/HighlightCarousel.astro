@@ -4,11 +4,12 @@ import type { ImageMetadata } from 'astro';
 
 export interface CarouselSlide {
   id: string;
-  image: ImageMetadata;
+  image: ImageMetadata | string;
   alt: string;
-  href: string;
-  external?: boolean;
   ctaLocation: string;
+  href?: string;
+  external?: boolean;
+  variant?: 'trailer';
 }
 
 interface Props {
@@ -16,6 +17,11 @@ interface Props {
 }
 
 const { slides } = Astro.props;
+
+// 自動再生が最後のスライドから最初のスライドへ自然に戻れるよう、
+// 末尾に1枚目の複製を追加する（スクロール後に無音でリセットする方式）
+const realCount = slides.length;
+const loopSlides = realCount > 1 ? [...slides, { ...slides[0], id: `${slides[0].id}-clone` }] : slides;
 ---
 
 {slides.length > 0 && (
@@ -24,26 +30,63 @@ const { slides } = Astro.props;
       class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       data-carousel-track
     >
-      {slides.map((slide) => (
-        <div class="relative shrink-0 w-full aspect-video max-h-[80vh] bg-ink snap-center" data-carousel-slide>
-          <a
-            href={slide.href}
-            target={slide.external ? '_blank' : undefined}
-            rel={slide.external ? 'noopener noreferrer' : undefined}
-            data-cta-location={slide.ctaLocation}
-            class="block w-full h-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+      {loopSlides.map((slide, i) => {
+        const isClone = i >= realCount;
+        return (
+          <div
+            class="relative shrink-0 w-full aspect-video max-h-[80vh] bg-ink snap-center"
+            data-carousel-slide
+            data-carousel-clone={isClone ? 'true' : undefined}
+            aria-hidden={isClone ? 'true' : undefined}
           >
-            <Image
-              src={slide.image}
-              alt={slide.alt}
-              width={1920}
-              height={1080}
-              fit="contain"
-              class="w-full h-full object-contain"
-            />
-          </a>
-        </div>
-      ))}
+            {slide.variant === 'trailer' ? (
+              <button
+                type="button"
+                data-trailer-trigger
+                tabindex={isClone ? -1 : 0}
+                aria-label="公式トレーラーを再生"
+                data-cta-location={slide.ctaLocation}
+                class="group relative block w-full h-full text-left cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+              >
+                {typeof slide.image === 'string' ? (
+                  <img src={slide.image} alt={slide.alt} width="1920" height="1080" loading="lazy" class="w-full h-full object-contain" />
+                ) : (
+                  <Image src={slide.image} alt={slide.alt} width={1920} height={1080} fit="contain" class="w-full h-full object-contain" />
+                )}
+                <span
+                  class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-black/60 border border-white/70 transition-transform duration-200 group-hover:scale-105"
+                  aria-hidden="true"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-5 h-5 md:w-6 md:h-6 ml-0.5"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+                <div class="pointer-events-none absolute left-4 bottom-3.5 md:left-6 md:bottom-6 flex items-baseline gap-2">
+                  <span class="text-xs md:text-sm font-bold tracking-widest text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+                    OFFICIAL TRAILER
+                  </span>
+                  <span class="font-data text-[11px] md:text-xs text-white/80 tabular-nums [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+                    1:20
+                  </span>
+                </div>
+              </button>
+            ) : (
+              <a
+                href={slide.href}
+                target={slide.external ? '_blank' : undefined}
+                rel={slide.external ? 'noopener noreferrer' : undefined}
+                tabindex={isClone ? -1 : undefined}
+                data-cta-location={slide.ctaLocation}
+                class="block w-full h-full focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-gold"
+              >
+                {typeof slide.image === 'string' ? (
+                  <img src={slide.image} alt={slide.alt} width="1920" height="1080" loading="lazy" class="w-full h-full object-contain" />
+                ) : (
+                  <Image src={slide.image} alt={slide.alt} width={1920} height={1080} fit="contain" class="w-full h-full object-contain" />
+                )}
+              </a>
+            )}
+          </div>
+        );
+      })}
     </div>
 
     {slides.length > 1 && (
@@ -64,42 +107,119 @@ const { slides } = Astro.props;
         ))}
       </div>
     )}
+
+    {slides.some((s) => s.variant === 'trailer') && (
+      <div
+        class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/85 px-3"
+        data-trailer-modal
+        role="dialog"
+        aria-modal="true"
+        aria-label="公式トレーラー"
+      >
+        <div class="relative w-full max-w-[1080px]">
+          <button
+            type="button"
+            data-trailer-close
+            aria-label="トレーラーを閉じる"
+            class="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white hover:text-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+          <video
+            data-trailer-video
+            class="w-full aspect-video bg-black"
+            controls
+            playsinline
+            preload="none"
+            poster="/assets/video/simplekeibamv.png"
+          >
+            <source src="/assets/video/best-ecstasy-tonight-opv.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    )}
   </div>
 )}
 
 <script>
   function setupCarousel(root: HTMLElement) {
     const track = root.querySelector<HTMLElement>('[data-carousel-track]');
-    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+    const allSlideEls = Array.from(root.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
     const dots = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-carousel-dot]'));
-    if (!track || slides.length <= 1) return;
+    const realCount = dots.length || allSlideEls.length;
+    if (!track || allSlideEls.length <= 1 || realCount <= 1) return;
+
+    // ブラウザがリロード前のスクロール位置を勝手に復元することがあり、内部の index=0 と
+    // 見た目の位置がズレて自動再生が破綻する原因になるため、初期化時に必ず1枚目へ強制的に揃える。
+    if (track.scrollLeft !== 0) {
+      track.scrollLeft = 0;
+    }
 
     let index = 0;
     let timer: ReturnType<typeof setInterval> | null = null;
+    let autoplayPaused = false;
+    // 自分のコード（scrollToEl）が起こしているスクロール中は、手動スワイプ検出を無効化する。
+    // これが無いと、自動再生のスクロールに対しても scroll イベントが発火し、下部の
+    // 手動スワイプ検出ロジックが index を横から上書きしてしまい、無限ループが壊れる。
+    let programmaticScroll = false;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hasClone = allSlideEls.length > realCount;
 
     const setActiveDot = (i: number) => {
       dots.forEach((dot, di) => dot.setAttribute('aria-selected', di === i ? 'true' : 'false'));
     };
 
-    const goTo = (i: number) => {
-      index = (i + slides.length) % slides.length;
-      // track 自身の scrollLeft のみを動かす。scrollIntoView はページ（window）のスクロール位置まで
-      // 動かすことがあるため使わない（固定ヘッダー配下だと特に発生しやすい）。
+    // track 自身の scrollLeft のみを動かす。scrollIntoView はページ（window）のスクロール位置まで
+    // 動かすことがあるため使わない（固定ヘッダー配下だと特に発生しやすい）。
+    // scrollend（実際にスクロールが収まった合図）で onSettled を呼ぶのが基本だが、
+    // scrollend は一部ブラウザ（Safari系の旧バージョン等）で未対応・不発火のことがあるため、
+    // 遷移時間より十分長いタイムアウトを保険として必ず設定し、どちらか早い方で確定させる。
+    const scrollToEl = (el: HTMLElement, behavior: ScrollBehavior, onSettled?: () => void) => {
+      programmaticScroll = true;
       const trackRect = track.getBoundingClientRect();
-      const targetRect = slides[index].getBoundingClientRect();
+      const targetRect = el.getBoundingClientRect();
       const delta = targetRect.left - trackRect.left;
-      track.scrollTo({
-        left: track.scrollLeft + delta,
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-      });
+      track.scrollTo({ left: track.scrollLeft + delta, behavior });
+
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        programmaticScroll = false;
+        onSettled?.();
+      };
+      track.addEventListener('scrollend', finish, { once: true });
+      setTimeout(finish, behavior === 'smooth' ? 700 : 50);
+    };
+
+    const goTo = (i: number) => {
+      index = (i + realCount) % realCount;
+      scrollToEl(allSlideEls[index], prefersReducedMotion ? 'instant' : 'smooth');
       setActiveDot(index);
     };
 
+    // 常に (index + 1) % realCount で一方向に進む。最後のスライドの次は複製（1枚目と同一）へ
+    // 通常と同じ速度・方向で移動し、その遷移が本当に完了した直後（scrollend）に、無演出のまま
+    // 本物の1枚目へ位置を補正する。autoplay の setInterval 自体は一切止めない。
+    const advanceAutoplay = () => {
+      const next = index + 1;
+      if (next < realCount || !hasClone) {
+        index = next % realCount;
+        scrollToEl(allSlideEls[index], prefersReducedMotion ? 'instant' : 'smooth');
+        setActiveDot(index);
+        return;
+      }
+      index = 0;
+      setActiveDot(0);
+      scrollToEl(allSlideEls[realCount], prefersReducedMotion ? 'instant' : 'smooth', () => {
+        scrollToEl(allSlideEls[0], 'instant');
+      });
+    };
+
     const start = () => {
-      if (prefersReducedMotion) return;
+      if (prefersReducedMotion || autoplayPaused) return;
       stop();
-      timer = setInterval(() => goTo(index + 1), 5000);
+      timer = setInterval(advanceAutoplay, 5000);
     };
     const stop = () => {
       if (timer) clearInterval(timer);
@@ -119,23 +239,68 @@ const { slides } = Astro.props;
     root.addEventListener('focusin', stop);
     root.addEventListener('focusout', start);
 
+    // 手動スワイプ／トラックパッド操作のみを検出する。自分のコードによるスクロール中は無視する。
     let scrollTimeout: ReturnType<typeof setTimeout>;
     track.addEventListener('scroll', () => {
+      if (programmaticScroll) return;
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         const trackLeft = track.getBoundingClientRect().left;
         let closest = 0;
         let closestDist = Infinity;
-        slides.forEach((slide, i) => {
+        allSlideEls.forEach((slide, i) => {
           const dist = Math.abs(slide.getBoundingClientRect().left - trackLeft);
           if (dist < closestDist) {
             closestDist = dist;
             closest = i;
           }
         });
-        index = closest;
-        setActiveDot(index);
+        if (hasClone && closest === realCount) {
+          // 手動スワイプで複製（末尾）まで到達した場合も、無音で本物の1枚目へ戻す
+          index = 0;
+          setActiveDot(0);
+          scrollToEl(allSlideEls[0], 'instant');
+        } else {
+          index = closest;
+          setActiveDot(index);
+        }
       }, 100);
+    });
+
+    // OFFICIAL TRAILER モーダル
+    const modal = root.querySelector<HTMLElement>('[data-trailer-modal]');
+    const video = modal?.querySelector<HTMLVideoElement>('[data-trailer-video]') ?? null;
+    const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-trailer-trigger]'));
+    const closeButtons = modal ? Array.from(modal.querySelectorAll<HTMLButtonElement>('[data-trailer-close]')) : [];
+
+    const openModal = () => {
+      if (!modal || !video) return;
+      autoplayPaused = true;
+      stop();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      video.play().catch(() => {});
+    };
+
+    const closeModal = () => {
+      if (!modal || !video) return;
+      video.pause();
+      video.currentTime = 0;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      autoplayPaused = false;
+      start();
+    };
+
+    triggers.forEach((btn) => btn.addEventListener('click', openModal));
+    closeButtons.forEach((btn) => btn.addEventListener('click', closeModal));
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
     });
 
     start();
