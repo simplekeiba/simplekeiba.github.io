@@ -2,66 +2,35 @@
 import Layout from '../../layouts/Layout.astro';
 import { fetchEpisodes } from '../../lib/podcast';
 import { formatDateJa } from '../../lib/date';
+import { cleanEpisodeTitle, formatEpisodeDuration } from '../../lib/episodeDisplay';
 import type { GetStaticPathsOptions } from 'astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const episodes = await fetchEpisodes();
-  
+
   // 最新のものが上に来るように降順ソート
   const sortedEpisodes = episodes.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
-  
+
   // 1ページ20件でページネーション生成
   return paginate(sortedEpisodes, { pageSize: 20 });
 }
 
 const { page } = Astro.props;
 
-// 枠番の背景・テキストカラークラスを返す (左側の細いバーとして表現)
-const getWakuClasses = (num: number | null) => {
-  const baseClasses = 'border-l-4 text-text bg-ink-raised group-hover:bg-ink transition-colors border-r border-ink-line';
-  if (!num) return `${baseClasses} border-l-waku-1`;
-  const waku = num % 8 === 0 ? 8 : num % 8;
-  const classes = [
-    '',
-    'border-l-waku-1', // 1: 白
-    'border-l-waku-2', // 2: 黒
-    'border-l-waku-3', // 3: 赤
-    'border-l-waku-4', // 4: 青
-    'border-l-waku-5', // 5: 黄
-    'border-l-waku-6', // 6: 緑
-    'border-l-waku-7', // 7: 橙
-    'border-l-waku-8', // 8: 桃
-  ];
-  return `${baseClasses} ${classes[waku]}`;
-};
-
-// 尺を簡潔な表記にする
-const formatDuration = (duration: string) => {
-  if (!duration) return '--:--';
-  const parts = duration.split(':');
-  if (parts.length === 3) {
-    const h = parseInt(parts[0], 10);
-    const m = parts[1];
-    const s = parts[2];
-    if (h > 0) {
-      return `${h}:${m}:${s}`;
-    } else {
-      return `${parseInt(m, 10)}:${s}`;
-    }
-  }
-  return duration;
-};
-
-// タイトル末尾の「#219」のような話数表記を削除する
-const cleanTitle = (title: string) => {
-  if (!title) return '';
-  return title.replace(/[#＃]\d+\s*$/, '').trim();
+// メタ情報 (話数・配信日・尺) を「・」区切りの1行にまとめる。話数がない回はそのまま省く
+const buildMeta = (ep: { episodeNumber: number | null; pubDate: Date; duration: string }) => {
+  const parts = [
+    ep.episodeNumber ? `#${ep.episodeNumber}` : '',
+    formatDateJa(ep.pubDate),
+    formatEpisodeDuration(ep.duration),
+  ].filter(Boolean);
+  return parts.join('　');
 };
 ---
 
 <Layout title="エピソード一覧 | シンプルKEIBA">
-  <div class="max-w-4xl mx-auto px-4 py-12 w-full overflow-hidden">
-    <header class="mb-10">
+  <div class="max-w-[900px] mx-auto px-4 py-12 w-full overflow-hidden">
+    <header class="mb-8">
       <h1 class="font-display font-black text-3xl sm:text-4xl text-text mb-2">
         EPISODES
       </h1>
@@ -70,49 +39,48 @@ const cleanTitle = (title: string) => {
       </p>
     </header>
 
-    <div class="bg-ink-raised border-t-2 border-b md:border-2 md:rounded-lg border-ink-line w-full overflow-hidden mt-2">
-      <!-- 出走表ボディ -->
-      <ul class="flex flex-col w-full">
-        {page.data.map((ep) => (
-          <li class="border-b border-ink-line last:border-b-0 group bg-ink-raised hover:bg-ink transition-colors relative">
-            <a href={`/episodes/${ep.slug}/`} class="episode-row focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold outline-none">
-              {/* 1列目: 枠番チップ */}
-              <div class={`episode-waku font-display font-bold text-lg md:text-xl ${getWakuClasses(ep.episodeNumber)}`}>
-                {ep.episodeNumber || '-'}
-              </div>
-              
-              {/* 2列目: タイトルとモバイル向けメタデータ */}
-              <div class="episode-content">
-                <span class="font-body font-bold text-text text-sm md:text-base leading-snug group-hover:text-gold-soft transition-colors line-clamp-2 md:line-clamp-1">
-                  {cleanTitle(ep.title)}
-                </span>
-                
-                {/* モバイル用メタデータ (768px未満でのみ表示) */}
-                <div class="episode-meta-mobile font-data tabular-nums text-text-muted text-[11px]">
-                  <time datetime={ep.pubDate.toISOString()}>{formatDateJa(ep.pubDate)}</time>
-                  <span class="text-text-faint">&middot;</span>
-                  <span>{formatDuration(ep.duration)}</span>
-                </div>
-              </div>
-                
-              {/* 3列目: 日付と尺 (768px以上でのみ表示) */}
-              <div class="episode-meta font-data tabular-nums border-l border-ink-line/50">
-                <time datetime={ep.pubDate.toISOString()} class="text-text-muted text-sm">
-                  {formatDateJa(ep.pubDate)}
-                </time>
-                <span class="text-text-faint text-xs mt-0.5">
-                  {formatDuration(ep.duration)}
-                </span>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <!-- エピソード検索 -->
+    <div class="mb-10">
+      <label for="episode-search" class="sr-only">エピソードを検索</label>
+      <input
+        type="search"
+        id="episode-search"
+        placeholder="エピソードを検索"
+        class="w-full bg-ink-raised border border-ink-line rounded-md px-4 py-3 text-sm text-text placeholder:text-text-faint focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-colors"
+      />
+      <p id="search-status" class="mt-2 text-xs text-text-faint" aria-live="polite"></p>
     </div>
+
+    <!-- エピソード一覧 (アーカイブ表示) -->
+    <ul id="episode-list" class="w-full">
+      {page.data.map((ep) => (
+        <li class="border-b border-white/10 last:border-b-0">
+          <a
+            href={`/episodes/${ep.slug}/`}
+            class="flex items-center gap-4 py-5 md:py-7 group focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold outline-none"
+          >
+            <div class="min-w-0 flex-1">
+              <div class="font-data tabular-nums text-text-muted text-[12px] md:text-[13px] font-medium mb-1.5">
+                {buildMeta(ep)}
+              </div>
+              <div class="font-body font-semibold text-text text-base md:text-lg leading-[1.55] group-hover:text-gold-soft transition-colors">
+                {cleanEpisodeTitle(ep.title)}
+              </div>
+            </div>
+            <span class="text-text-faint text-sm shrink-0 group-hover:text-gold transition-colors" aria-hidden="true">
+              &rarr;
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- 検索結果 (JSで動的に描画) -->
+    <ul id="search-results" class="w-full" hidden></ul>
 
     <!-- ページネーション -->
     {page.lastPage > 1 && (
-      <nav class="flex justify-center items-center gap-6 mt-12 font-data tabular-nums">
+      <nav id="pagination-nav" class="flex justify-center items-center gap-6 mt-12 font-data tabular-nums">
         {page.url.prev ? (
           <a href={page.url.prev} class="text-gold hover:text-gold-soft px-4 py-2 border border-gold rounded hover:bg-gold/10 transition-colors">
             &larr; Prev
@@ -122,11 +90,11 @@ const cleanTitle = (title: string) => {
             &larr; Prev
           </span>
         )}
-        
+
         <span class="text-text-muted text-sm md:text-base">
           Page <strong class="text-text">{page.currentPage}</strong> of {page.lastPage}
         </span>
-        
+
         {page.url.next ? (
           <a href={page.url.next} class="text-gold hover:text-gold-soft px-4 py-2 border border-gold rounded hover:bg-gold/10 transition-colors">
             Next &rarr;
@@ -141,69 +109,118 @@ const cleanTitle = (title: string) => {
   </div>
 </Layout>
 
-<style>
-  /* --- 共通・モバイルファースト --- */
-  
-  .episode-row {
-    display: grid;
-    /* モバイル: 48px + 残り幅 (2段組み) */
-    grid-template-columns: 48px minmax(0, 1fr);
-    align-items: stretch;
-    width: 100%;
-    /* min-height や height を一切指定せず、padding に完全に任せる */
+<script>
+  import { formatDateJa } from '../../lib/date';
+  import { cleanEpisodeTitle, formatEpisodeDuration } from '../../lib/episodeDisplay';
+
+  interface SearchEpisode {
+    slug: string;
+    episodeNumber: number | null;
+    title: string;
+    pubDate: string;
+    duration: string;
+    description: string;
   }
 
-  .episode-waku {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  const input = document.getElementById('episode-search') as HTMLInputElement | null;
+  const listEl = document.getElementById('episode-list');
+  const paginationEl = document.getElementById('pagination-nav');
+  const resultsEl = document.getElementById('search-results');
+  const statusEl = document.getElementById('search-status');
+
+  let allEpisodes: SearchEpisode[] | null = null;
+  let loadingPromise: Promise<void> | null = null;
+
+  function loadIndex(): Promise<void> {
+    if (!loadingPromise) {
+      loadingPromise = fetch('/episodes/search-index.json')
+        .then((res) => res.json())
+        .then((data: SearchEpisode[]) => {
+          allEpisodes = data;
+        })
+        .catch(() => {
+          allEpisodes = [];
+          if (statusEl) statusEl.textContent = '検索データの取得に失敗しました。';
+        });
+    }
+    return loadingPromise;
   }
 
-  .episode-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-    /* モバイル用に十分な上下パディングを確保し、これで行の高さを決める */
-    padding: 12px 12px;
+  function escapeHtml(str: string): string {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
   }
 
-  .episode-meta-mobile {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 6px;
+  function buildMeta(ep: SearchEpisode): string {
+    const parts = [
+      ep.episodeNumber ? `#${ep.episodeNumber}` : '',
+      formatDateJa(ep.pubDate),
+      formatEpisodeDuration(ep.duration),
+    ].filter(Boolean);
+    return parts.join('　');
   }
 
-  .episode-meta {
-    display: none;
-  }
+  function renderResults(query: string) {
+    const q = query.trim();
 
-  /* --- 768px以上 (PC/タブレット) --- */
-  @media (min-width: 768px) {
-    .episode-row {
-      /* PC: 3列グリッド */
-      grid-template-columns: 64px minmax(0, 1fr) 120px;
-      gap: 16px;
+    if (!q) {
+      if (listEl) listEl.hidden = false;
+      if (paginationEl) paginationEl.hidden = false;
+      if (resultsEl) {
+        resultsEl.hidden = true;
+        resultsEl.innerHTML = '';
+      }
+      if (statusEl) statusEl.textContent = '';
+      return;
     }
 
-    .episode-content {
-      padding: 16px 0; /* PCでは左右パディングは gap などで処理 */
-      padding-left: 16px;
+    if (listEl) listEl.hidden = true;
+    if (paginationEl) paginationEl.hidden = true;
+    if (!resultsEl) return;
+    resultsEl.hidden = false;
+
+    const lower = q.toLowerCase();
+    const matches = (allEpisodes || []).filter((ep) => {
+      return ep.title.toLowerCase().includes(lower) || ep.description.toLowerCase().includes(lower);
+    });
+
+    if (statusEl) statusEl.textContent = `${matches.length}件のエピソードが見つかりました`;
+
+    if (matches.length === 0) {
+      resultsEl.innerHTML = '<li class="py-12 text-center text-text-muted text-sm">該当するエピソードが見つかりませんでした</li>';
+      return;
     }
 
-    .episode-meta-mobile {
-      display: none;
-    }
-
-    .episode-meta {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-align: right;
-      padding-right: 16px;
-      height: 100%;
-    }
+    resultsEl.innerHTML = matches
+      .map((ep) => {
+        const title = escapeHtml(cleanEpisodeTitle(ep.title));
+        const meta = escapeHtml(buildMeta(ep));
+        return `
+          <li class="border-b border-white/10 last:border-b-0">
+            <a href="/episodes/${ep.slug}/" class="flex items-center gap-4 py-5 md:py-7 group focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-gold outline-none">
+              <div class="min-w-0 flex-1">
+                <div class="font-data tabular-nums text-text-muted text-[12px] md:text-[13px] font-medium mb-1.5">${meta}</div>
+                <div class="font-body font-semibold text-text text-base md:text-lg leading-[1.55] group-hover:text-gold-soft transition-colors">${title}</div>
+              </div>
+              <span class="text-text-faint text-sm shrink-0 group-hover:text-gold transition-colors" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        `;
+      })
+      .join('');
   }
-</style>
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  input?.addEventListener('input', (e) => {
+    const value = (e.target as HTMLInputElement).value;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      if (!allEpisodes) {
+        loadIndex().then(() => renderResults(value));
+      } else {
+        renderResults(value);
+      }
+    }, 150);
+  });
+</script>
