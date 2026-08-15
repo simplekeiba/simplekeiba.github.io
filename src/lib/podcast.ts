@@ -10,6 +10,7 @@ export interface PodcastEpisode {
   audioUrl: string;
   link: string;
   guid: string;
+  imageUrl: string;
 }
 
 const RSS_URL = 'https://anchor.fm/s/f1b706dc/podcast/rss';
@@ -91,6 +92,7 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
         audioUrl: item.enclosure?.['@_url'] || '',
         link: item.link || '',
         guid,
+        imageUrl: item['itunes:image']?.['@_href'] || '',
       };
     });
 

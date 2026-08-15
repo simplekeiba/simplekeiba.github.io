@@ -5,3 +5,4 @@ export const PLATFORM_LINKS = {
 
 export const YOUTUBE_URL = 'https://www.youtube.com/@SimpleKEIBA';
 export const MEMBERSHIP_URL = 'https://note.com/keiba_podcast/membership';
+export const MESSAGE_FORM_URL = 'https://forms.gle/gzB6HPzrPfmxv5Kq8';

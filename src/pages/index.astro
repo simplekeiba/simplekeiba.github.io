@@ -1,16 +1,25 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import HighlightCarousel, { type CarouselSlide } from '../components/HighlightCarousel.astro';
+import specialEventBanner from '../assets/special-event-banner.png';
 import carouselMembership from '../assets/carousel-membership.png';
 import carouselYoutube from '../assets/carousel-youtube.png';
 import carouselYosouou from '../assets/carousel-yosouou.png';
+import carouselSensePaddock from '../assets/carousel-sense-paddock.png';
 import { fetchEpisodes } from '../lib/podcast';
 import { formatDateJa, formatDateTimeJa } from '../lib/date';
 import { fetchYosououData, getNextRace, isYosououCampaignActive } from '../lib/yosouou';
-import { PLATFORM_LINKS, YOUTUBE_URL, MEMBERSHIP_URL } from '../data/links';
+import { PLATFORM_LINKS, YOUTUBE_URL, MEMBERSHIP_URL, MESSAGE_FORM_URL } from '../data/links';
+import { RECOMMENDED_EPISODES } from '../data/recommendedEpisodes';
 
 const episodes = await fetchEpisodes();
 const latestEpisode = episodes.length > 0 ? episodes[episodes.length - 1] : null;
+
+const recommendedEpisodes = RECOMMENDED_EPISODES.map((rec) => {
+  const ep = episodes.find((e) => e.slug === rec.slug);
+  return ep ? { ...ep, spotifyUrl: rec.spotifyUrl } : null;
+}).filter((ep): ep is NonNullable<typeof ep> => Boolean(ep));
 
 const spotifyShowId = PLATFORM_LINKS.spotify.match(/show\/([a-zA-Z0-9]+)/)?.[1] ?? '';
 
@@ -42,7 +51,20 @@ const carouselSlides: CarouselSlide[] = [
     href: '/yosouou/',
     ctaLocation: 'carousel-yosouou',
   },
+  {
+    id: 'sense-paddock',
+    image: carouselSensePaddock,
+    alt: 'SENSE PADDOCK',
+    href: 'https://www.sense-paddock.com/',
+    external: true,
+    ctaLocation: 'carousel-sense-paddock',
+  },
 ];
+
+const sectionLabelClass = 'text-xs md:text-sm font-bold text-gold tracking-widest uppercase mb-3';
+const sectionHeadingClass = 'text-[28px] md:text-4xl font-display font-bold text-text leading-tight';
+const ctaButtonClass =
+  'inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-soft text-ink font-bold px-8 py-4 rounded-md tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold';
 
 const formatDuration = (duration: string) => {
   if (!duration) return '--:--';
@@ -110,19 +132,93 @@ const formatDuration = (duration: string) => {
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             title="シンプルKEIBA を Spotify で再生"
           />
-          <div class="mt-6 text-center">
-            <a
-              href={`/episodes/${latestEpisode.slug}/`}
-              class="text-gold hover:text-gold-soft transition-colors underline underline-offset-4 text-sm font-bold"
-            >
-              ショーノートを読む
-            </a>
-          </div>
         </div>
       ) : (
         <p class="text-text-muted">エピソードを取得できませんでした。</p>
       )}
     </section>
+
+    <div class="space-y-20">
+      <!-- 01｜SPECIAL EVENT -->
+      <section>
+        <p class={sectionLabelClass}>SPECIAL EVENT</p>
+        <Image
+          src={specialEventBanner}
+          alt="2026年下半期 G1予想最強リスナー決定戦。秋のGⅠ12戦。毎回、勝つと思う馬を1頭選ぶだけ。"
+          width={1755}
+          height={594}
+          class="w-full h-auto rounded-lg mb-5"
+        />
+        <a href="/yosouou/" class="inline-flex items-center gap-1 text-[15px] md:text-base font-semibold text-gold hover:text-gold-soft transition-colors">
+          企画に参加する<span aria-hidden="true">→</span>
+        </a>
+      </section>
+
+      <!-- 02｜FIRST LISTEN -->
+      <section>
+        <p class={sectionLabelClass}>FIRST LISTEN</p>
+        <h2 class={`${sectionHeadingClass} mb-3`}>初めての方におすすめ</h2>
+        <p class="text-base text-text-muted leading-[1.8] mb-8">
+          シンプルKEIBAを初めて聴くなら、まずはこちらから。
+        </p>
+        {recommendedEpisodes.length > 0 ? (
+          <div class="flex flex-col divide-y divide-ink-line md:grid md:grid-cols-3 md:gap-8 md:divide-y-0">
+            {recommendedEpisodes.map((ep) => (
+              <a
+                href={ep.spotifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex flex-row md:flex-col gap-4 md:gap-0 py-6 first:pt-0 last:pb-0 md:py-0 group"
+              >
+                {ep.imageUrl && (
+                  <img
+                    src={ep.imageUrl}
+                    alt={ep.title}
+                    width="130"
+                    height="130"
+                    loading="lazy"
+                    class="w-[120px] h-[120px] shrink-0 object-cover rounded-lg md:w-full md:h-auto md:aspect-square md:mb-4"
+                  />
+                )}
+                <div class="min-w-0">
+                  <p class="font-bold text-text leading-snug mb-2 line-clamp-3 group-hover:text-gold-soft transition-colors">
+                    {ep.title}
+                  </p>
+                  <p class="font-data tabular-nums text-xs text-text-faint mb-2 md:mb-3">
+                    {formatDateJa(ep.pubDate)}　{formatDuration(ep.duration)}
+                  </p>
+                  <span class="hidden md:inline text-sm text-gold group-hover:text-gold-soft transition-colors">
+                    エピソードを聴く<span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="text-sm text-text-faint">{'{{TODO: おすすめエピソード3本の選定}}'}</p>
+        )}
+      </section>
+
+      <!-- 03｜MESSAGE -->
+      <section>
+        <p class={sectionLabelClass}>MESSAGE</p>
+        <h2 class="text-[28px] font-display font-bold text-text leading-[1.4] mb-4">
+          あなたの競馬の話、<br />
+          聞かせてください。
+        </h2>
+        <p class="text-[15px] text-white/70 leading-[1.7] mb-6 max-w-md">
+          感想、質問、競馬の思い出、テーマのリクエストまで。
+        </p>
+        <a
+          href={MESSAGE_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 text-[15px] md:text-base font-semibold text-gold hover:text-gold-soft transition-colors"
+        >
+          お便りを送る<span aria-hidden="true">→</span>
+        </a>
+      </section>
+    </div>
 
   </div>
 </Layout>

@@ -84,10 +84,14 @@ const { slides } = Astro.props;
 
     const goTo = (i: number) => {
       index = (i + slides.length) % slides.length;
-      slides[index].scrollIntoView({
+      // track 自身の scrollLeft のみを動かす。scrollIntoView はページ（window）のスクロール位置まで
+      // 動かすことがあるため使わない（固定ヘッダー配下だと特に発生しやすい）。
+      const trackRect = track.getBoundingClientRect();
+      const targetRect = slides[index].getBoundingClientRect();
+      const delta = targetRect.left - trackRect.left;
+      track.scrollTo({
+        left: track.scrollLeft + delta,
         behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        inline: 'start',
-        block: 'nearest',
       });
       setActiveDot(index);
     };

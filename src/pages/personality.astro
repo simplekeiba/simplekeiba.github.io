@@ -5,88 +5,116 @@ import mizoguchiPhoto from '../assets/personality-mizoguchi.jpg';
 import owadaPhoto from '../assets/personality-owada.png';
 import higashibataPhoto from '../assets/personality-higashibata.jpg';
 
-const personalities = [
+interface Member {
+  name: string;
+  photo: ImageMetadata;
+  keywordEn: string;
+  keywordJa: string;
+  descriptionLines: string[];
+  favoriteJockey: string;
+  favoriteHorse: string;
+  sns: { platform: 'x' | 'instagram'; url: string };
+}
+
+// 新しいメンバーを追加する場合は、この配列に1件足すだけでよい。
+// 同じ「写真左＋テキスト右」の行として縦に追加される
+// （MORE VOICES はこの一覧の外にある独立セクション）。
+const members: Member[] = [
   {
     name: '溝口 勇樹',
     photo: mizoguchiPhoto,
-    bioLines: [
-      '競馬大好き経営者。',
-      '馬券は直感で選ぶ永遠の競馬初心者。',
-      '好きな騎手：川田将雅騎手',
-      '好きな馬：ダノンプレミアム',
-    ],
-    sns: { platform: 'x' as const, url: 'https://x.com/UMAmizo' },
+    keywordEn: 'INTUITION',
+    keywordJa: '直感派',
+    descriptionLines: ['競馬大好き経営者。', '馬券は直感で選ぶ、永遠の競馬初心者。'],
+    favoriteJockey: '川田将雅騎手',
+    favoriteHorse: 'ダノンプレミアム',
+    sns: { platform: 'x', url: 'https://x.com/UMAmizo' },
   },
   {
     name: '大和田 咲綺',
     photo: owadaPhoto,
-    bioLines: [
-      'SENSEPADDOCK主宰。',
-      '競馬歴20年以上のフィギュアクリエイター。',
-      '馬券は3連単。',
-      '好きな騎手：武豊騎手',
-      '好きな馬：テンポイント',
-    ],
-    sns: { platform: 'instagram' as const, url: 'https://www.instagram.com/sense_paddock?igsh=aTl6a281NG11b2Fs' },
+    keywordEn: 'HORSE & CULTURE',
+    keywordJa: '馬と文化',
+    descriptionLines: ['フィギュア工房「SENSEPADDOCK」主宰。', '競馬歴20年以上のクリエイター。'],
+    favoriteJockey: '武豊騎手',
+    favoriteHorse: 'テンポイント',
+    sns: { platform: 'instagram', url: 'https://www.instagram.com/sense_paddock?igsh=aTl6a281NG11b2Fs' },
   },
   {
     name: '東端 佑典',
     photo: higashibataPhoto,
-    bioLines: [
-      'シンプルKEIBA主宰。',
-      '年間1000時間競馬に費やすビジネスマン。',
-      '論理的に考えるのが好き。',
-      '好きな騎手：坂井瑠星騎手',
-      '好きな馬：フィエールマン、フォーエバーヤング',
-    ],
-    sns: { platform: 'x' as const, url: 'https://x.com/ytBusiness1' },
+    keywordEn: 'LOGIC',
+    keywordJa: '論理的思考',
+    descriptionLines: ['シンプルKEIBA主宰。', '年間1000時間競馬に費やすビジネスマン。'],
+    favoriteJockey: '坂井瑠星騎手',
+    favoriteHorse: 'フィエールマン、フォーエバーヤング',
+    sns: { platform: 'x', url: 'https://x.com/ytBusiness1' },
   },
 ];
 ---
 
-<Layout title="パーソナリティ紹介 - シンプルKEIBA" description="シンプルKEIBA～難しくない競馬ラジオ～のパーソナリティ3名を紹介します。">
-  <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
-    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-4">パーソナリティ紹介</h1>
-    <p class="text-base md:text-lg text-text-muted leading-relaxed mb-12">
-      「シンプルKEIBA～難しくない競馬ラジオ～」をお届けする3人です。
+<Layout title="パーソナリティ紹介 - シンプルKEIBA" description="シンプルKEIBA～難しくない競馬ラジオ～を届けるメンバーを紹介します。">
+  <div class="max-w-[700px] mx-auto px-4 py-12 md:py-16">
+    <p class="text-xs font-data font-bold text-gold tracking-widest uppercase mb-3">PERSONALITIES</p>
+    <h1 class="text-[28px] md:text-4xl font-display font-bold text-text leading-tight mb-5">
+      それぞれの視点で、競馬を語る。
+    </h1>
+    <p class="text-base text-text-muted leading-[1.7] mb-12 md:mb-14">
+      感覚、馬への愛、ロジック。<br />
+      異なる視点を持つメンバーが、シンプルKEIBAを届けています。
     </p>
+    <p class="text-xs font-data font-bold text-gold tracking-widest uppercase mb-6 md:mb-8">CURRENT MEMBERS</p>
 
     <div class="divide-y divide-ink-line">
-      {personalities.map((person) => (
-        <section class="py-12 first:pt-0 last:pb-0 flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start">
-          <div class="shrink-0 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-gold">
+      {members.map((member) => (
+        <div class="flex flex-row items-start gap-4 md:gap-6 py-8 first:pt-0 last:pb-0">
+          <div class="shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border border-ink-line">
             <Image
-              src={person.photo}
-              alt={`${person.name}の写真`}
+              src={member.photo}
+              alt={`${member.name}の写真`}
               width={320}
               height={320}
               fit="cover"
               class="w-full h-full object-cover"
             />
           </div>
-          <div class="flex-1 text-center sm:text-left">
-            <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-3">{person.name}</h2>
-            <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-              {person.bioLines.map((line, i) => (
+          <div class="min-w-0 flex-1">
+            <h2 class="text-lg md:text-xl font-display font-bold text-text mb-1">{member.name}</h2>
+            <p class="text-xs mb-3">
+              <span class="font-data font-bold text-gold tracking-wide uppercase">{member.keywordEn}</span>
+              <span class="text-gold-soft"> / {member.keywordJa}</span>
+            </p>
+            <p class="text-sm text-text-muted leading-[1.7] mb-3">
+              {member.descriptionLines.map((line, i) => (
                 <>
                   {line}
-                  {i < person.bioLines.length - 1 && <br />}
+                  {i < member.descriptionLines.length - 1 && <br />}
                 </>
               ))}
             </p>
+            <dl class="text-xs space-y-1 mb-3">
+              <div class="flex gap-1.5">
+                <dt class="font-data text-text-faint shrink-0">FAVORITE JOCKEY</dt>
+                <dd class="text-text-muted">{member.favoriteJockey}</dd>
+              </div>
+              <div class="flex gap-1.5">
+                <dt class="font-data text-text-faint shrink-0">FAVORITE HORSE</dt>
+                <dd class="text-text-muted">{member.favoriteHorse}</dd>
+              </div>
+            </dl>
             <a
-              href={person.sns.url}
+              href={member.sns.url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${person.name}の${person.sns.platform === 'x' ? 'X' : 'Instagram'}`}
-              class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-ink-line text-text-muted hover:text-gold hover:border-gold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              aria-label={`${member.name}の${member.sns.platform === 'x' ? 'X' : 'Instagram'}`}
+              class="inline-flex items-center justify-center w-6 h-6 rounded-full text-text-muted hover:text-gold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
             >
-              {person.sns.platform === 'x' ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              {member.sns.platform === 'x' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
@@ -94,8 +122,16 @@ const personalities = [
               )}
             </a>
           </div>
-        </section>
+        </div>
       ))}
+    </div>
+
+    <!-- MORE VOICES：人物一覧とは別の、独立したブランドメッセージ。空席には見せない。 -->
+    <div class="mt-4 pt-8 border-t border-ink-line">
+      <p class="text-xs font-data font-bold text-gold tracking-widest uppercase mb-2">
+        <span aria-hidden="true">＋</span> MORE VOICES
+      </p>
+      <p class="text-sm text-text-muted">新しい視点も、これから。</p>
     </div>
   </div>
 </Layout>
