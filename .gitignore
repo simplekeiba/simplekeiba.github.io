@@ -28,6 +28,7 @@ pnpm-debug.log*
 !src/assets/*.png
 !public/favicon*.png
 !public/apple-touch-icon.png
+!public/assets/og-top.png
 
 # temp scripts
 take_screenshot.mjs
