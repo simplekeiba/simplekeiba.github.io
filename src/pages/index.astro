@@ -143,70 +143,59 @@ const formatDuration = (duration: string) => {
       )}
     </section>
 
-    <div class="space-y-20">
-      <!-- 01｜SPECIAL EVENT -->
-      <section>
-        <p class={sectionLabelClass}>SPECIAL EVENT</p>
-        <Image
-          src={specialEventBanner}
-          alt="2026年下半期 G1予想最強リスナー決定戦。秋のGⅠ12戦。毎回、勝つと思う馬を1頭選ぶだけ。"
-          width={1755}
-          height={594}
-          class="w-full h-auto rounded-lg mb-5"
-        />
-        <a href="/yosouou/" class="inline-flex items-center gap-1 text-[15px] md:text-base font-semibold text-gold hover:text-gold-soft transition-colors">
-          企画に参加する<span aria-hidden="true">→</span>
-        </a>
-      </section>
-
-      <!-- 02｜FIRST LISTEN -->
-      <section>
-        <p class={sectionLabelClass}>FIRST LISTEN</p>
-        <h2 class={`${sectionHeadingClass} mb-3`}>初めての方におすすめ</h2>
-        <p class="text-base text-text-muted leading-[1.8] mb-8">
-          シンプルKEIBAを初めて聴くなら、まずはこちらから。
-        </p>
-        {recommendedEpisodes.length > 0 ? (
-          <div class="flex flex-col divide-y divide-ink-line md:grid md:grid-cols-3 md:gap-8 md:divide-y-0">
-            {recommendedEpisodes.map((ep) => (
-              <a
-                href={ep.spotifyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex flex-row md:flex-col gap-4 md:gap-0 py-6 first:pt-0 last:pb-0 md:py-0 group"
-              >
-                {ep.imageUrl && (
-                  <img
-                    src={ep.imageUrl}
-                    alt={ep.title}
-                    width="130"
-                    height="130"
-                    loading="lazy"
-                    class="w-[120px] h-[120px] shrink-0 object-cover rounded-lg md:w-full md:h-auto md:aspect-square md:mb-4"
-                  />
-                )}
-                <div class="min-w-0">
-                  <p class="font-bold text-text leading-snug mb-2 line-clamp-3 group-hover:text-gold-soft transition-colors">
-                    {ep.title}
-                  </p>
-                  <p class="font-data tabular-nums text-xs text-text-faint mb-2 md:mb-3">
-                    {formatDateJa(ep.pubDate)}　{formatDuration(ep.duration)}
-                  </p>
-                  <span class="hidden md:inline text-sm text-gold group-hover:text-gold-soft transition-colors">
-                    エピソードを聴く<span aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <p class="text-sm text-text-faint">{'{{TODO: おすすめエピソード3本の選定}}'}</p>
-        )}
-      </section>
-
-    </div>
+    <!-- 01｜SPECIAL EVENT -->
+    <section>
+      <p class={sectionLabelClass}>SPECIAL EVENT</p>
+      <Image
+        src={specialEventBanner}
+        alt="2026年下半期 G1予想最強リスナー決定戦。秋のGⅠ12戦。毎回、勝つと思う馬を1頭選ぶだけ。"
+        width={1755}
+        height={594}
+        class="w-full h-auto rounded-lg mb-5"
+      />
+      <a href="/yosouou/" class="inline-flex items-center gap-1 text-[15px] md:text-base font-semibold text-gold hover:text-gold-soft transition-colors">
+        企画に参加する<span aria-hidden="true">→</span>
+      </a>
+    </section>
 
   </div>
+
+  <!-- 02｜FIRST LISTEN（他セクションより広い最大幅を持つ独立バンド） -->
+  <section class="pt-20 pb-16 md:pt-24 md:pb-20">
+    <div class="max-w-[1080px] mx-auto px-4">
+      <p class={sectionLabelClass}>FIRST LISTEN</p>
+      <h2 class={`${sectionHeadingClass} mb-10 md:mb-12`}>初めての方におすすめ</h2>
+      {recommendedEpisodes.length > 0 ? (
+        <div class="flex flex-col">
+          {recommendedEpisodes.map((ep, i) => (
+            <a
+              href={ep.spotifyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex flex-col md:flex-row md:items-center gap-3 md:gap-8 py-8 border-b border-white/10 last:border-b-0 group"
+            >
+              <p class="font-data text-xs md:text-sm font-semibold text-gold tracking-widest md:w-[60px] md:shrink-0">
+                {String(i + 1).padStart(2, '0')}
+              </p>
+              <div class="min-w-0 md:flex-1">
+                <p class="text-[17px] md:text-[21px] font-bold text-text leading-[1.5] mb-2 line-clamp-4 md:line-clamp-3 group-hover:text-gold-soft transition-colors">
+                  {ep.title}
+                </p>
+                <p class="font-data tabular-nums text-[11px] md:text-xs text-text-muted">
+                  {formatDateJa(ep.pubDate)}　{formatDuration(ep.duration)}
+                </p>
+              </div>
+              <span class="text-sm font-semibold text-gold group-hover:text-gold-soft transition-colors md:w-[170px] md:shrink-0 md:text-right">
+                エピソードを聴く<span aria-hidden="true">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="text-sm text-text-faint">{'{{TODO: おすすめエピソード3本の選定}}'}</p>
+      )}
+    </div>
+  </section>
 
   <!-- MESSAGE：ページを締める静かなCTA -->
   <section class="border-t border-ink-line bg-ink-raised">
