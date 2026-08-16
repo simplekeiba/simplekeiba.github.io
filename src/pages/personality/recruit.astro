@@ -1,0 +1,345 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import { PLATFORM_LINKS } from '../../data/links';
+import { formatDateJa } from '../../lib/date';
+import newMemberWantedImage from '../../assets/new-member-wanted.png';
+import lookingForImage from '../../assets/bosyuyoukou.png';
+
+const sectionLabelClass = 'text-xs font-data font-bold text-gold-soft tracking-widest uppercase mb-4';
+const sectionHeadingClass = 'text-[28px] md:text-4xl font-display font-bold text-text leading-[1.35]';
+const ctaButtonClass =
+  'inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-soft text-ink font-bold px-8 py-4 rounded-md tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold';
+
+const RECRUIT_FORM_URL = 'https://forms.gle/mFJjX7ZdZz1NkFFDA';
+
+// エピソード#80「【仲間募集】シンプルKEIBA"新メンバー"求む！」
+// RSSフィードの <link> は https://podcasters.spotify.com/pod/show/simple-keiba/episodes/KEIBA80-e2uvain
+// だが、これは作成者用ダッシュボード（要ログイン）へリダイレクトされ、一般リスナー向けの
+// open.spotify.com/episode/{id} 形式ではないため、公開リンクとしては使用していない。
+// Episode IDを推測して埋め込みプレイヤーを実装することもしていない（推測禁止のため）。
+// TODO: open.spotify.com/episode/{id} 形式の正式URLが判明次第、EPISODE_80_URLを差し替える。
+const EPISODE_80_URL = PLATFORM_LINKS.spotify;
+const EPISODE_80_TITLE = '【仲間募集】シンプルKEIBA"新メンバー"求む！#80';
+const EPISODE_80_DATE = formatDateJa('2025-03-04T21:30:00Z');
+const EPISODE_80_DURATION = '37:12';
+
+const lookingForExamples = [
+  '競馬を始めて2年くらいまでのビギナー',
+  '「競馬といえば、まず馬券」というくらい馬券が好き',
+  '血統の話ならずっとしていられる',
+  '調教・追い切りを見るのが好き',
+  '獣医師・獣医学など、馬を身体から見ている',
+  '乗馬をしている',
+  '牧場・厩舎・育成など、馬に関わる仕事をしている',
+  '女性競馬ファンとしての視点を持っている',
+  '競馬新聞・競馬メディアに関わっている',
+  '競馬や馬との少し変わった出会いや経験がある',
+  'その他、「自分ならこの角度から競馬を話せる」というものがある',
+];
+
+const welcomeExamples = [
+  'Podcast、YouTubeなど配信活動をしている',
+  'SNSなどで自分の好きなものについて発信している',
+  '競馬や馬に関係する仕事・活動をしている',
+  '将来、声やトークを使った仕事をしてみたい',
+  '自分の声や活動を作品として残せる場所を探している',
+  '誰かと一緒にコンテンツを作ってみたい',
+  'シンプルKEIBAで話してみたいテーマがある',
+];
+
+const activityItems = [
+  { label: '収録頻度', value: '原則、月1回程度' },
+  { label: '収録場所', value: '東京都内' },
+  { label: '対象', value: '20歳以上' },
+  { label: '報酬', value: '原則として金銭的な報酬はありません。' },
+];
+
+const flowSteps = [
+  { num: '01', title: '応募' },
+  { num: '02', title: '一度お話しする' },
+  { num: '03', title: 'ゲストとしてシンプルKEIBAに参加' },
+  { num: '04', title: '「また一緒にやりたい」とお互いに思えたら、新メンバーについて相談' },
+];
+
+const notForList = [
+  '競馬知識の多さで人を見下してしまう。',
+  '自分とは違う競馬の楽しみ方を否定してしまう。',
+  '自分だけが目立つことを一番に考えている。',
+  '馬や競馬に関わる人への敬意を持てない。',
+  '誰かの話を聞くより、自分の話だけをしたい。',
+];
+---
+
+<Layout
+  title="新メンバー募集 | シンプルKEIBA～難しくない競馬ラジオ～"
+  description="競馬Podcast「シンプルKEIBA」では、新しいメンバーを募集しています。競馬や馬が好きで、自分ならではの視点を持つ方と一緒に番組を作りたいと考えています。"
+>
+  <!-- HERO -->
+  <section class="border-b border-ink-line pt-12 pb-16 md:pt-16 md:pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>NEW MEMBER WANTED</p>
+      <h1 class="sr-only">シンプルKEIBAに、あなたの「競馬の見方」を。</h1>
+      <Image
+        src={newMemberWantedImage}
+        alt="NEW MEMBER WANTED シンプルKEIBAに、あなたの「競馬の見方」を。競馬が好き。馬が好き。そして、自分なりの「競馬を見る角度」を持っている人。"
+        width={1536}
+        height={1024}
+        class="w-full h-auto rounded-md mb-8 md:mb-10"
+      />
+      <div class="space-y-4 text-base md:text-lg text-text-muted leading-[1.8] max-w-[620px]">
+        <p>競馬Podcast「シンプルKEIBA～難しくない競馬ラジオ～」では、新しいメンバーを募集します。</p>
+        <p>
+          私たちが探しているのは、<br />
+          競馬の知識が一番ある人でも、予想が一番当たる人でもありません。
+        </p>
+        <p>
+          競馬が好き。馬が好き。<br />
+          そして、自分なりの「競馬を見る角度」を持っている人。
+        </p>
+        <p>
+          シンプルKEIBAには、直感、論理、競馬文化、歴史など、それぞれ違った競馬の楽しみ方があります。<br />
+          そこに、今のメンバーにはない新しい視点を加えてくれる人と出会いたいと思っています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO WE'RE LOOKING FOR -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>WHO WE'RE LOOKING FOR</p>
+      <h2 class={`${sectionHeadingClass} mb-6`}>こんな人と出会いたい</h2>
+      <p class="text-base text-text-muted leading-[1.8] mb-8 max-w-[620px]">
+        まず必要なのは、次のどちらか。<br />
+        <span class="text-text font-bold">競馬が好き。</span> または、<span class="text-text font-bold">馬が好き。</span><br />
+        詳しさや競馬歴は問いません。むしろ、こんな方を探しています。
+      </p>
+      <Image
+        src={lookingForImage}
+        alt="こんな人と出会いたい。競馬を始めて2年くらいまでのビギナー、「競馬といえば、まず馬券」というくらい馬券が好き、血統の話ならずっとしていられる、調教・追い切りを見るのが好き、獣医師・獣医学など馬を身体から見ている、乗馬をしている、牧場・厩舎・育成など馬に関わる仕事をしている、女性競馬ファンとしての視点を持っている、競馬新聞・競馬メディアに関わっている、競馬や馬との少し変わった出会いや経験がある。その他、「自分ならこの角度から競馬を話せる」というものがある。"
+        width={1536}
+        height={1024}
+        class="w-full h-auto rounded-md mb-8"
+      />
+      <ul class="space-y-3 mb-8 max-w-[620px]">
+        {lookingForExamples.map((item) => (
+          <li class="flex gap-3 text-sm md:text-base text-text-muted leading-[1.7]">
+            <span class="text-gold-soft shrink-0" aria-hidden="true">・</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="text-lg md:text-xl font-display font-bold text-text mb-4 max-w-[620px]">
+        この中に当てはまらなくても構いません。
+      </p>
+      <p class="text-base text-text-muted leading-[1.8] max-w-[620px]">
+        私たち自身がまだ知らない、<br />
+        「そんな競馬の楽しみ方があるんだ」と思わせてくれる人にも会ってみたいと思っています。
+      </p>
+    </div>
+  </section>
+
+  <!-- WELCOME -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>WELCOME</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>こんな経験があれば、さらに歓迎</h2>
+      <ul class="space-y-3 mb-8 max-w-[620px]">
+        {welcomeExamples.map((item) => (
+          <li class="flex gap-3 text-sm md:text-base text-text-muted leading-[1.7]">
+            <span class="text-gold-soft shrink-0" aria-hidden="true">・</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="text-base text-text-muted leading-[1.8]">もちろん、配信経験ゼロでも問題ありません。</p>
+    </div>
+  </section>
+
+  <!-- WHAT MATTERS（思想的な中心） -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>WHAT MATTERS</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>一番大切にしたいこと</h2>
+      <p class="text-base md:text-lg text-text-muted leading-[1.8] max-w-[620px] mb-8">
+        シンプルKEIBAは、<br />
+        「競馬をもっとシンプルに、もっと楽しく。」<br />
+        を大切にしています。
+      </p>
+      <p class="text-xl md:text-2xl font-display font-bold text-text leading-[1.5] mb-8 max-w-[620px]">
+        だから、知識量以上に、<br />
+        自分とは違う競馬の楽しみ方を面白がれること。<br />
+        を重視します。
+      </p>
+      <div class="space-y-4 text-base md:text-lg text-text-muted leading-[1.8] max-w-[620px]">
+        <p>
+          初心者だから知らなくてもいい。<br />
+          血統に詳しくてもいい。<br />
+          馬券ばかり買っていてもいい。<br />
+          馬券にはほとんど興味がなく、馬そのものが好きでもいい。
+        </p>
+        <p>
+          違うからこそ、会話が面白くなる。<br />
+          そんな人と一緒に番組を作りたいと思っています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FROM THE ARCHIVE（背景の補足。主役にしない） -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>FROM THE ARCHIVE</p>
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text leading-[1.5] mb-6 max-w-[620px]">
+        新しい視点を探すことは、今回が初めてではありません。
+      </h2>
+      <div class="space-y-4 text-sm md:text-base text-text-muted leading-[1.8] max-w-[620px] mb-8">
+        <p>2025年、シンプルKEIBAでは一度、新しいメンバーについて番組内で語りました。</p>
+        <p>
+          当時から考えていたのは、<br />
+          今のメンバーにはない視点が加わることで、まだ見たことのない会話や企画が生まれるのではないか。<br />
+          ということでした。
+        </p>
+        <p>
+          その考えは今も変わっていません。<br />
+          ただ、今はもう少し広く考えています。
+        </p>
+        <p>
+          年齢や性別、競馬歴などの属性だけではなく、<br />
+          その人にしかない「競馬や馬を見る角度」そのものに出会いたい。<br />
+          と考えています。
+        </p>
+      </div>
+
+      <a
+        href={EPISODE_80_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group block max-w-[620px] border-t border-b border-ink-line py-5"
+      >
+        <div class="font-data tabular-nums text-text-faint text-xs mb-2">
+          {EPISODE_80_DATE}　{EPISODE_80_DURATION}
+        </div>
+        <div class="font-body font-semibold text-text text-sm md:text-base leading-[1.6] mb-2 group-hover:text-gold-soft transition-colors">
+          {EPISODE_80_TITLE}
+        </div>
+        <span class="text-gold text-sm group-hover:text-gold-soft transition-colors">
+          Spotifyでこのエピソードを聴く<span aria-hidden="true">→</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>ACTIVITY</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>活動について</h2>
+
+      <dl class="grid grid-cols-1 md:grid-cols-2 border-t border-ink-line mb-8">
+        {activityItems.map((item, i) => (
+          <div class={`py-5 border-b border-ink-line md:px-6 first:md:pl-0 ${i % 2 === 0 ? 'md:border-r' : ''}`}>
+            <dt class="font-data text-xs font-bold text-gold-soft tracking-widest uppercase mb-2">{item.label}</dt>
+            <dd class="text-base md:text-lg text-text">{item.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="space-y-4 text-base text-text-muted leading-[1.8] max-w-[620px]">
+        <p>
+          シンプルKEIBAは、出演すること自体を仕事として依頼する募集ではなく、競馬や馬が好きなメンバー同士で、一緒にコンテンツを作っていく活動です。
+        </p>
+        <p>自分の声、自分の考え、自分の競馬観を、Podcastという作品として残していくことができます。</p>
+        <p>
+          Podcastで200本以上配信してきたシンプルKEIBAを、自分の発信や、新しい活動へのきっかけとして使ってもらえたら嬉しいです。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIRST, LET'S TALK -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>FIRST, LET'S TALK</p>
+      <h2 class={`${sectionHeadingClass} mb-6`}>いきなり「新メンバー」にはなりません。</h2>
+      <p class="text-base text-text-muted leading-[1.8] mb-10 max-w-[620px]">
+        意思表明していただいたからといって、すぐに加入をお願いするわけではありません。<br />
+        まずは、お互いに話してみるところから始めます。
+      </p>
+
+      <ol class="flex flex-col divide-y divide-ink-line md:flex-row md:divide-y-0 md:divide-x md:divide-ink-line mb-10">
+        {flowSteps.map((step, i) => (
+          <li class={`flex items-start gap-4 py-6 first:pt-0 last:pb-0 md:flex-1 md:items-start md:gap-3 md:py-0 ${i > 0 ? 'md:pl-6' : ''} ${i < flowSteps.length - 1 ? 'md:pr-6' : ''}`}>
+            <span class="font-data text-lg font-bold text-gold shrink-0">{step.num}</span>
+            <p class="text-sm md:text-base font-medium text-text leading-[1.6]">{step.title}</p>
+          </li>
+        ))}
+      </ol>
+
+      <p class="text-base text-text-muted leading-[1.8] max-w-[620px]">
+        私たちもあなたを知りたいですし、<br />
+        あなたにもシンプルKEIBAを知ってもらいたい。<br />
+        だから、最初から長期的な参加を約束する必要はありません。
+      </p>
+    </div>
+  </section>
+
+  <!-- NOT FOR EVERYONE -->
+  <section class="border-b border-ink-line py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>NOT FOR EVERYONE</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>こんな人とは、たぶん合いません。</h2>
+      <ul class="space-y-3 mb-8 max-w-[620px]">
+        {notForList.map((item) => (
+          <li class="flex gap-3 text-sm md:text-base text-text-muted leading-[1.7]">
+            <span class="text-gold-soft shrink-0" aria-hidden="true">・</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="text-base text-text-muted leading-[1.8] mb-10 max-w-[620px]">
+        そういう方とは、おそらくシンプルKEIBAは合いません。
+      </p>
+      <p class="text-xl md:text-2xl font-display font-bold text-text leading-[1.6] mb-4 max-w-[620px]">
+        知識より、人。<br />
+        正解より、会話。<br />
+        そして何より、競馬や馬を一緒に楽しめること。
+      </p>
+      <p class="text-base text-text-muted leading-[1.8]">そこを大切にしています。</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <p class={sectionLabelClass}>JOIN US</p>
+      <h2 class={`${sectionHeadingClass} mb-8`}>少しでも気になったら</h2>
+      <div class="space-y-4 text-base md:text-lg text-text-muted leading-[1.8] max-w-[620px] mb-10">
+        <p>
+          「自分が新メンバーなんて大丈夫かな」<br />
+          くらいで構いません。<br />
+          競馬歴が浅くても、専門知識がなくても大丈夫です。
+        </p>
+        <p>
+          逆に、<br />
+          「自分にはこんな競馬の見方がある」<br />
+          と思っている方も大歓迎です。
+        </p>
+        <p>
+          あなたがどんな人で、<br />
+          どんなきっかけで競馬や馬を好きになり、<br />
+          どんな話をしてみたいのか。<br />
+          まずは聞かせてください。
+        </p>
+      </div>
+      <p class="text-sm text-text-muted leading-[1.7] mb-4 max-w-[560px]">
+        応募したからといって、すぐに新メンバーになるわけではありません。まずはお互いを知るところから始めます。
+      </p>
+      <a href={RECRUIT_FORM_URL} target="_blank" rel="noopener noreferrer" class={ctaButtonClass}>
+        シンプルKEIBAに応募してみる<span aria-hidden="true">→</span>
+      </a>
+      <p class="text-xs text-text-faint mt-3">Googleフォームが開きます</p>
+    </div>
+  </section>
+</Layout>
