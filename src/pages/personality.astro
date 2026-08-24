@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import mizoguchiPhoto from '../assets/personality-mizoguchi.jpg';
 import owadaPhoto from '../assets/personality-owada.png';
 import higashibataPhoto from '../assets/personality-higashibata.jpg';
 
@@ -21,14 +20,14 @@ interface Member {
 // （MORE VOICES はこの一覧の外にある独立セクション）。
 const members: Member[] = [
   {
-    name: '溝口 勇樹',
-    photo: mizoguchiPhoto,
-    keywordEn: 'INTUITION',
-    keywordJa: '直感派',
-    descriptionLines: ['競馬大好き経営者。', '馬券は直感。永遠の競馬初心者。'],
-    favoriteJockey: '川田将雅騎手',
-    favoriteHorse: 'ダノンプレミアム',
-    sns: { platform: 'x', url: 'https://x.com/UMAmizo' },
+    name: '東端 佑典',
+    photo: higashibataPhoto,
+    keywordEn: 'LOGIC',
+    keywordJa: '論理的思考',
+    descriptionLines: ['シンプルKEIBA主宰。', '年間1000時間競馬に費やすビジネスマン。'],
+    favoriteJockey: '坂井瑠星騎手',
+    favoriteHorse: 'フィエールマン',
+    sns: { platform: 'x', url: 'https://x.com/ytBusiness1' },
   },
   {
     name: '大和田 咲綺',
@@ -39,16 +38,6 @@ const members: Member[] = [
     favoriteJockey: '武豊騎手',
     favoriteHorse: 'テンポイント',
     sns: { platform: 'instagram', url: 'https://www.instagram.com/sense_paddock?igsh=aTl6a281NG11b2Fs' },
-  },
-  {
-    name: '東端 佑典',
-    photo: higashibataPhoto,
-    keywordEn: 'LOGIC',
-    keywordJa: '論理的思考',
-    descriptionLines: ['シンプルKEIBA主宰。', '年間1000時間競馬に費やすビジネスマン。'],
-    favoriteJockey: '坂井瑠星騎手',
-    favoriteHorse: 'フィエールマン',
-    sns: { platform: 'x', url: 'https://x.com/ytBusiness1' },
   },
 ];
 ---
