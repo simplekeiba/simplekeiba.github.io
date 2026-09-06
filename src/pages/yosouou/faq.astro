@@ -1,0 +1,289 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { PLATFORM_LINKS, MESSAGE_FORM_URL } from '../../data/links';
+
+// 他の /yosouou/ 配下ページ（index.astro / ranking.astro）と同じ書き方に合わせている
+const formUrl = 'https://forms.gle/1r71nxcxBe35zEVE7';
+
+interface FaqLink {
+  href: string;
+  text: string;
+  external?: boolean;
+}
+
+interface FaqItem {
+  q: string;
+  /** 段落ごとに1要素。1要素＝1つの <p> として描画する */
+  a: string[];
+  link?: FaqLink;
+}
+
+interface FaqSection {
+  label: string;
+  heading: string;
+  items: FaqItem[];
+}
+
+// 章の並びは情報の分類ではなく、リスナーが企画に触れる時系列に沿わせている
+// （参加を検討する → 応募する → 採点される → 順位を見る → 結果を知る）。
+// 設問を増やす場合は、該当する章の items に1件足すだけでよい。
+const faqSections: FaqSection[] = [
+  {
+    label: '01 / はじめに',
+    heading: '参加する前に',
+    items: [
+      {
+        q: '競馬にくわしくないのですが、参加できますか？',
+        a: [
+          '参加できます。やることは「このレース、この馬が勝ちそう」と思う馬を1頭選んで送るだけです。血統やタイムの知識は必要ありません。',
+        ],
+      },
+      {
+        q: '馬券を買う必要はありますか？ お金はかかりますか？',
+        a: ['どちらも必要ありません。馬券を購入せずに参加できる企画です。参加費もかかりません。'],
+      },
+      {
+        q: '12レース全部に参加しないとダメですか？',
+        a: ['いいえ。出したいレースだけで大丈夫です。1レースだけの参加も歓迎します。'],
+      },
+      {
+        q: '途中から参加してもいいですか？',
+        a: ['歓迎します。企画の途中からでも、残りのレースで参加できます。'],
+      },
+    ],
+  },
+  {
+    label: '02 / 応募',
+    heading: '応募のしかた',
+    items: [
+      {
+        q: 'どうやって応募しますか？',
+        a: [
+          '応募フォームから送信してください。入力するのは、メールアドレス（本人確認用・公開されません）、ラジオネーム、対象レース、指名する馬1頭、番組へのメッセージ（任意）です。',
+        ],
+        link: { href: formUrl, text: '予想に参加する', external: true },
+      },
+      {
+        q: '1回の送信で、複数のレースをまとめて予想できますか？',
+        a: [
+          'できません。1回の送信につき1レース、1頭です。複数のレースに参加する場合は、レースごとにフォームを送信してください。',
+        ],
+      },
+      {
+        q: '締切はいつですか？',
+        a: [
+          '各レース前日の23:59です。締切は受信時刻を基準とします（送信を押した時刻ではありません）。',
+          '締切を過ぎた応募は集計の対象になりません。全12レースの日程と締切の一覧は、ルールページに掲載しています。',
+        ],
+        link: { href: '/yosouou/rules/', text: '日程と締切の一覧を見る' },
+      },
+      {
+        q: '一度送ったあとで、指名する馬を変えられますか？',
+        a: [
+          '締切前なら何度でも出し直せます。同じレースに複数回送信された場合、締切前に受信した最新の1件を有効とします。',
+          '前の応募を取り消す連絡は不要です。',
+        ],
+      },
+      {
+        q: '馬名はどう書けばいいですか？ 間違えて送ってしまいました。',
+        a: [
+          'JRA発表の正式なカタカナ表記で、正確にご記入ください。表記のゆれがあると、集計できないことがあります。',
+          '誤字は運営側で合理的に補正することがありますが、どの馬か判別が難しい場合は無効となります。気づいた時点で、締切前に正しい馬名で送り直していただくのが確実です。',
+        ],
+      },
+    ],
+  },
+  {
+    label: '03 / 採点',
+    heading: 'ポイントと順位',
+    items: [
+      {
+        q: 'ポイントはどう決まりますか？',
+        a: [
+          '指名した馬の着順で決まります。1着は5点、2着は3点、3着は1点、4着以下は0点です。',
+          '同着の場合は、それぞれの着順のポイントをそのまま適用します。1着同着であれば、どちらを指名していても5点です。',
+        ],
+      },
+      {
+        q: '指名した馬が出走取消・競走除外になったらどうなりますか？',
+        a: [
+          'そのレースは0点となります。',
+          '締切前に発表された場合は、別の馬で応募し直していただけます。締切後に発表された場合は、再応募はできません。',
+        ],
+      },
+      {
+        q: '順位はどう決まりますか？',
+        a: [
+          '全レースの合計ポイントが多い順です。同点の場合は同順位とし、次の順位を飛ばします（例：1位、2位、2位、4位）。',
+        ],
+      },
+      {
+        q: 'レースが中止・変更になったらどうなりますか？',
+        a: ['開催に変更があった場合は、サイト上でお知らせします。'],
+      },
+    ],
+  },
+  {
+    label: '04 / 反映',
+    heading: 'ランキングへの反映',
+    items: [
+      {
+        q: '応募したのに、ランキングに名前が出てきません。',
+        a: [
+          'ランキングは毎日20:30に自動更新されます。応募した直後には反映されません。',
+          '20:30より前に応募した場合はその日の夜、20:30より後に応募した場合は翌日の夜に表示されます。次の更新までお待ちください。',
+        ],
+      },
+      {
+        q: 'レース結果は、いつポイントに反映されますか？',
+        a: [
+          '運営がレース結果を集計したあと、次の20:30の更新でサイトに反映されます。',
+          'ランキングページに表示している「更新日時」と「集計時点」が、いま表示されている順位がどの時点のものかを示しています。',
+        ],
+        link: { href: '/yosouou/ranking/', text: 'ランキングを見る' },
+      },
+      {
+        q: '翌日になっても反映されません。',
+        a: [
+          'お手数ですが、お便りフォームからご連絡ください。応募時のラジオネームと対象のレース名をあわせてお知らせいただけると、確認がスムーズです。',
+        ],
+        link: { href: MESSAGE_FORM_URL, text: 'お便りフォームから連絡する', external: true },
+      },
+    ],
+  },
+  {
+    label: '05 / 公開と結果発表',
+    heading: '名前の公開と、最終結果',
+    items: [
+      {
+        q: 'ラジオネームは公開されますか？',
+        a: [
+          'はい。ラジオネームは番組およびサイト上で公開されます。本名や、個人が特定される名称の使用はお控えください。',
+        ],
+      },
+      {
+        q: '途中でラジオネームを変えてもいいですか？',
+        a: [
+          '変更はできません。企画期間中は、毎回同じラジオネームでご応募ください。',
+          '途中で変えられると、それまでの成績と合算できなくなります。',
+        ],
+      },
+      {
+        q: 'メールアドレスは公開されますか？',
+        a: ['公開しません。本人確認のためだけに使用します。'],
+        link: { href: '/privacy', text: 'プライバシーポリシーを見る' },
+      },
+      {
+        q: '自分だけの成績ページはありますか？',
+        a: [
+          '個人ごとのページはありません。ランキングページで、全参加者の順位とポイントをまとめてご覧いただけます。',
+        ],
+      },
+      {
+        q: '賞品は何がもらえますか？',
+        a: ['優勝者には豪華景品をご用意します。内容は Coming Soon。決まり次第、ルールページでお知らせします。'],
+      },
+      {
+        q: '最終結果はいつ発表されますか？',
+        a: [
+          '12月28日にサイトで最終順位を発表します。表彰は2027年最初の配信で行います。',
+          'ホープフルステークス（12月26日）と有馬記念（12月27日）が年末の連続開催となるため、年内の配信では最終順位を発表できません。',
+        ],
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="よくある質問 - 2026年下半期 G1予想最強リスナー決定戦 - シンプルKEIBA"
+  description="2026年下半期 G1予想最強リスナー決定戦のよくある質問。応募のしかた、締切、ポイントの決まり方、ランキングへの反映タイミングをまとめています。"
+>
+  <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+    <p class="text-xs md:text-sm font-data font-bold text-gold tracking-widest uppercase mb-3">FAQ</p>
+    <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-6">よくある質問</h1>
+    <p class="text-base md:text-lg text-text-muted leading-relaxed mb-12">
+      秋のGⅠ12レースを対象に、各レースで1頭を指名して合計ポイントを競うリスナー参加企画です。<br />
+      応募から順位が出るまでの流れを、順を追って説明します。
+    </p>
+
+    {faqSections.map((section) => (
+      <section class="mb-12">
+        <p class="text-xs md:text-sm font-data font-bold text-gold-soft tracking-widest uppercase mb-3">{section.label}</p>
+        <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">{section.heading}</h2>
+
+        <div class="divide-y divide-ink-line">
+          {section.items.map((item) => (
+            <div class="py-6 first:pt-0 last:pb-0">
+              <h3 class="text-lg md:text-xl font-display font-bold text-text leading-snug mb-3">{item.q}</h3>
+              {item.a.map((paragraph) => (
+                <p class="text-base md:text-lg text-text-muted leading-relaxed mb-3 last:mb-0">{paragraph}</p>
+              ))}
+              {item.link && (
+                <a
+                  href={item.link.href}
+                  target={item.link.external ? '_blank' : undefined}
+                  rel={item.link.external ? 'noopener noreferrer' : undefined}
+                  class="inline-flex items-center gap-1 mt-3 text-base font-semibold text-gold hover:text-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm"
+                >
+                  {item.link.text}<span aria-hidden="true">→</span>
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="mb-16">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">ここに答えがない場合</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        正式なルールは、ルールページにすべて記載しています。<br />
+        それでも解決しない場合は、お便りフォームからお問い合わせください。
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-8">
+        <a
+          href="/yosouou/rules/"
+          class="inline-flex items-center gap-1 text-base font-semibold text-gold hover:text-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm"
+        >
+          正式ルールを見る<span aria-hidden="true">→</span>
+        </a>
+        <a
+          href={MESSAGE_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1 text-base font-semibold text-gold hover:text-gold-soft transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm"
+        >
+          お便りフォームから連絡する<span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="mb-16 flex justify-center">
+      <a
+        href={formUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center px-10 py-5 bg-gold hover:bg-gold-soft text-ink text-lg font-bold rounded-lg transition-colors shadow-lg"
+      >
+        予想に参加する
+      </a>
+    </div>
+
+    <!-- 番組の紹介と Spotify / Apple のボタン -->
+    <div class="bg-ink-raised border border-ink-line rounded-xl p-8 text-center mt-12">
+      <h3 class="text-2xl font-display font-bold text-text mb-4">シンプルKEIBAを聴く</h3>
+      <p class="text-text-muted mb-8 max-w-lg mx-auto">
+        「難しくない競馬ポッドキャスト」をコンセプトに、競馬の楽しさをわかりやすくお届けしています。
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+        <a href={PLATFORM_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-full font-bold text-white transition-opacity hover:opacity-90" style="background-color: #1DB954;">
+          Spotify で聴く
+        </a>
+        <a href={PLATFORM_LINKS.apple} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full sm:w-auto px-6 py-3 rounded-full font-bold text-white transition-opacity hover:opacity-90" style="background-color: #A341DF;">
+          Apple Podcasts で聴く
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
