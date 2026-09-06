@@ -1,6 +1,13 @@
 {
-  "participants": [],
-  "updatedAt": "2026/8/2 20:00",
+  "participants": [
+    {
+      "id": "p-001",
+      "radioName": "ねぎ",
+      "totalPoints": 0,
+      "rank": 1
+    }
+  ],
+  "updatedAt": "2026/9/6 20:00",
   "asOfRace": "準備中",
   "fetchFailed": false
 }

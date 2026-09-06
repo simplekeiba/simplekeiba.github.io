@@ -57,6 +57,10 @@ const races = [
           </tbody>
         </table>
       </div>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mt-6">
+        同着の場合は、それぞれの着順のポイントをそのまま適用します。<br />
+        たとえば1着同着であれば、どちらを指名していても5点です。
+      </p>
     </section>
 
     <section class="mb-12">
@@ -87,6 +91,15 @@ const races = [
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
         締切前であれば、何度でも応募し直せます。<br />
         同じレースに複数回応募された場合、締切前に受信した最新の1件を有効とします。
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">出走取消・競走除外</h2>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
+        指名した馬が出走取消・競走除外となった場合、そのレースは0点となります。<br />
+        締切前に発表された場合は、別の馬で応募し直していただけます。<br />
+        締切後に発表された場合、再応募はできません。
       </p>
     </section>
 
@@ -145,16 +158,19 @@ const races = [
       <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">ラジオネームについて</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
         ラジオネームは、番組およびサイト上で公開されます。<br />
-        あわせて、あなたの成績を表示する個別ページが自動生成されます。<br />
-        本名や、個人が特定される名称の使用はお控えください。
+        本名や、個人が特定される名称の使用はお控えください。<br />
+        <br />
+        企画期間中は、毎回同じラジオネームでご応募ください。<br />
+        途中で変更されると、それまでの成績と合算できなくなります。
       </p>
     </section>
 
     <section class="mb-12">
       <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">馬名の表記</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        馬名に誤字がある場合、運営側で合理的に補正することがあります。<br />
-        判別が困難な場合は、無効となることがあります。
+        馬名は、JRA発表の正式なカタカナ表記で正確にご記入ください。<br />
+        誤字がある場合、運営側で合理的に補正することがありますが、<br />
+        判別が困難な場合は無効となることがあります。
       </p>
     </section>
 
@@ -170,8 +186,8 @@ const races = [
       <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">賞品</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
         優勝者には豪華景品をご用意します。<br />
-        <!-- {{TODO: 賞品の具体的な内容が決まり次第、この一文を差し替える}} -->
-        詳細は決まり次第、このページでお知らせします。
+        <!-- 賞品の具体的な内容は意図的に未公開（Coming Soon）。決定後にこの一文を差し替える -->
+        内容は Coming Soon。決まり次第、このページでお知らせします。
       </p>
     </section>
 
