@@ -58,3 +58,32 @@ export function formatDeadlineJa(date: Date | string | number): string {
   });
   return `${formatDateShortJa(d)} ${timeFormatter.format(d)}`;
 }
+
+/**
+ * レースの発走日を日本時間 (Asia/Tokyo) 基準の「M月D日（曜）」形式でフォーマットする（例: 9月13日（日））
+ */
+export function formatRaceDateJa(date: Date | string | number): string {
+  const d = new Date(date);
+  const formatter = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'short'
+  });
+  // ja-JP は「9月13日(日)」を返すため、半角括弧を全角に揃える
+  return formatter.format(d).replace('(', '（').replace(')', '）');
+}
+
+/**
+ * レースの発走時刻を日本時間 (Asia/Tokyo) 基準の「HH:mm」形式でフォーマットする（例: 15:45）
+ */
+export function formatRaceTimeJa(date: Date | string | number): string {
+  const d = new Date(date);
+  const formatter = new Intl.DateTimeFormat('ja-JP', {
+    timeZone: 'Asia/Tokyo',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  return formatter.format(d);
+}
