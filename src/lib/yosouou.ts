@@ -161,3 +161,31 @@ export function getFinishedRacesCount(): number {
   }
   return count;
 }
+
+/**
+ * 集計がまだ始まっていない状態か。
+ *
+ * 公開用シートの `as_of_race` が「準備中」のままなら、レース結果は
+ * 1つも反映されていない。この間は「最終更新」を表示しない。
+ *
+ * 理由：`updated_at` は運営が手で書き換える値であり（§6.5、ビルド時刻を
+ * 自動表示すると中身が変わっていないのに更新したことになるため）、
+ * 集計開始前は運営がセルを最後に触った日が出るだけになる。
+ * 参加者が知りたいのは「自分の点がいつ入るか」であって、その日付ではない。
+ */
+export function isBeforeFirstAggregation(data: YosououData): boolean {
+  const asOf = data.asOfRace.trim();
+  return asOf === '' || asOf === '準備中';
+}
+
+/**
+ * 初回集計の予定日。第1レースの翌日（月曜）に初回ランキングを更新する運用
+ * （§12 のスケジュールに合わせる）。対象レースが無い場合は null。
+ */
+export function getFirstAggregationDate(): Date | null {
+  const first = races[0];
+  if (!first) return null;
+  const raceDay = new Date(`${first.date}T00:00:00+09:00`);
+  raceDay.setDate(raceDay.getDate() + 1);
+  return raceDay;
+}

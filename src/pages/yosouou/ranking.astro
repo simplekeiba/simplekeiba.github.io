@@ -1,10 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { fetchYosououData } from '../../lib/yosouou';
+import {
+  fetchYosououData,
+  isBeforeFirstAggregation,
+  getFirstAggregationDate,
+} from '../../lib/yosouou';
+import { formatRaceDateJa } from '../../lib/date';
 import { PLATFORM_LINKS } from '../../data/links';
 
 const data = await fetchYosououData();
 const totalParticipants = data.participants.length;
+
+// 集計開始前は「最終更新」を出さない。運営がセルを最後に触った日が
+// 出るだけで、参加者には意味が無いため（src/lib/yosouou.ts を参照）
+const beforeFirst = isBeforeFirstAggregation(data);
+const firstAggregationDate = getFirstAggregationDate();
 
 const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
 ---
@@ -70,10 +80,18 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
               </table>
             </div>
           </div>
-          {data.updatedAt && (
-            <p class="text-right text-sm text-text-faint mt-3">
-              最終更新：{data.updatedAt}（{data.asOfRace}）
-            </p>
+          {beforeFirst ? (
+            firstAggregationDate && (
+              <p class="text-right text-sm text-text-faint mt-3">
+                初回集計：{formatRaceDateJa(firstAggregationDate)}
+              </p>
+            )
+          ) : (
+            data.updatedAt && (
+              <p class="text-right text-sm text-text-faint mt-3">
+                最終更新：{data.updatedAt}（{data.asOfRace}）
+              </p>
+            )
           )}
         </>
       )}

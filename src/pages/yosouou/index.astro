@@ -3,11 +3,20 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import yosououBanner from '../../assets/carousel-yosouou.png';
 import races from '../../data/races.json';
-import { fetchYosououData, getNextRace } from '../../lib/yosouou';
-import { formatDateShortJa, formatDeadlineJa } from '../../lib/date';
+import {
+  fetchYosououData,
+  getNextRace,
+  isBeforeFirstAggregation,
+  getFirstAggregationDate,
+} from '../../lib/yosouou';
+import { formatDateShortJa, formatDeadlineJa, formatRaceDateJa } from '../../lib/date';
 
 const data = await fetchYosououData();
 const nextRace = getNextRace();
+
+// 集計開始前は「最終更新」を出さない（src/lib/yosouou.ts を参照）
+const beforeFirst = isBeforeFirstAggregation(data);
+const firstAggregationDate = getFirstAggregationDate();
 
 const top3 = data.participants.slice(0, 3);
 const totalParticipants = data.participants.length;
@@ -149,10 +158,18 @@ const steps = [
           ))}
         </div>
       )}
-      {data.updatedAt && (
-        <p class="mt-6 text-right text-xs text-text-faint">
-          最終更新：{data.updatedAt}（{data.asOfRace}）
-        </p>
+      {beforeFirst ? (
+        firstAggregationDate && (
+          <p class="mt-6 text-right text-xs text-text-faint">
+            初回集計：{formatRaceDateJa(firstAggregationDate)}
+          </p>
+        )
+      ) : (
+        data.updatedAt && (
+          <p class="mt-6 text-right text-xs text-text-faint">
+            最終更新：{data.updatedAt}（{data.asOfRace}）
+          </p>
+        )
       )}
     </div>
   </section>
