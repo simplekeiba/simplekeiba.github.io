@@ -645,7 +645,7 @@ AGENTS.mdの「ダミーテキスト・架空の数値を一切生成しない�
 │  │  └─ og/[...route].ts       OGP画像生成
 │  ├─ lib/
 │  │  ├─ podcast.ts             RSS取得・正規化。PodcastEpisodeに`imageUrl`（itunes:image）を含む
-│  │  ├─ date.ts                日付整形関数（formatDateJa/formatDateTimeJa/formatDateShortJa/formatDeadlineJa）。ページ内で直接Intl.DateTimeFormatを書かない絶対ルール
+│  │  ├─ date.ts                日付整形関数（formatDateJa/formatDeadlineDateTimeJa/formatDateShortJa/formatDeadlineJa/formatRaceDateJa/formatRaceTimeJa）。ページ内で直接Intl.DateTimeFormatを書かない絶対ルール
 │  │  └─ yosouou.ts             CSV取得・キャッシュ・isYosououCampaignActive()等
 │  ├─ data/
 │  │  ├─ links.ts               PLATFORM_LINKS / YOUTUBE_URL / MEMBERSHIP_URL / MESSAGE_FORM_URL

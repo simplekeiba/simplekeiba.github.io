@@ -14,18 +14,27 @@ export function formatDateJa(date: Date | string | number): string {
 }
 
 /**
- * 日付を日本時間 (Asia/Tokyo) 基準の「M月D日 H:mm」形式でフォーマットする
+ * 締切日時を日本時間 (Asia/Tokyo) 基準の「M月D日（曜）HH:mm」形式で
+ * フォーマットする（例: 10月17日（土）23:59）。
+ *
+ * 曜日を入れているのは、締切が土曜の夜という「気づいたときには過ぎている」
+ * タイミングに集中しているため。日付だけでは何曜日か分からない。
+ * `formatDeadlineJa` は同じ情報を英字の詰まった形（10.17 SAT 23:59）で返す。
+ * 読ませたい場所ではこちら、データ的に並べる場所では向こうを使う。
  */
-export function formatDateTimeJa(date: Date | string | number): string {
+export function formatDeadlineDateTimeJa(date: Date | string | number): string {
   const d = new Date(date);
   const formatter = new Intl.DateTimeFormat('ja-JP', {
     timeZone: 'Asia/Tokyo',
     month: 'long',
     day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
   });
-  return formatter.format(d);
+  // ja-JP は「10月17日(土) 23:59」を返すため、括弧を全角に揃えて余白を詰める
+  return formatter.format(d).replace('(', '（').replace(') ', '）');
 }
 
 /**
