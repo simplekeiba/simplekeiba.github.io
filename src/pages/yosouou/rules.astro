@@ -80,9 +80,15 @@ const races = [
     <section class="mb-12">
       <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">締切</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        各レース前日の23:59です。<br />
+        各レース前日の<span class="font-data text-alert font-bold">23:59</span>です。<br />
         締切は受信時刻を基準とします（送信時刻ではありません）。<br />
         締切を過ぎた応募は、集計の対象になりません。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed">
+        締切を過ぎた応募しかない方は、ランキングの得点・順位を「0」ではなく
+        <span class="font-data text-gold-soft font-bold">-</span> と表示します。<br />
+        「0点」は指名した馬が3着までに入らなかったことを意味するため、区別しています。応募が届いていること自体は記録に残ります。<br />
+        次のレースに締切内で応募された時点から、得点が入ります。
       </p>
     </section>
 

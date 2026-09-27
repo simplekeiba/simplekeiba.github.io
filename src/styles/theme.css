@@ -17,6 +17,9 @@
   --color-text-muted: #A8ADB5;
   --color-text-faint: #6B7079;
   
+  /* 締切など、見落とすと不利益が出る情報にだけ使う。#0B0B0D 上で 5.4:1（docs/spec.md §5.3・§7.3） */
+  --color-alert: #E8564F;
+
   --color-read-bg: #101014;
   --color-read-text: #E8E8EA;
   

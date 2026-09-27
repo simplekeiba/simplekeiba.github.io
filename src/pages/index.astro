@@ -107,7 +107,7 @@ const formatDuration = (duration: string) => {
           {nextRace ? (
             <>
               <p class="font-display text-xl md:text-2xl font-bold text-text mb-1">{nextRace.name}</p>
-              <p class="font-data text-text-muted mb-6">締切 {formatDateTimeJa(nextRace.deadline)}</p>
+              <p class="font-data text-alert font-bold mb-6 tabular-nums">締切 {formatDateTimeJa(nextRace.deadline)}</p>
             </>
           ) : (
             <p class="font-display text-xl md:text-2xl font-bold text-text mb-6">全12レースが終了しました</p>

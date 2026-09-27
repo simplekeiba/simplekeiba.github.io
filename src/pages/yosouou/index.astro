@@ -87,7 +87,7 @@ const steps = [
         <>
           <h2 class={`${sectionHeadingClass} mb-6`}>{nextRace.name}</h2>
           <p class="font-data text-lg text-text-muted mb-1 tabular-nums">{formatDateShortJa(nextRace.date)}</p>
-          <p class="font-data text-xs text-text-faint mb-10 tabular-nums">
+          <p class="font-data text-sm md:text-base text-alert font-bold mb-10 tabular-nums">
             応募締切　{formatDeadlineJa(nextRace.deadline)}
           </p>
           <a href={formUrl} target="_blank" rel="noopener noreferrer" class={ctaClasses}>
