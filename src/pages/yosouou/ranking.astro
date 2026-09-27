@@ -14,6 +14,9 @@ const totalParticipants = data.participants.length;
 // 集計開始前は「最終更新」を出さない。運営がセルを最後に触った日が
 // 出るだけで、参加者には意味が無いため（src/lib/yosouou.ts を参照）
 const beforeFirst = isBeforeFirstAggregation(data);
+
+// 締切に間に合った応募がまだ無い参加者がいるか（表の「-」の凡例を出すかどうか）
+const hasPending = data.participants.some((p) => p.totalPoints === null);
 const firstAggregationDate = getFirstAggregationDate();
 
 const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
@@ -66,13 +69,13 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
                   {data.participants.map((p) => (
                     <tr class="hover:bg-ink/50 transition-colors">
                       <td class="px-4 py-4 font-data text-center text-text-muted whitespace-nowrap">
-                        {p.rank}
+                        {p.rank ?? '-'}
                       </td>
                       <td class="px-4 py-4 font-bold text-white sticky left-0 bg-ink-raised z-10 whitespace-nowrap">
                         {p.radioName}
                       </td>
                       <td class="px-4 py-4 font-data text-right text-gold-soft font-bold whitespace-nowrap">
-                        {p.totalPoints}
+                        {p.totalPoints ?? '-'}
                       </td>
                     </tr>
                   ))}
@@ -80,6 +83,12 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
               </table>
             </div>
           </div>
+          {hasPending && (
+            <p class="text-sm text-text-muted mt-4 leading-relaxed">
+              <span class="font-data text-gold-soft">-</span>
+              　応募は届いていますが、締切までに有効な予想がなかったため、まだ採点対象がありません。次のレースに締切内で応募すると、その回からポイントが入ります。
+            </p>
+          )}
           {beforeFirst ? (
             firstAggregationDate && (
               <p class="text-right text-sm text-text-faint mt-3">

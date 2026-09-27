@@ -1,13 +1,181 @@
 {
   "participants": [
     {
+      "id": "p-010",
+      "radioName": "ショッタン",
+      "totalPoints": 3,
+      "rank": 1
+    },
+    {
       "id": "p-001",
       "radioName": "ねぎ",
       "totalPoints": 0,
-      "rank": 1
+      "rank": 2
+    },
+    {
+      "id": "p-002",
+      "radioName": "ゆうと🍨",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-003",
+      "radioName": "トランキーロ",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-004",
+      "radioName": "びーんず213",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-005",
+      "radioName": "yurin",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-006",
+      "radioName": "メタにんじん",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-007",
+      "radioName": "トウハタ（シンプルKEIBA）",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-008",
+      "radioName": "シンプルKEIBA AI予想",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-009",
+      "radioName": "Black Thunders",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-011",
+      "radioName": "三島の目玉",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-012",
+      "radioName": "むぎちゃEx",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-013",
+      "radioName": "げんまい",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-014",
+      "radioName": "ロンリーファミリー",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-015",
+      "radioName": "北狐",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-016",
+      "radioName": "ブライト",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-017",
+      "radioName": "かおり",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-018",
+      "radioName": "はな",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-019",
+      "radioName": "しゃはる",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-020",
+      "radioName": "オサカナ",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-021",
+      "radioName": "ともやむくん",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-022",
+      "radioName": "はるまきとかげ",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-023",
+      "radioName": "ラディッシュ",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-024",
+      "radioName": "アルビワハヤヒデ",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-025",
+      "radioName": "ズッコケ大作戦",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-026",
+      "radioName": "銀幕の英雄",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-027",
+      "radioName": "さきちゃん（シンプルKEIBA）",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-028",
+      "radioName": "いきいき",
+      "totalPoints": null,
+      "rank": null
+    },
+    {
+      "id": "p-029",
+      "radioName": "マテウスサヴィオ",
+      "totalPoints": null,
+      "rank": null
     }
   ],
-  "updatedAt": "2026/9/6 20:00",
-  "asOfRace": "準備中",
+  "updatedAt": "2026/9/27 20:30",
+  "asOfRace": "スプリンターズS終了時点",
   "fetchFailed": false
 }

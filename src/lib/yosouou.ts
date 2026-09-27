@@ -5,8 +5,16 @@ import races from '../data/races.json';
 export interface Participant {
   id: string;
   radioName: string;
-  totalPoints: number;
-  rank: number;
+  /**
+   * 合計ポイント。締切に間に合った応募が1件も無い参加者は null。
+   *
+   * 公開用シートはその場合 `-` を返す（docs/spec.md §4.8.3）。
+   * 0点は「指名したが当たらなかった」を意味するため、
+   * 「応募が有効にならなかった」と同じ表記にはしない。
+   */
+  totalPoints: number | null;
+  /** 順位。totalPoints が null の参加者には順位が付かないため null */
+  rank: number | null;
 }
 
 export interface YosououData {
@@ -49,6 +57,31 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
+/**
+ * 公開用シートの数値セルを読む。`-`（有効な応募が無い参加者）や
+ * 空欄は null にして、0点と区別できるようにする（docs/spec.md §4.8.3）。
+ */
+function parsePoints(raw: string | undefined): number | null {
+  const value = raw?.trim() ?? '';
+  if (value === '') return null;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
+/**
+ * 順位の昇順に並べ替える。CSVは応募順で出力されるため、
+ * ここで並べ替えないとランキングの体をなさない（docs/spec.md §4.8.3）。
+ * 順位の無い参加者は最後尾。同順位内の並びは応募順のまま。
+ */
+function sortByRank(participants: Participant[]): Participant[] {
+  return [...participants].sort((a, b) => {
+    if (a.rank === b.rank) return 0;
+    if (a.rank === null) return 1;
+    if (b.rank === null) return -1;
+    return a.rank - b.rank;
+  });
+}
+
 export async function fetchYosououData(): Promise<YosououData> {
   let fetchFailed = false;
   let data: YosououData = {
@@ -83,19 +116,17 @@ export async function fetchYosououData(): Promise<YosououData> {
         if (!id) continue;
 
         const radioName = row[1]?.trim() || '';
-        const totalPoints = parseInt(row[2] || '', 10);
-        const rank = parseInt(row[3] || '', 10);
 
         participants.push({
           id,
           radioName,
-          totalPoints: isNaN(totalPoints) ? 0 : totalPoints,
-          rank: isNaN(rank) ? 0 : rank
+          totalPoints: parsePoints(row[2]),
+          rank: parsePoints(row[3])
         });
       }
 
       data = {
-        participants,
+        participants: sortByRank(participants),
         updatedAt,
         asOfRace,
         fetchFailed: false

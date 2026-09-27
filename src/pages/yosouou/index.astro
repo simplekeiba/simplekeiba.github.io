@@ -18,6 +18,7 @@ const nextRace = getNextRace();
 const beforeFirst = isBeforeFirstAggregation(data);
 const firstAggregationDate = getFirstAggregationDate();
 
+// fetchYosououData() が順位順に並べ替えて返す（docs/spec.md §4.8.3）
 const top3 = data.participants.slice(0, 3);
 const totalParticipants = data.participants.length;
 
@@ -150,10 +151,10 @@ const steps = [
           {top3.map((p) => (
             <div class="flex items-baseline justify-between py-5">
               <div class="flex items-baseline gap-4">
-                <span class="font-data tabular-nums font-bold text-2xl text-gold">{p.rank}</span>
+                <span class="font-data tabular-nums font-bold text-2xl text-gold">{p.rank ?? '-'}</span>
                 <span class="font-bold text-lg">{p.radioName}</span>
               </div>
-              <span class="font-data tabular-nums font-bold text-lg text-gold">{p.totalPoints}pt</span>
+              <span class="font-data tabular-nums font-bold text-lg text-gold">{p.totalPoints === null ? '-' : `${p.totalPoints}pt`}</span>
             </div>
           ))}
         </div>
