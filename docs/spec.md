@@ -275,7 +275,7 @@ interface Member {
 | 名前 | keywordEn / keywordJa | プロフィール | Favorite Jockey | Favorite Horse | SNS |
 |---|---|---|---|---|---|
 | 溝口 勇樹 | INTUITION / 直感派 | 競馬大好き経営者。馬券は直感。永遠の競馬初心者。 | 川田将雅騎手 | ダノンプレミアム | X: https://x.com/UMAmizo |
-| 大和田 咲綺 | HORSE & CULTURE / 馬と文化 | フィギュア工房「SENSEPADDOCK」主宰。競馬歴20年以上のクリエイター。 | 武豊騎手 | テンポイント | Instagram |
+| 大和田 咲綺 | HORSE & CULTURE / 馬と文化 | フィギュア工房「SENSE PADDOCK」主宰。競馬歴20年以上のクリエイター。 | 武豊騎手 | テンポイント | Instagram |
 | 東端 佑典 | LOGIC / 論理的思考 | シンプルKEIBA主宰。年間1000時間競馬に費やすビジネスマン。 | 坂井瑠星騎手 | フィエールマン | X: https://x.com/ytBusiness1 |
 
 #### 4.5.2 レイアウト

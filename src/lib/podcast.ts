@@ -15,6 +15,22 @@ export interface PodcastEpisode {
 
 const RSS_URL = 'https://anchor.fm/s/f1b706dc/podcast/rss';
 
+/**
+ * 配信側のショーノートに残っている表記ゆれを直す。
+ *
+ * 現状は工房名の「SENSEPADDOCK」だけ。正式表記は「SENSE PADDOCK」で、
+ * サイト内の他の箇所（/personality・カルーセル）はすべて正式表記に揃っている。
+ * RSSは配信側が真の出典なので、恒久的にはSpotify for Creators側の
+ * タイトル・説明文を直すのが筋だが、それまでの間サイト上だけでも揃える。
+ *
+ * ここを増やすときは慎重に。RSSの文言を書き換えるということは、
+ * 配信アプリで見える内容とサイトの内容が食い違うということなので、
+ * 対象は「明らかな誤記で、直した方が読み手に親切なもの」に限る。
+ */
+function normalizeFeedText(text: string): string {
+  return text.replace(/SENSEPADDOCK/g, 'SENSE PADDOCK');
+}
+
 export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
   try {
     const response = await fetch(RSS_URL);
@@ -38,7 +54,7 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
 
     // まずパースして必要な値を確定する
     const parsedItems = itemArray.map((item: any) => {
-      const title = item.title || '';
+      const title = normalizeFeedText(item.title || '');
       // titleから最後の #数字 を抽出 (小数点を含む場合は除外)
       const matches = [...title.matchAll(/[#＃](\d+)(?!\d|\.)/g)];
       const epNum = matches.length > 0 ? parseInt(matches[matches.length - 1][1], 10) : null;
@@ -88,7 +104,7 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
         title,
         pubDate,
         duration: item['itunes:duration'] || '',
-        description: item.description || '',
+        description: normalizeFeedText(item.description || ''),
         audioUrl: item.enclosure?.['@_url'] || '',
         link: item.link || '',
         guid,
