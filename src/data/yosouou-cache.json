@@ -32,7 +32,7 @@
     },
     {
       "id": "p-005",
-      "radioName": "yurin",
+      "radioName": "サメヘッド",
       "totalPoints": 0,
       "rank": 2
     },
@@ -159,6 +159,18 @@
     {
       "id": "p-027",
       "radioName": "さきちゃん（シンプルKEIBA）",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-030",
+      "radioName": "天然水",
+      "totalPoints": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-031",
+      "radioName": "デスピサロ",
       "totalPoints": 0,
       "rank": 2
     },

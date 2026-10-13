@@ -82,6 +82,56 @@ function sortByRank(participants: Participant[]): Participant[] {
   });
 }
 
+/**
+ * 公開用シートのCSVを取得する。失敗したら間を空けて3回まで試す。
+ *
+ * 1回きりのfetchだと、Google側の一時的な503や、データセンターIPからの
+ * アクセスに対するレート制限を1度引いただけで、その日のビルドが
+ * まるごとキャッシュへフォールバックしてしまう。ビルドは1日1回しか
+ * 走らないため、1度の失敗が24時間ページに出続けることになる。
+ *
+ * 併せて、200が返ってきても中身がCSVとは限らない点に注意する。
+ * Googleは状況によってHTMLのエラーページや同意画面を200で返すことがあり、
+ * それをそのままパースすると、見出し行以降の断片が「参加者」として
+ * 並んでしまう。ヘッダー行の有無で中身を確かめてから返す。
+ */
+const FETCH_ATTEMPTS = 3;
+const FETCH_TIMEOUT_MS = 15_000;
+const CSV_HEADER_MARKER = 'participant_id';
+// 既定の `node` のままだとボット扱いされやすいため、ビルドだと分かる名前を送る
+const USER_AGENT = 'Mozilla/5.0 (compatible; SimpleKEIBA-SiteBuild/1.0; +https://simplekeiba.com/)';
+
+async function fetchRankingCsv(): Promise<string> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt++) {
+    try {
+      const response = await fetch(CSV_URL, {
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+        headers: { 'User-Agent': USER_AGENT }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} ${response.statusText}`);
+      }
+      const text = await response.text();
+      if (!text.includes(CSV_HEADER_MARKER)) {
+        const head = text.slice(0, 160).replace(/\s+/g, ' ');
+        throw new Error(`CSVではない応答が返りました（先頭: ${head}）`);
+      }
+      return text;
+    } catch (err) {
+      lastError = err;
+      const reason = err instanceof Error ? err.message : String(err);
+      console.warn(`[yosouou] ランキングCSVの取得に失敗 (${attempt}/${FETCH_ATTEMPTS}): ${reason}`);
+      if (attempt < FETCH_ATTEMPTS) {
+        await new Promise((resolve) => setTimeout(resolve, attempt * 3000));
+      }
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
 export async function fetchYosououData(): Promise<YosououData> {
   let fetchFailed = false;
   let data: YosououData = {
@@ -92,11 +142,7 @@ export async function fetchYosououData(): Promise<YosououData> {
   };
 
   try {
-    const response = await fetch(CSV_URL);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch CSV: ${response.status} ${response.statusText}`);
-    }
-    const csvText = await response.text();
+    const csvText = await fetchRankingCsv();
     const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
 
     if (lines.length > 0) {
@@ -141,7 +187,9 @@ export async function fetchYosououData(): Promise<YosououData> {
       return data;
     }
   } catch (err) {
-    console.error('Error fetching yosouou data:', err);
+    // ここに来るとページに赤い警告が出てキャッシュが表示される。
+    // ビルドログで原因を追えるよう、理由を残す
+    console.error('[yosouou] CSVを取得できなかったため、キャッシュJSONで継続します:', err);
     fetchFailed = true;
   }
 
