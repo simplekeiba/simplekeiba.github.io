@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import { fetchTextWithRetry } from './fetchWithRetry';
 
 export interface PodcastEpisode {
   slug: string;
@@ -33,11 +34,11 @@ function normalizeFeedText(text: string): string {
 
 export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
   try {
-    const response = await fetch(RSS_URL);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch RSS: ${response.status} ${response.statusText}`);
-    }
-    const xmlText = await response.text();
+    const xmlText = await fetchTextWithRetry(RSS_URL, {
+      label: 'エピソードRSS',
+      // HTMLのエラーページを掴んだまま進むと、エピソード0件のサイトができてしまう
+      validate: (text) => text.includes('<rss') && text.includes('<channel')
+    });
 
     const parser = new XMLParser({
       ignoreAttributes: false,
@@ -114,9 +115,15 @@ export async function fetchEpisodes(): Promise<PodcastEpisode[]> {
 
     return episodes;
   } catch (error) {
-    console.error('Failed to fetch podcast episodes:', error);
-    // ビルドを停止しないという要件のため、実際にはここでキャッシュJSONを読み込むことになる。
-    // 現段階ではひとまず空配列を返すか、エラーを再スローする。
+    console.error('[エピソードRSS] 取得できなかったためビルドを中止します:', error);
+    // ここで投げるとビルドが止まり、その日のデプロイが行われない。
+    // GitHub Pagesは直前に成功した内容を配信し続けるのでサイトは落ちないが、
+    // 新しいエピソードもランキングの更新も反映されない。
+    //
+    // docs/spec.md §6.3 は「失敗時はキャッシュJSONで継続する」としているが、
+    // エピソード用のキャッシュはまだ作っていない（docs/spec.md §13.4）。
+    // 上の fetchTextWithRetry でリトライするようにしたため、
+    // 一時的な通信失敗でここへ来ることはほぼ無くなっている。
     throw error;
   }
 }
