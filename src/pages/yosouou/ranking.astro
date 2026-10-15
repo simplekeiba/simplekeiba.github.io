@@ -56,32 +56,36 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
       ) : (
         <>
           <div class="bg-ink-raised border border-ink-line rounded-xl overflow-hidden w-full">
-            <div class="overflow-x-auto w-full">
-              <table class="w-full text-left min-w-[320px]">
-                <thead class="bg-ink border-b border-ink-line text-sm text-text-faint">
-                  <tr>
-                    <th class="px-4 py-3 font-normal w-16 text-center whitespace-nowrap">順位</th>
-                    <th class="px-4 py-3 font-normal sticky left-0 bg-ink z-10 whitespace-nowrap">ラジオネーム</th>
-                    <th class="px-4 py-3 font-normal text-right w-24 whitespace-nowrap">ポイント</th>
+            {/*
+              3列しかないので横スクロールさせない（docs/spec.md §4.8.3）。
+              ラジオネームは折り返させる。nowrap にすると
+              「さきちゃん（シンプルKEIBA）」のような長い名前で表が画面幅を超え、
+              モバイルで順位やポイントが見えなくなる。
+            */}
+            <table class="w-full text-left table-fixed">
+              <thead class="bg-ink border-b border-ink-line text-xs md:text-sm text-text-faint">
+                <tr>
+                  <th class="px-2 md:px-4 py-3 font-normal w-12 md:w-16 text-center">順位</th>
+                  <th class="px-2 md:px-4 py-3 font-normal">ラジオネーム</th>
+                  <th class="px-2 md:px-4 py-3 font-normal text-right w-16 md:w-24">ポイント</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-ink-line">
+                {data.participants.map((p) => (
+                  <tr class="hover:bg-ink/50 transition-colors">
+                    <td class="px-2 md:px-4 py-4 font-data text-center text-text-muted tabular-nums">
+                      {p.rank ?? '-'}
+                    </td>
+                    <td class="px-2 md:px-4 py-4 text-sm md:text-base font-bold text-white break-words">
+                      {p.radioName}
+                    </td>
+                    <td class="px-2 md:px-4 py-4 font-data text-right text-gold-soft font-bold tabular-nums">
+                      {p.totalPoints ?? '-'}
+                    </td>
                   </tr>
-                </thead>
-                <tbody class="divide-y divide-ink-line">
-                  {data.participants.map((p) => (
-                    <tr class="hover:bg-ink/50 transition-colors">
-                      <td class="px-4 py-4 font-data text-center text-text-muted whitespace-nowrap">
-                        {p.rank ?? '-'}
-                      </td>
-                      <td class="px-4 py-4 font-bold text-white sticky left-0 bg-ink-raised z-10 whitespace-nowrap">
-                        {p.radioName}
-                      </td>
-                      <td class="px-4 py-4 font-data text-right text-gold-soft font-bold whitespace-nowrap">
-                        {p.totalPoints ?? '-'}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
           {hasPending && (
             <p class="text-sm text-text-muted mt-4 leading-relaxed">
