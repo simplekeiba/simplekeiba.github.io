@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { PLATFORM_LINKS, MEMBERSHIP_URL } from '../data/links';
+import logoHeader from '../assets/logo-header.png';
 
 const pathname = Astro.url.pathname;
 const navItems = [
@@ -20,13 +22,19 @@ const isActive = (href: string, external: boolean) => {
 
 <header class="fixed top-0 left-0 w-full bg-ink border-b border-ink-line z-50 flex items-center" style="height: var(--header-height);">
   <div class="flex justify-between items-center px-4 w-full mx-auto max-w-screen-xl">
-    <a href="/" class="group flex flex-col justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm max-w-[180px] sm:max-w-[240px] md:max-w-none">
-      <span class="font-display font-bold text-[15px] md:text-lg text-gold leading-[1.25] transition-colors group-hover:text-gold-soft">
-        シンプルKEIBA
-      </span>
-      <span class="font-display font-semibold text-[11px] md:text-xs text-gold opacity-80 leading-[1.25] mt-[2px] transition-colors group-hover:text-gold-soft">
-        ～難しくない競馬ラジオ～
-      </span>
+    <a href="/" class="group shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm">
+      {/*
+        ロゴは縦横比がおよそ2:1で、ヘッダー（72px）では高さが制約になる。
+        幅ではなく高さで指定すること。alt は番組名そのものにする
+        （このリンクはトップへ戻る導線で、画像がリンクの読み上げ名になるため）。
+      */}
+      <Image
+        src={logoHeader}
+        alt="シンプルKEIBA"
+        widths={[160, 240, 320]}
+        sizes="(min-width: 768px) 110px, 90px"
+        class="h-11 md:h-14 w-auto transition-opacity group-hover:opacity-80"
+      />
     </a>
 
     <!-- Desktop Navigation -->
