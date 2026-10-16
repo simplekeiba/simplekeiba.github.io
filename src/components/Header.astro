@@ -22,29 +22,21 @@ const isActive = (href: string, external: boolean) => {
 
 <header class="fixed top-0 left-0 w-full bg-ink border-b border-ink-line z-50 flex items-center" style="height: var(--header-height);">
   <div class="flex justify-between items-center px-4 w-full mx-auto max-w-screen-xl">
-    <a href="/" class="group shrink-0 flex flex-col items-start justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm">
+    <a href="/" class="group shrink-0 flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold rounded-sm">
       {/*
         ロゴは縦横比がおよそ2:1で、ヘッダー（72px）では高さが制約になる。
         幅ではなく高さで指定すること。alt は番組名そのものにする
         （このリンクはトップへ戻る導線で、画像がリンクの読み上げ名になるため）。
-        `items-start` は必須。付けないと flex-col の既定の stretch で、
-        ロゴが副題の幅まで横に引き伸ばされる（実際にそうなった）。
-        副題はロゴに含まれないので別に置く。§2.1 でターゲットへの最大の
-        差別化要素としているコピーなので、全ページで見える状態を保つ。
-        ロゴより副題のほうが横に長いが、これは差し替え前のテキスト2階層でも
-        同じだったので踏襲している。
+        全ページの最上部に出る画像なので loading は eager にする。
       */}
       <Image
         src={logoHeader}
         alt="シンプルKEIBA"
         widths={[160, 240, 320]}
-        sizes="(min-width: 768px) 97px, 81px"
+        sizes="(min-width: 768px) 113px, 89px"
         loading="eager"
-        class="h-10 md:h-12 w-auto transition-opacity group-hover:opacity-80"
+        class="h-11 md:h-14 w-auto transition-opacity group-hover:opacity-80"
       />
-      <span class="mt-1 font-display font-semibold text-[10px] md:text-[11px] leading-none text-gold opacity-80 whitespace-nowrap transition-colors group-hover:text-gold-soft">
-        ～難しくない競馬ラジオ～
-      </span>
     </a>
 
     <!-- Desktop Navigation -->
