@@ -76,6 +76,22 @@ const steps = [
       <a href={formUrl} target="_blank" rel="noopener noreferrer" class={ctaClasses}>
         予想に参加する<span aria-hidden="true">→</span>
       </a>
+
+      {/*
+        締切後の応募が毎回出ているため、フォームへ出ていく直前のここに注意書きを置く
+        （docs/spec.md §4.8.2）。色は締切専用の `--alert`（§5.3）。
+        このページには NEXT RACE にも赤い締切表示があるが、どちらも同じ
+        「締切」という一つの情報なので、赤が意味する内容はぶれていない。
+      */}
+      <div class="mt-8 mx-auto max-w-sm border border-alert/60 rounded-md px-5 py-4">
+        <p class="font-data text-base md:text-lg font-bold text-alert tabular-nums leading-snug">
+          応募はレース前日の 23:59 まで
+        </p>
+        <p class="mt-2 text-xs md:text-sm text-text-muted leading-relaxed">
+          締切を過ぎた応募は採点されません。<br />
+          （送信時刻ではなく受信時刻が基準です）
+        </p>
+      </div>
     </div>
   </section>
 
