@@ -45,6 +45,21 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
 
     <section>
       <h1 class="font-display text-3xl md:text-4xl font-bold mb-8 text-white">現在のランキング</h1>
+
+      {/*
+        ルール追加の告知。ルールページと同じ体裁・同じ日付で出す（docs/spec.md §4.8.3）。
+        同じポイントなのに順位が違う理由をここで示さないと、集計ミスに見えてしまう。
+      */}
+      <div class="mb-8 border-l-4 border-alert bg-alert/10 rounded-r-md px-5 py-4">
+        <p class="font-data text-xs md:text-sm font-bold text-alert tracking-widest mb-2">
+          2026.10.20　ルール追加
+        </p>
+        <p class="text-sm md:text-base text-text-muted leading-relaxed">
+          合計ポイントが同じ場合は、<strong class="text-text">1着的中数</strong>、続いて
+          <strong class="text-text">2着的中数</strong>の多い方を上位とするようになりました。
+          <a href="/yosouou/rules/#rank" class="text-gold hover:text-gold-soft underline underline-offset-4">ルールを見る</a>
+        </p>
+      </div>
       
       {totalParticipants === 0 ? (
         <div class="bg-ink-raised border border-ink-line p-12 text-center rounded-xl">
@@ -87,6 +102,9 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
               </tbody>
             </table>
           </div>
+          <p class="text-xs md:text-sm text-text-faint mt-4 leading-relaxed">
+            ※同ポイントの場合は、1着的中数、2着的中数の順に比較して順位を決定します。
+          </p>
           {hasPending && (
             <p class="text-sm text-text-muted mt-4 leading-relaxed">
               <span class="font-data text-gold-soft">-</span>

@@ -4,222 +4,296 @@
       "id": "p-010",
       "radioName": "ショッタン",
       "totalPoints": 8,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 1,
       "rank": 1
     },
     {
       "id": "p-001",
       "radioName": "ねぎ",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-002",
       "radioName": "ゆうと🍨",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-003",
       "radioName": "トランキーロ",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-004",
       "radioName": "びーんず213",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-005",
       "radioName": "サメヘッド",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-006",
       "radioName": "メタにんじん",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-008",
       "radioName": "シンプルKEIBA AI予想",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-009",
       "radioName": "Black Thunders",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-011",
       "radioName": "三島の目玉",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-012",
       "radioName": "むぎちゃEx",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-013",
       "radioName": "げんまい",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-014",
       "radioName": "ロンリーファミリー",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-018",
       "radioName": "はな",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-019",
       "radioName": "しゃはる",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-021",
       "radioName": "ともやむくん",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-023",
       "radioName": "ラディッシュ",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-024",
       "radioName": "アルビワハヤヒデ",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-027",
       "radioName": "さきちゃん（シンプルKEIBA）",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-031",
       "radioName": "デスピサロ",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-032",
       "radioName": "柴馬(しばうま)",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-034",
       "radioName": "ひもの",
       "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
       "rank": 2
     },
     {
       "id": "p-017",
       "radioName": "かおり",
       "totalPoints": 1,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 23
     },
     {
       "id": "p-022",
       "radioName": "はるまきとかげ",
       "totalPoints": 1,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 23
     },
     {
       "id": "p-007",
       "radioName": "トウハタ（シンプルKEIBA）",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-015",
       "radioName": "北狐",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-016",
       "radioName": "ブライト",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-020",
       "radioName": "オサカナ",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-025",
       "radioName": "ズッコケ大作戦",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-026",
       "radioName": "銀幕の英雄",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-030",
       "radioName": "天然水",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-033",
       "radioName": "コクサンオジサン",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-035",
       "radioName": "だんどら",
       "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": 25
     },
     {
       "id": "p-028",
       "radioName": "いきいき",
       "totalPoints": null,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": null
     },
     {
       "id": "p-029",
       "radioName": "マテウスサヴィオ",
       "totalPoints": null,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": null
     },
     {
       "id": "p-036",
       "radioName": "だいすけ",
       "totalPoints": null,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": null
     },
     {
       "id": "p-037",
       "radioName": "由井守",
       "totalPoints": null,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
       "rank": null
     }
   ],

@@ -14,7 +14,19 @@ export interface Participant {
    * 「応募が有効にならなかった」と同じ表記にはしない。
    */
   totalPoints: number | null;
-  /** 順位。totalPoints が null の参加者には順位が付かないため null */
+  /**
+   * 1着を当てた回数。同点時の第2基準（docs/spec.md §4.8.3）。
+   * 公開用シートの `first_place` 列。
+   */
+  firstPlaceCount: number;
+  /** 2着を当てた回数。同点時の第3基準。公開用シートの `second_place` 列 */
+  secondPlaceCount: number;
+  /**
+   * 順位。totalPoints が null の参加者には順位が付かないため null。
+   *
+   * **公開用シートの `rank` 列は読まず、`rankParticipants()` で計算する。**
+   * 同点時の判定（1着的中数 → 2着的中数）の実装を1か所に集めるため。
+   */
   rank: number | null;
 }
 
@@ -69,18 +81,54 @@ function parsePoints(raw: string | undefined): number | null {
   return Number.isNaN(parsed) ? null : parsed;
 }
 
+/** 公開用シートの回数セル。空や非数値は0として扱う */
+function parseCount(raw: string | undefined): number {
+  const parsed = Number.parseInt((raw ?? '').trim(), 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 /**
- * 順位の昇順に並べ替える。CSVは応募順で出力されるため、
- * ここで並べ替えないとランキングの体をなさない（docs/spec.md §4.8.3）。
- * 順位の無い参加者は最後尾。同順位内の並びは応募順のまま。
+ * 順位決定の比較関数（docs/spec.md §4.8.3）。
+ * 合計ポイント → 1着的中数 → 2着的中数 の順に比較し、
+ * 3つとも同じなら 0 を返す（＝同順位）。
+ *
+ * **participant_id を比較に含めないこと。** 含めると同順位が発生しなくなる。
  */
-function sortByRank(participants: Participant[]): Participant[] {
-  return [...participants].sort((a, b) => {
-    if (a.rank === b.rank) return 0;
-    if (a.rank === null) return 1;
-    if (b.rank === null) return -1;
-    return a.rank - b.rank;
+function compareForRank(a: Participant, b: Participant): number {
+  return (
+    (b.totalPoints ?? 0) - (a.totalPoints ?? 0) ||
+    b.firstPlaceCount - a.firstPlaceCount ||
+    b.secondPlaceCount - a.secondPlaceCount
+  );
+}
+
+/**
+ * 順位を付けて並べ替える（docs/spec.md §4.8.3）。
+ *
+ * 同順位が出たら次の順位を飛ばす（例：1位, 2位, 2位, 4位）。
+ * 有効な応募が無い参加者（得点が `-`）は順位を付けず、常に最後尾へ置く。
+ *
+ * 並べ替えは安定ソートなので、3項目すべてが同じ参加者どうしは
+ * CSVの並び（＝participant_id順＝応募順）のまま残る。
+ */
+function rankParticipants(participants: Participant[]): Participant[] {
+  const scored = participants.filter((p) => p.totalPoints !== null);
+  const unscored = participants.filter((p) => p.totalPoints === null);
+
+  const sorted = [...scored].sort(compareForRank);
+
+  let rank = 0;
+  sorted.forEach((participant, index) => {
+    if (index === 0 || compareForRank(sorted[index - 1], participant) !== 0) {
+      rank = index + 1;
+    }
+    participant.rank = rank;
   });
+  unscored.forEach((participant) => {
+    participant.rank = null;
+  });
+
+  return [...sorted, ...unscored];
 }
 
 /** 公開用シートのCSV。ヘッダー行があるかどうかで中身を確かめる */
@@ -126,12 +174,14 @@ export async function fetchYosououData(): Promise<YosououData> {
           id,
           radioName,
           totalPoints: parsePoints(row[2]),
-          rank: parsePoints(row[3])
+          firstPlaceCount: parseCount(row[7]),
+          secondPlaceCount: parseCount(row[8]),
+          rank: null
         });
       }
 
       data = {
-        participants: sortByRank(participants),
+        participants: rankParticipants(participants),
         updatedAt,
         asOfRace,
         fetchFailed: false

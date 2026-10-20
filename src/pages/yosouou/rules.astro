@@ -22,6 +22,26 @@ const races = [
   <div class="max-w-3xl mx-auto px-4 py-12 md:py-16">
     <h1 class="text-3xl md:text-4xl font-display font-bold text-text mb-12">2026年下半期 G1予想最強リスナー決定戦 ルール</h1>
 
+    {/*
+      ルール追加の告知。いつ追加されたかが一目で分かるよう、日付を先頭に置き
+      締切と同じ `--alert`（§5.3）で示す。企画の途中でルールが増えた場合、
+      参加者が気づかないまま不利益を被るのを防ぐためのもの。
+    */}
+    <div class="mb-12 border-l-4 border-alert bg-alert/10 rounded-r-md px-5 py-4">
+      <p class="font-data text-xs md:text-sm font-bold text-alert tracking-widest mb-2">
+        2026.10.20　ルール追加
+      </p>
+      <p class="text-base md:text-lg font-bold text-text leading-snug mb-2">
+        同点になった場合の順位の決め方を追加しました
+      </p>
+      <p class="text-sm md:text-base text-text-muted leading-relaxed">
+        合計ポイントが同じ場合、<strong class="text-text">1着的中数</strong>、続いて
+        <strong class="text-text">2着的中数</strong>の多い方を上位とします。
+        得点方法（1着5pt / 2着3pt / 3着1pt）に変更はありません。
+        詳しくは<a href="#rank" class="text-gold hover:text-gold-soft underline underline-offset-4">「順位の決定方法」</a>をご覧ください。
+      </p>
+    </div>
+
     <section class="mb-12">
       <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">企画概要</h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
@@ -144,11 +164,19 @@ const races = [
       </p>
     </section>
 
-    <section class="mb-12">
-      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">順位</h2>
+    <section class="mb-12" id="rank">
+      <h2 class="text-xl md:text-2xl font-display font-bold text-text mb-6 border-b border-ink-line pb-2">
+        順位の決定方法
+        <span class="ml-2 align-middle font-body text-[11px] md:text-xs font-bold text-alert">2026.10.20 追加</span>
+      </h2>
       <p class="text-base md:text-lg text-text-muted leading-relaxed mb-4">
-        合計ポイントの多い順です。<br />
-        同点の場合は同順位とし、次の順位を飛ばします（例：1位、2位、2位、4位）。
+        最終順位は、全12レースの合計獲得ポイントによって決定します。<br />
+        合計ポイントが同じ場合は、1着的中数、続いて2着的中数の多い方を上位とします。<br />
+        すべて同じ場合は同順位とし、次の順位を飛ばします（例：1位、2位、2位、4位）。
+      </p>
+      <p class="text-base md:text-lg text-text-muted leading-relaxed">
+        最終結果で1位が複数名となった場合は、番組内で公平な抽選を行い、景品の獲得者1名を決定します。<br />
+        抽選は景品の獲得者を決めるためのもので、成績上の順位は同順位のままです。
       </p>
     </section>
 
