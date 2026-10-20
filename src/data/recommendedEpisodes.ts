@@ -15,15 +15,15 @@ export interface RecommendedEpisode {
 
 export const RECOMMENDED_EPISODES: RecommendedEpisode[] = [
   {
-    slug: 'ep-161',
-    spotifyUrl: 'https://open.spotify.com/episode/4Ize58T7Ql8S0MwE6VYTjB',
+    slug: 'ep-242',
+    spotifyUrl: 'https://open.spotify.com/episode/5KLc3fceHqQ2ATvAbxKmxl',
   },
   {
-    slug: 'ep-216',
-    spotifyUrl: 'https://open.spotify.com/episode/55puBklyCiuzFzwPfWdsCx',
+    slug: 'ep-236',
+    spotifyUrl: 'https://open.spotify.com/episode/16t1jyGTSxSr628KJEI2Zc',
   },
   {
-    slug: 'ep-220',
-    spotifyUrl: 'https://open.spotify.com/episode/3dtaUD9supxjcjYIJksS3o',
+    slug: 'ep-231',
+    spotifyUrl: 'https://open.spotify.com/episode/6nFtOfrhp8M6TMoC9VTRkF',
   },
 ];
