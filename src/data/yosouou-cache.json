@@ -1,6 +1,14 @@
 {
   "participants": [
     {
+      "id": "p-009",
+      "radioName": "Black Thunders",
+      "totalPoints": 10,
+      "firstPlaceCount": 2,
+      "secondPlaceCount": 0,
+      "rank": 1
+    },
+    {
       "id": "p-034",
       "radioName": "ひもの",
       "totalPoints": 10,
@@ -14,7 +22,7 @@
       "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 1,
-      "rank": 2
+      "rank": 3
     },
     {
       "id": "p-021",
@@ -22,7 +30,7 @@
       "totalPoints": 6,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 3
+      "rank": 4
     },
     {
       "id": "p-001",
@@ -30,7 +38,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-002",
@@ -38,7 +46,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-003",
@@ -46,7 +54,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-004",
@@ -54,15 +62,15 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-005",
-      "radioName": "yuu",
+      "radioName": "Yuu",
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-006",
@@ -70,7 +78,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-008",
@@ -78,15 +86,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
-    },
-    {
-      "id": "p-009",
-      "radioName": "Black Thunders",
-      "totalPoints": 5,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-011",
@@ -94,7 +94,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-012",
@@ -102,7 +102,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-013",
@@ -110,7 +110,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-014",
@@ -118,7 +118,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-018",
@@ -126,7 +126,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-019",
@@ -134,7 +134,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-023",
@@ -142,7 +142,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-024",
@@ -150,7 +150,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-027",
@@ -158,7 +158,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-031",
@@ -166,7 +166,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-032",
@@ -174,7 +174,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 4
+      "rank": 5
     },
     {
       "id": "p-017",
@@ -258,7 +258,15 @@
     },
     {
       "id": "p-035",
-      "radioName": "ダンドラ",
+      "radioName": "だんどら",
+      "totalPoints": 0,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
+      "rank": 25
+    },
+    {
+      "id": "p-036",
+      "radioName": "だいすけ",
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
@@ -295,17 +303,9 @@
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
       "rank": null
-    },
-    {
-      "id": "p-036",
-      "radioName": "だいすけ",
-      "totalPoints": null,
-      "firstPlaceCount": 0,
-      "secondPlaceCount": 0,
-      "rank": null
     }
   ],
-  "updatedAt": "2026/10/25 16:00",
-  "asOfRace": "菊花賞終了時点",
+  "updatedAt": "2026/11/1 17:15",
+  "asOfRace": "天皇賞(秋)終了時点",
   "fetchFailed": false
 }
