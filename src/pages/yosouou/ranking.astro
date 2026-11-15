@@ -72,10 +72,11 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
         <>
           <div class="bg-ink-raised border border-ink-line rounded-xl overflow-hidden w-full">
             {/*
-              3列しかないので横スクロールさせない（docs/spec.md §4.8.3）。
-              ラジオネームは折り返させる。nowrap にすると
+              横スクロールさせない（docs/spec.md §4.8.3）。列幅を固定し、
+              残りの幅をラジオネームに回して折り返させる。nowrap にすると
               「さきちゃん（シンプルKEIBA）」のような長い名前で表が画面幅を超え、
               モバイルで順位やポイントが見えなくなる。
+              1着・2着の列は同ポイント時の順位の根拠を見せるためのもの（v5.13）。
             */}
             <table class="w-full text-left table-fixed">
               <thead class="bg-ink border-b border-ink-line text-xs md:text-sm text-text-faint">
@@ -83,6 +84,8 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
                   <th class="px-2 md:px-4 py-3 font-normal w-12 md:w-16 text-center">順位</th>
                   <th class="px-2 md:px-4 py-3 font-normal">ラジオネーム</th>
                   <th class="px-2 md:px-4 py-3 font-normal text-right w-16 md:w-24">ポイント</th>
+                  <th class="px-1 md:px-4 py-3 font-normal text-center w-10 md:w-20">1着</th>
+                  <th class="px-1 md:px-4 py-3 font-normal text-center w-10 md:w-20">2着</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-ink-line">
@@ -97,13 +100,19 @@ const formUrl = "https://forms.gle/1r71nxcxBe35zEVE7";
                     <td class="px-2 md:px-4 py-4 font-data text-right text-gold-soft font-bold tabular-nums">
                       {p.totalPoints ?? '-'}
                     </td>
+                    <td class="px-1 md:px-4 py-4 font-data text-center text-text-muted tabular-nums">
+                      {p.totalPoints === null ? '-' : p.firstPlaceCount}
+                    </td>
+                    <td class="px-1 md:px-4 py-4 font-data text-center text-text-muted tabular-nums">
+                      {p.totalPoints === null ? '-' : p.secondPlaceCount}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
           <p class="text-xs md:text-sm text-text-faint mt-4 leading-relaxed">
-            ※同ポイントの場合は、1着的中数、2着的中数の順に比較して順位を決定します。
+            ※「1着」「2着」は、その着順の馬を当てた回数です。同ポイントの場合は、1着的中数、2着的中数の順に比較して順位を決定します。
           </p>
           {hasPending && (
             <p class="text-sm text-text-muted mt-4 leading-relaxed">
