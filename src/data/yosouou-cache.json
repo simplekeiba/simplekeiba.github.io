@@ -1,12 +1,44 @@
 {
   "participants": [
     {
+      "id": "p-034",
+      "radioName": "ひもの",
+      "totalPoints": 13,
+      "firstPlaceCount": 2,
+      "secondPlaceCount": 1,
+      "rank": 1
+    },
+    {
+      "id": "p-009",
+      "radioName": "Black Thunders",
+      "totalPoints": 11,
+      "firstPlaceCount": 2,
+      "secondPlaceCount": 0,
+      "rank": 2
+    },
+    {
+      "id": "p-027",
+      "radioName": "さきちゃん（シンプルKEIBA）",
+      "totalPoints": 11,
+      "firstPlaceCount": 2,
+      "secondPlaceCount": 0,
+      "rank": 2
+    },
+    {
       "id": "p-001",
       "radioName": "ねぎ",
       "totalPoints": 10,
       "firstPlaceCount": 2,
       "secondPlaceCount": 0,
-      "rank": 1
+      "rank": 4
+    },
+    {
+      "id": "p-002",
+      "radioName": "ゆうと🍨",
+      "totalPoints": 10,
+      "firstPlaceCount": 2,
+      "secondPlaceCount": 0,
+      "rank": 4
     },
     {
       "id": "p-004",
@@ -14,23 +46,31 @@
       "totalPoints": 10,
       "firstPlaceCount": 2,
       "secondPlaceCount": 0,
-      "rank": 1
+      "rank": 4
     },
     {
-      "id": "p-009",
-      "radioName": "Black Thunders",
+      "id": "p-011",
+      "radioName": "三島の目玉",
       "totalPoints": 10,
       "firstPlaceCount": 2,
       "secondPlaceCount": 0,
-      "rank": 1
+      "rank": 4
     },
     {
-      "id": "p-034",
-      "radioName": "ひもの",
+      "id": "p-023",
+      "radioName": "ラディッシュ",
       "totalPoints": 10,
       "firstPlaceCount": 2,
       "secondPlaceCount": 0,
-      "rank": 1
+      "rank": 4
+    },
+    {
+      "id": "p-013",
+      "radioName": "げんまい",
+      "totalPoints": 9,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 1,
+      "rank": 9
     },
     {
       "id": "p-003",
@@ -38,7 +78,7 @@
       "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 1,
-      "rank": 5
+      "rank": 10
     },
     {
       "id": "p-005",
@@ -46,7 +86,7 @@
       "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 1,
-      "rank": 5
+      "rank": 10
     },
     {
       "id": "p-008",
@@ -54,7 +94,7 @@
       "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 1,
-      "rank": 5
+      "rank": 10
     },
     {
       "id": "p-010",
@@ -62,23 +102,15 @@
       "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 1,
-      "rank": 5
+      "rank": 10
     },
     {
       "id": "p-021",
       "radioName": "ともやむくん",
-      "totalPoints": 7,
+      "totalPoints": 8,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 9
-    },
-    {
-      "id": "p-013",
-      "radioName": "げんまい",
-      "totalPoints": 6,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 10
+      "rank": 14
     },
     {
       "id": "p-014",
@@ -86,7 +118,7 @@
       "totalPoints": 6,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 10
+      "rank": 15
     },
     {
       "id": "p-024",
@@ -94,23 +126,15 @@
       "totalPoints": 6,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 10
+      "rank": 15
     },
     {
-      "id": "p-027",
-      "radioName": "さきちゃん（シンプルKEIBA）",
+      "id": "p-031",
+      "radioName": "デスピサロ",
       "totalPoints": 6,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 10
-    },
-    {
-      "id": "p-002",
-      "radioName": "ゆうと🍨",
-      "totalPoints": 5,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 15
     },
     {
       "id": "p-006",
@@ -118,15 +142,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 14
-    },
-    {
-      "id": "p-011",
-      "radioName": "三島の目玉",
-      "totalPoints": 5,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 18
     },
     {
       "id": "p-012",
@@ -134,7 +150,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 18
     },
     {
       "id": "p-018",
@@ -142,7 +158,7 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 18
     },
     {
       "id": "p-019",
@@ -150,39 +166,31 @@
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 14
-    },
-    {
-      "id": "p-023",
-      "radioName": "ラディッシュ",
-      "totalPoints": 5,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 14
-    },
-    {
-      "id": "p-031",
-      "radioName": "デスピサロ",
-      "totalPoints": 5,
-      "firstPlaceCount": 1,
-      "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 18
     },
     {
       "id": "p-032",
-      "radioName": "柴馬(しばうま)",
+      "radioName": "柴馬（しばうま）",
       "totalPoints": 5,
       "firstPlaceCount": 1,
       "secondPlaceCount": 0,
-      "rank": 14
+      "rank": 18
+    },
+    {
+      "id": "p-037",
+      "radioName": "単枠指定",
+      "totalPoints": 5,
+      "firstPlaceCount": 1,
+      "secondPlaceCount": 0,
+      "rank": 18
     },
     {
       "id": "p-017",
       "radioName": "かおり",
-      "totalPoints": 2,
+      "totalPoints": 3,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 23
+      "rank": 24
     },
     {
       "id": "p-007",
@@ -190,7 +198,15 @@
       "totalPoints": 1,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 24
+      "rank": 25
+    },
+    {
+      "id": "p-020",
+      "radioName": "オサカナ",
+      "totalPoints": 1,
+      "firstPlaceCount": 0,
+      "secondPlaceCount": 0,
+      "rank": 25
     },
     {
       "id": "p-022",
@@ -198,7 +214,7 @@
       "totalPoints": 1,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 24
+      "rank": 25
     },
     {
       "id": "p-033",
@@ -206,7 +222,7 @@
       "totalPoints": 1,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 24
+      "rank": 25
     },
     {
       "id": "p-039",
@@ -214,7 +230,7 @@
       "totalPoints": 1,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 24
+      "rank": 25
     },
     {
       "id": "p-040",
@@ -222,7 +238,7 @@
       "totalPoints": 1,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 24
+      "rank": 25
     },
     {
       "id": "p-015",
@@ -230,7 +246,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-016",
@@ -238,15 +254,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
-    },
-    {
-      "id": "p-020",
-      "radioName": "オサカナ",
-      "totalPoints": 0,
-      "firstPlaceCount": 0,
-      "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-025",
@@ -254,7 +262,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-026",
@@ -262,7 +270,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-030",
@@ -270,7 +278,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-035",
@@ -278,7 +286,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-036",
@@ -286,15 +294,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
-    },
-    {
-      "id": "p-037",
-      "radioName": "単枠指定",
-      "totalPoints": 0,
-      "firstPlaceCount": 0,
-      "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-038",
@@ -302,7 +302,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-041",
@@ -310,7 +310,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-042",
@@ -318,7 +318,7 @@
       "totalPoints": 0,
       "firstPlaceCount": 0,
       "secondPlaceCount": 0,
-      "rank": 29
+      "rank": 31
     },
     {
       "id": "p-028",
@@ -345,7 +345,7 @@
       "rank": null
     }
   ],
-  "updatedAt": "2026/11/15 17:50",
-  "asOfRace": "エリザベス女王杯終了時点",
+  "updatedAt": "2026/11/22 20:45",
+  "asOfRace": "マイルチャンピオンシップ終了時点",
   "fetchFailed": false
 }
